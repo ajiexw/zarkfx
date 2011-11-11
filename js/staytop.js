@@ -1,4 +1,8 @@
-ZARK_FX.getElementLeft = function(element){
+/*
+ * 不支持IE6
+ * */
+ZARK_FX.staytop = {};
+ZARK_FX.staytop.getElementLeft = function(element){
     var actualLeft = element.offsetLeft;
     var current = element.offsetParent;
     while (current !== null){
@@ -7,7 +11,7 @@ ZARK_FX.getElementLeft = function(element){
     }
     return actualLeft;
 }
-ZARK_FX.getElementTop = function(element){
+ZARK_FX.staytop.getElementTop = function(element){
     var actualTop = element.offsetTop;
     var current = element.offsetParent;
     while (current !== null){
@@ -16,11 +20,11 @@ ZARK_FX.getElementTop = function(element){
     }
     return actualTop;
 };
-$('div['+ZARK_FX.fx+']').each(function(){
+$('div['+ZARK_FX.FX+']').each(function(){
     var $this = $(this);
-    if (ZARK_FX.parserFx($this.attr(ZARK_FX.fx)).staytop !== undefined){
-        var old_position = ZARK_FX.getElementTop(this);
-        var fixed_left = ZARK_FX.getElementLeft(this);
+    if (ZARK_FX.parserFx($this.attr(ZARK_FX.FX)).staytop !== undefined){
+        var old_position = ZARK_FX.staytop.getElementTop(this);
+        var fixed_left = ZARK_FX.staytop.getElementLeft(this);
         $(window).scroll(function(){
             if (document.documentElement.scrollTop > old_position){
                 $this.css('top',0).css('left',fixed_left).css('position','fixed');
@@ -28,5 +32,6 @@ $('div['+ZARK_FX.fx+']').each(function(){
                 $this.css('position','static').css('top','').css('left','');
             };
         });
+        $(window).scroll();
     };
 });

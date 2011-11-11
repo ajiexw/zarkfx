@@ -1,6 +1,6 @@
-$('input['+ZARK_FX.fx+']').each(function(){
+$('input['+ZARK_FX.FX+']').each(function(){
     var $this = $(this);
-    if (ZARK_FX.parserFx($this.attr(ZARK_FX.fx)).focusclean !== undefined){
+    if (ZARK_FX.parserFx($this.attr(ZARK_FX.FX)).focusclean !== undefined){
         var old_value = $this.val();
         $this.focus(function(){
             if($this.val()==old_value){
