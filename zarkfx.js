@@ -25,7 +25,7 @@ $(function(){
 
         for(var k in parsered_fx){
             if(ZARK_FX.loaded[k] === undefined){
-                $.getScript(ZARK_FX.PATH+'js/'+k+'.js');
+                $.getScript(ZARK_FX.PATH+'fx/'+k+'.js');
             };
             ZARK_FX.loaded[k] = true;
         };
