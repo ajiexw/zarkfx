@@ -14,5 +14,5 @@ if ($.browser.msie && ($.browser.version == "6.0") && (!$.support.style)) {
             };
         });
     };
-    $.getScript(ZARK_FX.PATH+'jslib/ddpng.js', startPngFix);
+    $.getScript(ZARK_FX.PATH + ZARK_FX.JS_LIB_PATH + 'ddpng.js', startPngFix);
 };

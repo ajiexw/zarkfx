@@ -1,0 +1,32 @@
+ZARK_FX.hoverfade = {};
+var runCycle = function(){
+    $('div['+ZARK_FX.FX+']').each(function(){
+        var $this = $(this);
+        if (ZARK_FX.parserFx($this.attr(ZARK_FX.FX)).hoverfade !== undefined){
+            var attrs = ZARK_FX.parserFx($this.attr(ZARK_FX.FX)).hoverfade;
+            var temp_id = ZARK_FX.getJSC();
+            $('<div id="'+temp_id+'" style="display:none"></div>').appendTo('body');
+            $this.cycle({ 
+                fx:     'fade', 
+                timeout: 0, 
+                pager:  '#'+temp_id,
+                speed: 	    400,
+                timeout:    4000,
+                pause:	    1
+
+            });
+            var switchs = attrs['switch'].split(',');
+            for(var index in switchs){
+                //这里有一个for循环的闭包问题, hover后取到的index是最后一个, 所以用hack
+                $('#'+switchs[index]).attr('fx_hack_hoverfade_index', index);
+                $('#'+switchs[index]).mouseover(function(){
+                    $('#'+temp_id+' a:eq('+$(this).attr('fx_hack_hoverfade_index')+')').trigger('click');
+                    $this.cycle('pause');
+                }).mouseout(function(){
+                    $this.cycle('resume');
+                });
+            };
+        };
+    });
+};
+$.getScript(ZARK_FX.PATH + ZARK_FX.JS_LIB_PATH + 'cycle.js', runCycle);
