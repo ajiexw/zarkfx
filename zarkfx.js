@@ -4,7 +4,7 @@ $(function(){
 
 
     ZARK_FX.FX = 'fx';
-    ZARK_FX.PATH = '/gouwudang/zarkfx/';
+    ZARK_FX.PATH = '../zarkfx/';
     ZARK_FX.JS_LIB_PATH = 'jslib/';
     ZARK_FX.loaded = {};
     var FX = ZARK_FX.FX;
@@ -49,6 +49,7 @@ $(function(){
 
         for(var k in parsered_fx){
             if(ZARK_FX.loaded[k] === undefined){
+                //alert(ZARK_FX.PATH+'fx/'+k+'.js');
                 $.getScript(ZARK_FX.PATH+'fx/'+k+'.js');
             };
             ZARK_FX.loaded[k] = true;
