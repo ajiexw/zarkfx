@@ -14,6 +14,17 @@ $(function(){
         return 'zarkfx_'+ZARK_FX.JSC++;
     };
 
+    ZARK_FX.getCSS = function(file_name){
+        if ($.browser.msie) {
+            var path = window.location.href.substring(0, window.location.href.lastIndexOf('/')+1) + ZARK_FX.PATH + file_name;
+            document.createStyleSheet(path);
+        }else{
+            var linkobj=$('<link type="text/css" rel="stylesheet" />');
+            linkobj.attr('href', ZARK_FX.PATH + file_name);  
+            $('head').append(linkobj); 
+        };
+    };
+
     ZARK_FX.parserFx = function(fx_string){
         var ret_fx = {};
         var fxs = fx_string.split(" ");
