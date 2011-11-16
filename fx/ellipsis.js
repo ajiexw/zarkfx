@@ -1,4 +1,6 @@
 /*
+ *  jslib: http://tpgblog.com/2009/12/21/threedots-the-jquery-ellipsis-plugin/
+ *
  *  max_rows 不一定准,  奇怪
  *
  *  <div fx="ellipsis[max_rows=3]" style="width:200px;" >
