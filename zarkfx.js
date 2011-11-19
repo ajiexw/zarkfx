@@ -39,9 +39,15 @@
                         var attrs = fx.substring(fx.indexOf('[')+1, fx.indexOf(']')).split(';');
                         for(var j in attrs){
                             if($.trim(attrs[j]) !== ''){
-                                var attr_name = $.trim(attrs[j].substring(0, attrs[j].indexOf('=')));
-                                var attr_value = $.trim(attrs[j].substring(attrs[j].indexOf('=')+1));
-                                ret_fx[fx_name][attr_name] = attr_value;
+                                if(attrs[j].indexOf('=') > -1){
+                                    var attr_name = $.trim(attrs[j].substring(0, attrs[j].indexOf('=')));
+                                    var attr_value = $.trim(attrs[j].substring(attrs[j].indexOf('=')+1));
+                                    ret_fx[fx_name][attr_name] = attr_value;
+
+                                }else{
+                                    var attr_name = attrs[j];
+                                    ret_fx[fx_name][attr_name] = true;
+                                };
                             };
                         };
                     };
