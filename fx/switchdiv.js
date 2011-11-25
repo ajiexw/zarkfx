@@ -1,15 +1,12 @@
 /*
- * <a href="div1" fx="switchdiv" >1</a>
- * <a href="div2" fx="switchdiv[event=mouseover]" >2</a>
+ * <a href="div1" fx="switchdiv[switchid=div1]" >1</a>
+ * <a href="div2" fx="switchdiv[event=mouseover;switchid=div2]" >1</a>
  *
  * <div id="div1">content1</div>
  * <div id="div2">content2</div>
  *
- * <a href="diva" fx="switchdiv[group=some]" >1</a>
- * <a href="divb" fx="switchdiv[group=some]" >2</a>
- *
+ * 必须有switchid
  * event可以是mouseover mouseout click 等事件
- * group是分组, 如果不写就是default组
  * 如果IE6 下出现页面跳动, 给被switch的div们再包一个div, 然后让这个div的高宽固定
  *
  * */
@@ -26,10 +23,12 @@ $('a['+ZARK_FX.FX+']').each(function(){
             $this.blur();
             for(var i in ZARK_FX.switchdiv.switch_groups[group]){
                 $a = ZARK_FX.switchdiv.switch_groups[group][i];
-                $($a.attr('href')).hide();
+                var hide_id = ZARK_FX.parserFx($a.attr(ZARK_FX.FX)).switchdiv.switchid;
+                $('#'+hide_id).hide();
                 $a.addClass('unchosed').removeClass('chosed');
             };
-            $($this.attr('href')).show();
+            var show_id = attrs.switchid;
+            $('#'+show_id).show();
             $this.addClass('chosed').removeClass('unchosed');
             return false;
         };
@@ -47,9 +46,9 @@ $('a['+ZARK_FX.FX+']').each(function(){
 
         if (ZARK_FX.switchdiv.switch_groups[group].length == 1){
             $this.addClass('chosed').removeClass('unchosed');
-            $($this.attr('href')).show();
+            $('#'+attrs.switchid).show();
         }else{
-            $($(this).attr('href')).hide();
+            $('#'+attrs.switchid).hide();
             $(this).addClass('unchosed').removeClass('chosed');
         };
 
