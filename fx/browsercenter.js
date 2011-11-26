@@ -1,14 +1,16 @@
 /*
  * IE6不支持任何参数
  *
- * <div fx="browsercenter"></div>
- * <div fx="browsercenter[v;h]"></div>
+ * <* fx="browsercenter"></*>
+ * <* fx="browsercenter[v;h]"></*>
  *
- * <div fx="browsercenter[vertical]"></div>
- * <div fx="browsercenter[v]"></div>
+ * <* fx="browsercenter[vertical]"></*>
+ * <* fx="browsercenter[v]"></*>
  *
- * <div fx="browsercenter[horizontal]"></div>
- * <div fx="browsercenter[h]"></div>
+ * <* fx="browsercenter[horizontal]"></*>
+ * <* fx="browsercenter[h]"></*>
+ *
+ * 需要偏移量时使用 margin
  *
  * */
 ZARK_FX.browsercenter = {};
@@ -39,10 +41,11 @@ if(ZARK_FX.browser.ie6){ // ie6 hack
 
 };
 
-$('div['+ZARK_FX.FX+']').each(function(){
+$('['+ZARK_FX.FX+']').each(function(){
     var $this = $(this);
     var attrs = ZARK_FX.parserFx($this.attr(ZARK_FX.FX)).browsercenter;
     if (attrs !== undefined){
+        $this.css('display','block');
         if(ZARK_FX.browser.ie6){
             $this.appendTo('#'+join_div_id);
         }else{
