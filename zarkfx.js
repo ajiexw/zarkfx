@@ -7,7 +7,11 @@
         ZARK_FX.FX = 'fx';
         ZARK_FX.PATH = '../zarkfx/';
         ZARK_FX.JS_LIB_PATH = 'jslib/';
-        ZARK_FX.loaded = {};
+        ZARK_FX.SWF_LIB_PATH = 'swf/';
+        ZARK_FX.loaded  = {};
+        ZARK_FX.browser = {};
+        ZARK_FX.browser.ie6 = $.browser.msie && ($.browser.version == "6.0") && (!$.support.style);
+        
         var FX = ZARK_FX.FX;
         $.fn.ZARK_FX = {};
 

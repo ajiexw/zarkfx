@@ -1,5 +1,7 @@
 /*
  * 不支持IE6
+ * <div fx="staytop"></div>
+ *
  * */
 ZARK_FX.staytop = {};
 ZARK_FX.staytop.getElementLeft = function(element){
