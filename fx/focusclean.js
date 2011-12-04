@@ -13,8 +13,8 @@ $('input['+ZARK_FX.FX+']').each(function(){
             };
         }).blur(function(){
             if($this.val()==''){
-                $this.val(old_value);
                 $this.css('color',ZARK_FX.focusclean.tip_color);
+                $this.val(old_value);
             };
         });
         $this.css('color',ZARK_FX.focusclean.tip_color);
