@@ -48,4 +48,4 @@ var runCycle = function(){
         };
     });
 };
-$.getScript(ZARK_FX.PATH + ZARK_FX.JS_LIB_PATH + 'cycle.js', runCycle);
+$.getScript(ZARK_FX.JS_LIB_PATH + 'cycle.js', runCycle);

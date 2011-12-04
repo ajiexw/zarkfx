@@ -33,4 +33,4 @@ var initCorner = function(){
     });
 };
 
-$.getScript(ZARK_FX.PATH + ZARK_FX.JS_LIB_PATH + 'ddroundies.js', initCorner);
+$.getScript(ZARK_FX.JS_LIB_PATH + 'ddroundies.js', initCorner);

@@ -6,8 +6,9 @@
 
         ZARK_FX.FX = 'fx';
         ZARK_FX.PATH = '../zarkfx/';
-        ZARK_FX.JS_LIB_PATH = 'jslib/';
-        ZARK_FX.SWF_LIB_PATH = 'swf/';
+        ZARK_FX.JS_LIB_PATH  = ZARK_FX.PATH + 'jslib/';
+        ZARK_FX.SWF_LIB_PATH = ZARK_FX.PATH + 'swf/';
+        ZARK_FX.IMG_LIB_PATH = ZARK_FX.PATH + 'img/';
         ZARK_FX.loaded  = {};
         ZARK_FX.browser = {};
         ZARK_FX.browser.ie6 = $.browser.msie && ($.browser.version == "6.0") && (!$.support.style);
@@ -31,6 +32,10 @@
             };
         };
 
+        ZARK_FX.setDefaultInt = function(attrs, key, value){
+            if (attrs[key] === undefined) { attrs[key] = value; }else{ attrs[key] = parseInt(attrs[key]); };
+        };
+
         ZARK_FX.parserFx = function(fx_string){
             var ret_fx = {};
             var fxs = fx_string.split(" ");
@@ -44,7 +49,7 @@
                         for(var j in attrs){
                             if($.trim(attrs[j]) !== ''){
                                 if(attrs[j].indexOf('=') > -1){
-                                    var attr_name = $.trim(attrs[j].substring(0, attrs[j].indexOf('=')));
+                                    var attr_name  = $.trim(attrs[j].substring(0, attrs[j].indexOf('=')));
                                     var attr_value = $.trim(attrs[j].substring(attrs[j].indexOf('=')+1));
                                     ret_fx[fx_name][attr_name] = attr_value;
 
@@ -62,6 +67,14 @@
 
             };
             return ret_fx;
+        };
+
+        ZARK_FX.getAttrs = function($obj, fx_name){
+            return ZARK_FX.parserFx($obj.attr(ZARK_FX.FX))[fx_name];
+        };
+
+        ZARK_FX.hasAttrs = function($obj, fx_name){
+            return ZARK_FX.parserFx($obj.attr(ZARK_FX.FX))[fx_name] !== undefined;
         };
 
         $('['+FX+']').each(function(){

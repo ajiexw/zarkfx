@@ -23,4 +23,4 @@ var initFancybox = function(){
 };
 
 ZARK_FX.getCSS('plugin/fancybox/fancybox.css');
-$.getScript(ZARK_FX.PATH + ZARK_FX.JS_LIB_PATH + 'fancybox.js', initFancybox);
+$.getScript(ZARK_FX.JS_LIB_PATH + 'fancybox.js', initFancybox);

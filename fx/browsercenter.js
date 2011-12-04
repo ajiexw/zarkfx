@@ -68,4 +68,3 @@ $('['+ZARK_FX.FX+']').each(function(){
         };
     };
 });
-
