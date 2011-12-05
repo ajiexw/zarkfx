@@ -3,24 +3,19 @@
  *
  * */
 
-ZARK_FX.popvideo = {};
+ZARK_FX.getCSS(ZARK_FX.PATH + 'css/fancybox/fancybox.css');
 
-var initFancybox = function(){
-    $('a['+ZARK_FX.FX+']').each(function(){
-        var $this = $(this);
-        if(ZARK_FX.parserFx($this.attr(ZARK_FX.FX)).popvideo !== undefined){
-            var attrs = ZARK_FX.parserFx($this.attr(ZARK_FX.FX)).popvideo;
-            $this.fancybox({
-                'padding'           : 0,
-                'autoScale'         : false,
-                'transitionIn'      : 'none',
-                'transitionOut'     : 'none',
-                'overlayOpacity'    : 0.8,
-                'hideOnOverlayClick': false
-            });
-        };
-    });
-};
+ZARK_FX.getFrame('jquery-1.3.2', function($){
+    ZARK_FX.run('popvideo', function(attrs){
 
-ZARK_FX.getCSS('plugin/fancybox/fancybox.css');
-$.getScript(ZARK_FX.JS_LIB_PATH + 'fancybox.js', initFancybox);
+        $(this).fancybox({
+            'padding'           : 0,
+            'autoScale'         : false,
+            'transitionIn'      : 'none',
+            'transitionOut'     : 'none',
+            'overlayOpacity'    : 0.8,
+            'hideOnOverlayClick': false
+        });
+
+    }, {}, 'fancybox');
+});

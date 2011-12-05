@@ -1,21 +1,18 @@
 /*
- *
- *  <div fx="hovershow[showid=somediv;(startshow)]" > 
- *  hover me show another div
+ *  <div fx="hovershow[showid=atag;(startshow)]" > 
+ *  hover me show another *
  *  </div>
  *
- *  <div id="somediv" > 
+ *  <* id="atag" > 
  *  content
- *  </div>
+ *  </*>
  *
  * */
 
-ZARK_FX.hovershow = {};
+ZARK_FX.getFrame('jquery-1.3.2', function($){
+    ZARK_FX.run('hovershow', function(attrs){
 
-$('['+ZARK_FX.FX+']').each(function(){
-    var $this = $(this);
-    if (ZARK_FX.parserFx($this.attr(ZARK_FX.FX)).hovershow !== undefined){
-        var attrs = ZARK_FX.parserFx($this.attr(ZARK_FX.FX)).hovershow;
+        var $this = $(this);
         if(attrs.showid !== undefined){
             $this.hover(function(){
                 $('#'+attrs.showid).show();
@@ -26,6 +23,6 @@ $('['+ZARK_FX.FX+']').each(function(){
                 $('#'+attrs.showid).hide();
             };
         };
-    };
-});
 
+    });
+});

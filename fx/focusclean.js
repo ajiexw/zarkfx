@@ -1,9 +1,8 @@
-ZARK_FX.focusclean = {};
-ZARK_FX.focusclean.tip_color = '#CDCDCD';
+ZARK_FX.getFrame('jquery-1.3.2', function($){
 
-$('input['+ZARK_FX.FX+']').each(function(){
-    var $this = $(this);
-    if (ZARK_FX.parserFx($this.attr(ZARK_FX.FX)).focusclean !== undefined){
+    ZARK_FX.run('focusclean', function(attrs){
+
+        var $this = $(this);
         var old_value = $this.val();
         var old_color = $this.css('color');
         $this.focus(function(){
@@ -13,10 +12,11 @@ $('input['+ZARK_FX.FX+']').each(function(){
             };
         }).blur(function(){
             if($this.val()==''){
-                $this.css('color',ZARK_FX.focusclean.tip_color);
+                $this.css('color',attrs.tip_color);
                 $this.val(old_value);
             };
         });
-        $this.css('color',ZARK_FX.focusclean.tip_color);
-    };
+        $this.css('color',attrs.tip_color);
+    
+    }, {tip_color:  '#CDCDCD'} );
 });

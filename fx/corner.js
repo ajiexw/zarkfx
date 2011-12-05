@@ -5,32 +5,28 @@
  * <* fx="corner[radius=8,4,12]"></*>
  *
  * */
-ZARK_FX.corner = {};
 
-var initCorner = function(){
-    $('['+ZARK_FX.FX+']').each(function(){
+ZARK_FX.getFrame('jquery-1.3.2', function($){
+
+    ZARK_FX.run('corner', function(attrs){
+
         var $this = $(this);
-        if(ZARK_FX.parserFx($this.attr(ZARK_FX.FX)).corner !== undefined){
-            var attrs = ZARK_FX.parserFx($this.attr(ZARK_FX.FX)).corner;
-            var temp = ZARK_FX.getJSC();
-            $this.addClass(temp);
-            var radius = 4;
-            if (attrs.radius !== undefined){
-                if (attrs.radius.indexOf(',') > -1){
-                    var rs = attrs.radius.split(',');
-                    var radius = '';
-                    for(var i in rs){
-                        if($.trim(rs[i]).length > 0){
-                            radius += rs[i] + 'px '
-                        };
-                    };
-                }else{
-                    radius = parseInt(attrs.radius);
+        var radius;
+        var temp_jsc = ZARK_FX.getJSC();
+        $this.addClass(temp_jsc);
+        if (typeof attrs.radius === 'string' && attrs.radius.indexOf(',') > -1){
+            radius = '';
+            var rs = attrs.radius.split(',');
+            for(var i in rs){
+                if($.trim(rs[i]).length > 0){
+                    radius += $.trim(rs[i]) + 'px '
                 };
             };
-            DD_roundies.addRule('.'+temp, radius, true);
+        }else{
+            radius = parseInt(attrs.radius);
         };
-    });
-};
+        DD_roundies.addRule('.'+temp_jsc, radius, true);
 
-$.getScript(ZARK_FX.JS_LIB_PATH + 'ddroundies.js', initCorner);
+    }, {radius: 4}, 'ddroundies');
+
+});

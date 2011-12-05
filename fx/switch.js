@@ -2,7 +2,7 @@
  * Example 1:
  * <* fx="switch[switchid=div1]" >1</*>
  * <* fx="switch[event=mouseover;switchid=div2]" >1</*>
- * <* fx="switch[event=mouseover;switchid=c1;nochangeclass]" >1</*>
+ * <* fx="switch[event=mouseover;switchclass=c1;nochangeclass]" >1</*>
  *
  * <* id="div1">content1</*>
  * <* id="div2">content2</*>
@@ -19,20 +19,19 @@
  *
  * */
 
-ZARK_FX['switch'] = {};
-ZARK_FX['switch'].switch_groups = {};
 
-$('['+ZARK_FX.FX+']').each(function(){
-    var $this = $(this);
-    if (ZARK_FX.parserFx($this.attr(ZARK_FX.FX))['switch'] !== undefined){
-        var attrs = ZARK_FX.parserFx($this.attr(ZARK_FX.FX))['switch'];
+ZARK_FX.getFrame('jquery-1.3.2', function($){
+    var switch_groups = {};
+
+    ZARK_FX.run('switch', function(attrs){
+
+        var $this = $(this);
         var group = attrs.group !== undefined? attrs.group : 'default';
-
         var switchFunction = function(){
-            for(var i in ZARK_FX['switch'].switch_groups[group]){
-                var $a = ZARK_FX['switch'].switch_groups[group][i];
-                var hide_id = ZARK_FX.parserFx($a.attr(ZARK_FX.FX))['switch'].switchid;
-                var hide_cl = ZARK_FX.parserFx($a.attr(ZARK_FX.FX))['switch'].switchclass;
+            for(var i in switch_groups[group]){
+                var $a = switch_groups[group][i];
+                var hide_id = ZARK_FX.parserFx($a.attr(ZARK_FX.FX_NAME))['switch'].switchid;
+                var hide_cl = ZARK_FX.parserFx($a.attr(ZARK_FX.FX_NAME))['switch'].switchclass;
                 if (hide_id !== undefined) $('#'+hide_id).hide();
                 if (hide_cl !== undefined) $('.'+hide_cl).hide();
                 $a.addClass('unchosed').removeClass('chosed');
@@ -56,13 +55,13 @@ $('['+ZARK_FX.FX+']').each(function(){
         };
         
         // add $this to switch_groups
-        if(ZARK_FX['switch'].switch_groups[group] === undefined){
-            ZARK_FX['switch'].switch_groups[group] = [];
+        if(switch_groups[group] === undefined){
+            switch_groups[group] = [];
         };
-        ZARK_FX['switch'].switch_groups[group].push($this);
+        switch_groups[group].push($this);
 
         // show the first switched, and hide others
-        if (ZARK_FX['switch'].switch_groups[group].length == 1){
+        if (switch_groups[group].length == 1){
             if (attrs.nochangeclass === undefined) $this.addClass('chosed').removeClass('unchosed');
             if (attrs.switchid !== undefined) $('#'+attrs.switchid).show();
         }else{
@@ -71,11 +70,11 @@ $('['+ZARK_FX.FX+']').each(function(){
         };
 
         // change the first switcher's class
-        if (ZARK_FX['switch'].switch_groups[group].length == 1){
+        if (switch_groups[group].length == 1){
             if (attrs.switchclass !== undefined) $('.'+attrs.switchclass).show();
         }else{
             if (attrs.nochangeclass === undefined) $(this).addClass('unchosed').removeClass('chosed');
         };
 
-    };
+    });
 });
