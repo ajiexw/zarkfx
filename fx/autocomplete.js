@@ -9,11 +9,14 @@
  *      adiwang
  *      lining
  *      nike
+ *
+ * jQuery Autocomplete URL: http://docs.jquery.com/Plugins/Autocomplete/autocomplete#url_or_dataoptions
  * */
 
 ZARK_FX.getFrame('jquery-1.3.2', function($){
 
     ZARK_FX.getCSS(ZARK_FX.CSS_PATH + 'jquery-autocomplete.css');
+    var source_cache = {};
 
     ZARK_FX.run('autocomplete', function(attrs){
 
@@ -21,16 +24,21 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
         var source;
 
         if (attrs.src !== undefined){
-            $.ajax({
-                async:      false,
-                cache:      true,
-                dataType:   'text',
-                type:       'GET',
-                url:        attrs.src,
-                success:    function(data){
-                    source = data.split('\n');
-                }
-            });
+            if (source_cache[attrs.src] === undefined){
+                $.ajax({
+                    async:      false,
+                    cache:      true,
+                    dataType:   'text',
+                    type:       'GET',
+                    url:        attrs.src,
+                    success:    function(data){
+                        source = data.split('\n');
+                    }
+                });
+                source_cache[attrs.src] = source;
+            }else{
+                source = source_cache[attrs.src];
+            };
         }else if(attrs.data !== undefined){
             source = attrs.data.split(',');
         };
