@@ -3,8 +3,8 @@
         if (!window['ZARK_FX']) window['ZARK_FX'] = {};
         ZARK_FX = window['ZARK_FX'];
 
-        ZARK_FX.FX_NAME = 'fx';
-        ZARK_FX.PATH = '/plugins/zarkfx/';
+        ZARK_FX.FX_NAME         = 'fx';
+        ZARK_FX.PATH            = '/plugins/zarkfx/';
         ZARK_FX.JS_PATH         = ZARK_FX.PATH + 'jslib/';
         ZARK_FX.CSS_PATH        = ZARK_FX.PATH + 'css/';
         ZARK_FX.SWF_PATH        = ZARK_FX.PATH + 'swf/';
