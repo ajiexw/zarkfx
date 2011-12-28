@@ -82,7 +82,16 @@
                 $ZARK('['+ZARK_FX.FX_NAME+'*='+fx_name+']').each(function(){
                     var attrs = ZARK_FX.getFX(this, fx_name);
                     if (attrs !== undefined){
-                        attrs = $ZARK.extend(defaults, attrs);
+                        // change attrs's data type like defaults
+                        // 不要使用jQuery的extend函数, 因为extend会改变attrs的数据类型
+                        for(var k in defaults){
+                            if (attrs[k] === undefined){
+                                attrs[k] = defaults[k];
+                            }else{
+                                if(typeof(defaults[k]) === 'number')  attrs[k] = parseInt(attrs[k]);
+                                if(typeof(defaults[k]) === 'boolean') attrs[k] = attrs[k] === 'true';
+                            };
+                        };// change end
                         cb && cb.call(this, attrs);
                     };
                 });
@@ -135,7 +144,7 @@
                     }else{
                         ret_fx[fx] = {};
                     };
-                }
+                };
             };
             return ret_fx;
         };

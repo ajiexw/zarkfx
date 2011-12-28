@@ -1,0 +1,4 @@
+.zarkfx_pagination_default .zarkfx_pagination_current_page {color:#000;}
+.zarkfx_pagination_default ul {float:left;}
+.zarkfx_pagination_default ul li {display:block; float:left; color:#6F6F6F; padding:0 5px; }
+.zarkfx_pagination_default ul li a {display:block; float:left; color:#6F6F6F; font-size:12px; }
