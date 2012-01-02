@@ -26,7 +26,7 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
                 if (scroll_objs[i].hide_height < this_top){
                     scroll_objs[i].$hide_obj.fadeIn();
                 }else{
-                    scroll_objs[i].$hide_obj.fadeOut();
+                    if (attrs.nohide === false) scroll_objs[i].$hide_obj.fadeOut();
                 };
             };
         };
@@ -37,7 +37,7 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
         var $scroll_obj;
         var fx_name = 'scroll';
         if (attrs['default'] !== undefined){
-            $this.hide();
+            if (attrs.nohide === false) $this.hide();
             var scroll_to_top_id = ZARK_FX.getJSC();
             $('<div id="'+scroll_to_top_id+'" style="position: fixed; bottom: 50px; right: 50px; opacity: 1; cursor: pointer; display: block; background-color: rgb(255, 255, 255); width: 48px; height: 48px;"><img src="'+ZARK_FX.IMG_PATH+'/'+fx_name+'/default.png"><div>').appendTo('body');
             $scroll_obj = $('#'+scroll_to_top_id);
@@ -58,7 +58,7 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
 
         // show or hide this obj
         var this_top = $(document).scrollTop();
-        if (attrs.hide_height > this_top){
+        if (attrs.hide_height > this_top  && attrs.nohide === false){
             $scroll_obj.hide();
         }else{
             $scroll_obj.show();
@@ -77,6 +77,7 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
         top:            undefined,
         bottom:         undefined,
         left:           undefined,
-        right:          undefined
+        right:          undefined,
+        nohide:         false
     });
 });

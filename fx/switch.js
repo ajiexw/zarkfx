@@ -60,6 +60,7 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
         };
         switch_groups[group].push($this);
 
+        /*
         // show the first switched, and hide others
         if (switch_groups[group].length == 1){
             if (attrs.nochangeclass === undefined) $this.addClass('chosed').removeClass('unchosed');
@@ -75,6 +76,7 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
         }else{
             if (attrs.nochangeclass === undefined) $(this).addClass('unchosed').removeClass('chosed');
         };
+        */
 
     });
 });

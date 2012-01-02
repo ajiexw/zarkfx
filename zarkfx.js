@@ -89,7 +89,7 @@
                                 attrs[k] = defaults[k];
                             }else{
                                 if(typeof(defaults[k]) === 'number')  attrs[k] = parseInt(attrs[k]);
-                                if(typeof(defaults[k]) === 'boolean') attrs[k] = attrs[k] === 'true';
+                                if(typeof(defaults[k]) === 'boolean') attrs[k] = attrs[k] === true;
                             };
                         };// change end
                         cb && cb.call(this, attrs);
