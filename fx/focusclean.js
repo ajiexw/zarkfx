@@ -18,5 +18,5 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
         });
         $this.css('color',attrs.tip_color);
     
-    }, {tip_color:  '#CDCDCD'} );
+    }, {tip_color:  '#666666'} );
 });
