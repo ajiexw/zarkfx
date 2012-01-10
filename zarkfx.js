@@ -13,6 +13,7 @@
         ZARK_FX.loaded_fx       = {};
         ZARK_FX.loaded_scripts  = {};
         ZARK_FX.loaded_frames   = {};
+        ZARK_FX.loaded_css      = {};
         ZARK_FX.browser         = {};
         ZARK_FX.browser.ie6     = $ZARK.browser.msie && ($ZARK.browser.version == "6.0") && (!$ZARK.support.style);
 
@@ -105,13 +106,16 @@
 
         // 异步加载第三方CSS
         ZARK_FX.getCSS = function(file_url){
-            if ($ZARK.browser.msie) {
-                var path = window.location.href.substring(0, window.location.href.lastIndexOf('/')+1) + ZARK_FX.PATH + file_url;
-                document.createStyleSheet(path);
-            }else{
-                var linkobj=$ZARK('<link type="text/css" rel="stylesheet" />');
-                linkobj.attr('href', file_url);
-                $ZARK('head').append(linkobj); 
+            if (ZARK_FX.loaded_css[file_url] === undefined){
+                if ($ZARK.browser.msie) {
+                    var path = window.location.href.substring(0, window.location.href.lastIndexOf('/')+1) + ZARK_FX.PATH + file_url;
+                    document.createStyleSheet(path);
+                }else{
+                    var linkobj=$ZARK('<link type="text/css" rel="stylesheet" />');
+                    linkobj.attr('href', file_url);
+                    $ZARK('head').append(linkobj); 
+                };
+                ZARK_FX.loaded_css[file_url] = true;
             };
         };
 

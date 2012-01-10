@@ -1,0 +1,12 @@
+.zarkfx_accordion_div1 { float:left; }
+.zarkfx_accordion_ul1 { float:left; width:100%;}
+.zarkfx_accordion_li1 { clear:both;float:left; font-size:12px; width:87%;padding:0px 0px 0px 20px; position:relative;}
+.zarkfx_accordion_li1 .zarkfx_accordion_a1 {display:block; text-decoration:none; color:#232323; line-height:25px; border-bottom:1px solid #dcdcdc; width:100%; padding:5px 0 5px 3px;}
+.zarkfx_accordion_a1:hover {color:#6f6f6f;cursor:pointer; }
+.zarkfx_accordion_span1  {display:block; position:absolute; top:16px; right:0px; width:6px; height:7px; }
+.zarkfx_accordion_div2 {float:left; display:block;width:100%;  margin-bottom:-1px; }
+.zarkfx_accordion_ul2 { width:80%; float:right; margin-right:-3px;}
+.zarkfx_accordion_li2  {font-size:14px;width:100%;padding:0px 0px 0px 0px; position:relative;}
+.zarkfx_accordion_a2 {display:block; text-decoration:none; color:#232323; line-height:25px; border-bottom:1px solid #dcdcdc; width:100%; padding:7px 0 7px 0px; font-size:12px;}
+.zarkfx_accordion_a2:hover {color:#6f6f6f;cursor:pointer;  }
+.zarkfx_accordion_span2 {right:3px;display:block; position:absolute; top:16px; right:0px; width:6px; height:7px; }
