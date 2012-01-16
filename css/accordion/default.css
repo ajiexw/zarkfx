@@ -1,7 +1,7 @@
 .zarkfx_accordion_div1 { float:left; width:120px; background:#f9f9f9; border:1px solid #dcdcdc; }
 .zarkfx_accordion_ul1 { float:left; width:100%;}
 .zarkfx_accordion_li1 { clear:both;float:left; font-size:12px; position:relative; list-style-type:none; box-shadow:0 5px 5px #ffffff inset; }
-.zarkfx_accordion_li1 .zarkfx_accordion_a1 {display:block; text-decoration:none; color:#858585; line-height:25px; border-top:1px solid #ffffff; border-bottom:1px solid #dcdcdc; border-left:1px solid #dcdcdc; width:90px; padding:3px 15px;}
+.zarkfx_accordion_li1 .zarkfx_accordion_a1 {display:block; text-decoration:none; color:#858585; line-height:25px; border-top:1px solid #ffffff; border-bottom:1px solid #dcdcdc; width:90px; padding:3px 15px;}
 .zarkfx_accordion_a1:hover {color:#232323;cursor:pointer; }
 .zarkfx_accordion_span1  {display:block; position:absolute; top:13px; right:15px; width:7px; height:7px; }
 .zarkfx_accordion_div2 {float:left; display:block;width:100%; }
