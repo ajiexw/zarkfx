@@ -34,13 +34,13 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
                 var hide_cl = ZARK_FX.parserFx($a.attr(ZARK_FX.FX_NAME))['switch'].switchclass;
                 if (hide_id !== undefined) $('#'+hide_id).hide();
                 if (hide_cl !== undefined) $('.'+hide_cl).hide();
-                $a.addClass('unchosed').removeClass('chosed');
+                $a.addClass('zarkfx_unchosed').removeClass('zarkfx_chosed');
             };
             var show_id = attrs.switchid;
             var show_cl = attrs.switchclass;
             if (show_id !== undefined) $('#'+show_id).show();
             if (show_cl !== undefined) $('.'+show_cl).show();
-            if (attrs.nochangeclass === undefined) $this.addClass('chosed').removeClass('unchosed');
+            if (attrs.nochangeclass === undefined) $this.addClass('zarkfx_chosed').removeClass('zarkfx_unchosed');
             if ($this.attr('nodeName') === 'A') {
                 $this.blur();
                 return false;
@@ -63,7 +63,7 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
         /*
         // show the first switched, and hide others
         if (switch_groups[group].length == 1){
-            if (attrs.nochangeclass === undefined) $this.addClass('chosed').removeClass('unchosed');
+            if (attrs.nochangeclass === undefined) $this.addClass('zarkfx_chosed').removeClass('zarkfx_unchosed');
             if (attrs.switchid !== undefined) $('#'+attrs.switchid).show();
         }else{
             if (attrs.switchid !== undefined) $('#'+attrs.switchid).hide();
@@ -74,7 +74,7 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
         if (switch_groups[group].length == 1){
             if (attrs.switchclass !== undefined) $('.'+attrs.switchclass).show();
         }else{
-            if (attrs.nochangeclass === undefined) $(this).addClass('unchosed').removeClass('chosed');
+            if (attrs.nochangeclass === undefined) $(this).addClass('zarkfx_unchosed').removeClass('zarkfx_chosed');
         };
         */
 
