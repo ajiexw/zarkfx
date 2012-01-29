@@ -4,7 +4,14 @@
         ZARK_FX = window['ZARK_FX'];
 
         ZARK_FX.FX_NAME         = 'fx';
-        ZARK_FX.PATH            = '/plugins/zarkfx/';
+        ZARK_FX.PATH            = '';
+
+        $("script").each(function() {
+            if( /zarkfx.js$/.test(this.src) ) {
+                ZARK_FX.PATH = this.src.replace(/zarkfx.js$/, "");
+            }
+        });
+
         ZARK_FX.JS_PATH         = ZARK_FX.PATH + 'jslib/';
         ZARK_FX.CSS_PATH        = ZARK_FX.PATH + 'css/';
         ZARK_FX.SWF_PATH        = ZARK_FX.PATH + 'swf/';
@@ -13,6 +20,9 @@
         ZARK_FX.loaded_fx       = {};
         ZARK_FX.loaded_scripts  = {};
         ZARK_FX.loaded_frames   = {};
+
+        ZARK_FX.loaded_frames["jquery-" + $ZARK.fn.jquery] = jQuery;
+
         ZARK_FX.loaded_css      = {};
         ZARK_FX.browser         = {};
         ZARK_FX.browser.ie6     = $ZARK.browser.msie && ($ZARK.browser.version == "6.0") && (!$ZARK.support.style);
@@ -27,9 +37,6 @@
         ZARK_FX.getFrame = function(frame_name, cb){
             if (ZARK_FX.loaded_frames[frame_name] === undefined){
                 ZARK_FX.loaded_frames[frame_name] = 'loading';
-                var temp_$, temp_jquery;
-                if ($ !== undefined) { temp_$ = $; $ = null; };
-                if (jQuery !== undefined) { temp_jquery = jQuery; jQuery = null; };
 
                 $ZARK.ajax({
                     async:      false,
@@ -40,9 +47,6 @@
                 });
 
                 ZARK_FX.loaded_frames[frame_name] = jQuery.noConflict(true);
-
-                if (temp_$ !== undefined) { $ = temp_$; };
-                if (temp_jquery !== undefined) { jQuery = temp_jquery; };
 
                 cb && cb(ZARK_FX.loaded_frames[frame_name]);
 
