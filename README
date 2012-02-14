@@ -3,8 +3,3 @@
 1 引用jquery
 
 2 引用zarkfx/zarkfx.js
-
-3 修改zarkfx/zarkfx.js中的下面这个路径:
-  ZARK_FX.PATH = '../zarkfx/'
-
-4 用firebug检查,确保可以访问到zarkfx库.
