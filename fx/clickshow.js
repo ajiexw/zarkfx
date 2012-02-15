@@ -1,5 +1,5 @@
 /*
- *  <* fx="clickshow[showid=atag;]" > 
+ *  <* fx="clickshow[showid=atag;(hideme)]" > 
  *  click me show another *
  *  </*>
  *
@@ -19,6 +19,9 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
                     $('#'+attrs.showid).hide();
                 }else{
                     $('#'+attrs.showid).show();
+                };
+                if (attrs.hideme) {
+                    $this.hide();
                 };
             });
         };
