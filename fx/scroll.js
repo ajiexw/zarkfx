@@ -72,7 +72,7 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
         if (attrs.left !== undefined) $scroll_obj.css('left', attrs.left + 'px');
     
     }, {
-        speed:          1000,
+        speed:          0,
         hide_height:    200,
         top:            undefined,
         bottom:         undefined,
