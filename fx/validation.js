@@ -52,8 +52,8 @@
  *             <tr>
  *                 <td><input type="submit" value="submit" /></td>
  *             </tr>
- *         </form>
- *     </table>
+ *         </table>
+ *     </form>
  *     <hr />
  *     <p id="out"></p>
  * </body>
