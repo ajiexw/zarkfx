@@ -43,7 +43,6 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
             if (attrs.nochangeclass === undefined) $this.addClass('zarkfx_chosed').removeClass('zarkfx_unchosed');
             if ($this.attr('nodeName') === 'A') {
                 $this.blur();
-                return false;
             };
         };
 
