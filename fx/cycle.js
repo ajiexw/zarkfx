@@ -34,6 +34,10 @@ ZARK_FX.getFrame('jquery-1.3.2', function($) {
             eval("$(this).cycle(" + attrs["fx_var"] + ")");
         };
 
-    }, {fx_var: undefined}, 'cycle');
+    }, {
+        fx_var: undefined,
+        timeout: 0
+    
+    }, 'cycle');
 
 });
