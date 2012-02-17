@@ -17,14 +17,14 @@ class Directive_ZarkFX(Directive):
             blk = addnodes.nodes.container()
             blk.attributes["classes"] += ["zarkfx_demo"]
 
-            blk += addnodes.nodes.paragraph(text=u"Source code:")
-            src = addnodes.nodes.literal_block( text=u"\n".join(self.content) )
-            blk += src
-
             blk += addnodes.nodes.paragraph(text=u"Result:")
             res = addnodes.nodes.raw( text=u"\n".join(self.content) )
             res.attributes["format"] = "html"
             blk += res
+
+            blk += addnodes.nodes.paragraph(text=u"Source code:")
+            src = addnodes.nodes.literal_block( text=u"\n".join(self.content) )
+            blk += src
 
             return [blk]
         else:
