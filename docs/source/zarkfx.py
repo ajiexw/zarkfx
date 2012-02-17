@@ -1,5 +1,4 @@
 from sphinx.directives import Directive, directives, addnodes
-#from xml.dom import minidom
 import re, sys
 
 class Directive_ZarkFX(Directive):
@@ -23,23 +22,6 @@ class Directive_ZarkFX(Directive):
             blk += src
 
             blk += addnodes.nodes.paragraph(text=u"Result:")
-            #try:
-            #    t = ( u"".join(self.content) ).encode("utf-8")
-            #    dom = minidom.parseString(t)
-            #    xml = dom.toxml() + u"\n"
-            #    xml = re.sub(r'^<\?.*?\?>', "", xml)
-            #except Exception as err:
-            #    begin = err.offset - 10
-            #    end = err.offset + 40
-            #    if begin < 0:
-            #        begin = 0
-            #    if end > len(t):
-            #        end = len(t)
-            #    sys.stderr.write("\x1B[31;1m" + str(err) + ":\x1B[0m\n")
-            #    sys.stderr.write('    "...' + t[begin:end] + '..."\n');
-            #    sys.stderr.write("        " + " "*(err.offset - begin) + "^\n");
-            #    xml = u"Illegal statements\n"
-            #res = addnodes.nodes.raw(text=xml)
             res = addnodes.nodes.raw( text=u"\n".join(self.content) )
             res.attributes["format"] = "html"
             blk += res

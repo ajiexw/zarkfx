@@ -1,32 +1,30 @@
 /*
- * Test html:
+ * DOC_BEGIN
  *
- * <html>
- * <head>
- * <meta charset="utf-8" />
- * <script type="text/javascript" src="jslib/jquery-1.3.2.js"></script>
- * <script type="text/javascript" src="zarkfx.js"></script>
- * <script type="text/javascript">
- *     var regex_email = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i;
- * 
- *     function check_user(text) {
- *         if( /^(xdcr|sdjl|davinwang)$/i.test(text) )
- *             setTimeout(this.ok, 1000);
- *         else
- *             setTimeout(this.fail, 1000);
- *     }
- * 
- *     function custom_valid() {
- *         alert("custom_valid is called: " + this.value);
- *     }
- * 
- *     function custom_invalid() {
- *         this.value = "custom_invalid is called";
- *     }
- * </script>
- * </head>
- * 
- * <body>
+ * Validation
+ * ==========
+ *
+ * .. zarkfx:: :demo:
+ *
+ *     <script type="text/javascript">
+ *         var regex_email = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i;
+ *
+ *         function check_user(text) {
+ *             if( /^(xdcr|sdjl|davinwang)$/i.test(text) )
+ *                 setTimeout(this.ok, 1000);
+ *             else
+ *                 setTimeout(this.fail, 1000);
+ *         }
+ *
+ *         function custom_valid() {
+ *             alert("custom_valid is called: " + this.value);
+ *         }
+ *
+ *         function custom_invalid() {
+ *             this.value = "custom_invalid is called";
+ *         }
+ *     </script>
+ *
  *     <form>
  *         <table>
  *             <tr>
@@ -56,8 +54,8 @@
  *     </form>
  *     <hr />
  *     <p id="out"></p>
- * </body>
- * </html>
+ *
+ * DOC_END
  *
  */
 
