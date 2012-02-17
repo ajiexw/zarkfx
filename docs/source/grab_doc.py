@@ -43,27 +43,21 @@ if __name__ == "__main__":
     doc_end = "DOC_END\n"
     doc_inline = "DOC:"
     docs = []
-    state = None
+    state = 0
     for line in fin:
         # change "\r\n" to "\n"
         if len(line) >= 2 and line[-2] == "\r":
             line = line[:-2] + "\n"
 
-        if state == None: # outside of comments
-            if line.lstrip().startswith('/*') and '*/' not in line:
-                state = 'comments'
-        elif state == 'comments': # inside of comments
-            if line.rstrip().endswith('*/') and '/*' not in line:
-                state = None
-        elif state == 'comments': # outside of doc_begin
+        if state == 0: # outside
             idx_inline = line.find(doc_inline)
             idx_begin = line.find(doc_begin)
             if idx_inline >= 0:
                 fout.write(line[( idx_inline + len(doc_inline) ):])
             elif idx_begin >= 0 and \
                     idx_begin + len(doc_begin) == len(line):
-                state = 'doc'
-        elif state == 'doc': # inside of doc_begin
+                state = 1
+        elif state == 1: # inside
             # for alignment, cut idx_begin chars at the beginning of line
             if len(line) < idx_begin + 1:
                 line = "\n"
@@ -73,6 +67,6 @@ if __name__ == "__main__":
                 for line in docs:
                     fout.write(line)
                 docs = []
-                state = 'comments'
+                state = 0
             else:
                 docs += line
