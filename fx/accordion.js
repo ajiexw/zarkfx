@@ -5,12 +5,11 @@
  * Accordion
  * =========
  *
- * This FX is powered by sparker5
+ * 手风琴特效, 常用于目录式的导航.
  *
- * Example 1
- * ---------
- *
- * With default style.
+ * 使用默认样式
+ * ------------
+ * fx="accordion[style=default]"
  *
  * .. zarkfx:: :demo:
  *
@@ -37,10 +36,9 @@
  *          </ul>
  *      </div>
  *
- * Example 2
- * ---------
- *
- * Without default style.
+ * 不使用样式
+ * ----------
+ * fx="accordion"
  *
  * .. zarkfx:: :demo:
  *
