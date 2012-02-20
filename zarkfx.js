@@ -126,115 +126,146 @@
         // 解析fx字符串, 返回一个字典
         ZARK_FX.parseFX = function(fx_string){
 
-            var parseOne = function(){
+            var parseOne = function(s_fx){
                 var re_strip = /^\s+|\s+$/g;
+                var re_lstrip = /^\s+/g;
                 var re_var_name = /^[A-z_][A-z_0-9]*$/;
 
                 var res = {name: "", attrs: {}, remain: ""};
-                var err = {idx: 0, msg: ""};
+                var err = {idx: 0, msg: "", fx_name:""};
 
-                var idx = s_fx.indexOf("[");
-                if(idx == -1) {
+                var bracket_idx = s_fx.indexOf("[");
+                var space_idx = s_fx.indexOf(" ");
+                var state;
+
+                s_fx = s_fx.replace(re_lstrip, "");
+
+                if ( (space_idx !== -1) && (bracket_idx !== -1) && (space_idx < bracket_idx) && (s_fx.slice(space_idx, bracket_idx).replace(re_strip, "").length>0)){
+                    res.name = s_fx.slice(0, space_idx);
+                    res.remain = s_fx.slice(space_idx);
+                    state = "finished";
+                }else if(bracket_idx !== -1){
+                    res.name = s_fx.slice(0, bracket_idx);
+                    res.remain = s_fx.slice(bracket_idx);
+                    state = 0;
+                }else if(space_idx !== -1){
+                    res.name = s_fx.slice(0, space_idx);
+                    res.remain = s_fx.slice(space_idx);
+                    state = "finished";
+                }else{
                     res.name = s_fx.slice(0);
-                } else {
-                    res.name = s_fx.slice(0, idx);
+                    res.remain = ""
+                    state = "finished";
                 };
+
                 res.name = res.name.replace(re_strip, "");
                 if( !re_var_name.test(res.name) ) {
                     err.msg = "Illegal FX name.";
+                    err.fx_name = res.name;
                     throw err;
                 };
 
-                var state = 0, escaped, t;
-                var key, value;
-                for(idx+=1; idx<s_fx.length; idx+=1) {
-                    switch(state) {
-                        case 0: // init
-                            key = "";
-                            value = "";
-                            err.idx = idx;
-                            state = 1;
-                            idx -= 1;
-                            break;
-                        case 1: // parse key
-                            if( /[;\]]/.test(s_fx[idx]) ) {
-                                key = key.replace(re_strip, "");
-                                if(key != "") {
+                if (bracket_idx !== -1){
+                    var escaped, t;
+                    var key, value;
+                    var idx = bracket_idx;
+                    for(idx+=1; idx<s_fx.length; idx+=1) {
+                        switch(state) {
+                            case 0: // init
+                                key = "";
+                                value = "";
+                                err.idx = idx;
+                                state = 1;
+                                idx -= 1;
+                                break;
+                            case 1: // parse key
+                                if( /[;\]]/.test(s_fx[idx]) ) {
+                                    key = key.replace(re_strip, "");
+                                    if(key != "") {
+                                        if( !re_var_name.test(key) ) {
+                                            err.fx_name = res.name;
+                                            err.msg = "Illegal FX attr name.";
+                                            throw err;
+                                        };
+                                        res.attrs[key] = true;
+                                    };
+                                    if(s_fx[idx] == ";") {
+                                        state = 0;
+                                    } else {
+                                        state = "finished";
+                                    };
+                                } else if(s_fx[idx] == "=") {
+                                    key = key.replace(re_strip, "");
                                     if( !re_var_name.test(key) ) {
+                                        err.fx_name = res.name;
                                         err.msg = "Illegal FX attr name.";
                                         throw err;
                                     };
-                                    res.attrs[key] = true;
-                                };
-                                if(s_fx[idx] == ";") {
-                                    state = 0;
+                                    err.idx = idx + 1;
+                                    state = 2;
+                                    escaped = 0;
                                 } else {
-                                    state = "finished";
+                                    key += s_fx[idx];
                                 };
-                            } else if(s_fx[idx] == "=") {
-                                key = key.replace(re_strip, "");
-                                if( !re_var_name.test(key) ) {
-                                    err.msg = "Illegal FX attr name.";
-                                    throw err;
-                                };
-                                err.idx = idx + 1;
-                                state = 2;
-                                escaped = 0;
-                            } else {
-                                key += s_fx[idx];
-                            };
-                            break;
-                        case 2: // parse value
-                            if(escaped == 0) {
-                                if(s_fx[idx] == "&") {
-                                    escaped = 1;
-                                } else if(s_fx[idx] == ";") {
-                                    res.attrs[key] = value;
-                                    state = 0;
-                                } else if(s_fx[idx] == "]") {
-                                    res.attrs[key] = value;
-                                    state = "finished";
-                                } else {
-                                    value += s_fx[idx];
-                                }
-                            } else if(escaped == 1) {
-                                if(s_fx[idx] == "u") {
-                                    t = "0000";
-                                    escaped = 2;
-                                } else {
-                                    if(s_fx[idx] == "'") {
-                                        value += '"';
+                                break;
+                            case 2: // parse value
+                                if(escaped == 0) {
+                                    if(s_fx[idx] == "&") {
+                                        escaped = 1;
+                                    } else if(s_fx[idx] == ";") {
+                                        res.attrs[key] = value;
+                                        state = 0;
+                                    } else if(s_fx[idx] == "]") {
+                                        res.attrs[key] = value;
+                                        state = "finished";
                                     } else {
                                         value += s_fx[idx];
+                                    }
+                                } else if(escaped == 1) {
+                                    if(s_fx[idx] == "u") {
+                                        t = "0000";
+                                        escaped = 2;
+                                    } else {
+                                        if(s_fx[idx] == "'") {
+                                            value += '"';
+                                        } else {
+                                            value += s_fx[idx];
+                                        };
+                                        escaped = 0;
                                     };
-                                    escaped = 0;
+                                } else if(escaped == 2) { // "&uxxxx;"
+                                    if(s_fx[idx] == ";") {
+                                        eval('t = "\\u' + t + '"');
+                                        value += t;
+                                        escaped = 0;
+                                    } else if( /[A-Fa-f0-9]/.test(s_fx[idx]) ) {
+                                        t = t.slice(1) + s_fx[idx];
+                                    } else {
+                                        err.fx_name = res.name;
+                                        err.idx = idx;
+                                        err.msg = "Illegal character in hex environment.";
+                                        throw err;
+                                    };
                                 };
-                            } else if(escaped == 2) { // "&uxxxx;"
-                                if(s_fx[idx] == ";") {
-                                    eval('t = "\\u' + t + '"');
-                                    value += t;
-                                    escaped = 0;
-                                } else if( /[A-Fa-f0-9]/.test(s_fx[idx]) ) {
-                                    t = t.slice(1) + s_fx[idx];
-                                } else {
-                                    err.idx = idx;
-                                    err.msg = "Illegal character in hex environment.";
-                                    throw err;
-                                };
-                            };
+                                break;
+                        };
+                        if(state == "finished") {
                             break;
+                        };
                     };
-                    if(state == "finished") {
-                        break;
-                    };
-                };
-                if(state != "finished") {
-                    err.idx = idx;
-                    err.msg = "Unexpected ending.";
-                    throw err;
-                };
 
-                res.remain = s_fx.slice(idx + 1);
+                    if(state != "finished") {
+                        err.fx_name = res.name;
+                        err.idx = idx;
+                        err.msg = "Unexpected ending.";
+                        throw err;
+                    };
+
+                    res.remain = s_fx.slice(idx + 1);
+                
+                };// end if (bracket_idx !== -1)
+
+                res.remain = res.remain.replace(re_strip, "");
 
                 return res;
             };// end parseOne
@@ -247,7 +278,11 @@
                     ret_fxs[out.name] = out.attrs;
                     t = out.remain;
                 } catch(err) {
-                    alert( (err.idx + fx_string.length - t.length) + ": " + err.msg );
+                    if (err.idx !== undefined) {
+                        alert( err.fx_name + ": "+ (err.idx + fx_string.length - t.length) + ": " + err.msg );
+                    }else{
+                        throw err;
+                    };
                     break;
                 };
             };
