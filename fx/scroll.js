@@ -88,7 +88,7 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
         if (attrs.style === 'default' ){
             $this.hide();
             var scroll_to_top_id = ZARK_FX.getJSC();
-            $('<div id="'+scroll_to_top_id+'" style="position: fixed; bottom: 50px; right: 50px; opacity: 1; cursor: pointer; display: block; background-color: rgb(255, 255, 255); width: 48px; height: 48px;"><img src="'+ZARK_FX.IMG_PATH+fx_name+'/default.png"><div>').appendTo('body');
+            $('<div id="'+scroll_to_top_id+'" style="position: fixed; bottom: 50px; right: 50px; opacity: 1; cursor: pointer; display: block; width: 48px; height: 48px;"><img src="'+ZARK_FX.IMG_PATH+fx_name+'/default.png"><div>').appendTo('body');
             $scroll_obj = $('#'+scroll_to_top_id);
         }else{
             $scroll_obj = $this;
