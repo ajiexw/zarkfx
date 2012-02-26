@@ -73,8 +73,10 @@ ZARK_FX.getFrame('jquery-1.3.2', function($) {
             return;
         };
 
-        var this_val = {this: this, is_valid: false, validate: undefined};
+        var this_val = {this: this, validate: undefined, unvalidate: undefined};
         var regex;
+        this_val.invalid_msg = attrs["invalid_msg"];
+        this_val.error_obj = error_obj;
 
         switch(attrs["type"]) {
             case "numbers":
@@ -96,14 +98,16 @@ ZARK_FX.getFrame('jquery-1.3.2', function($) {
                 break;
 
             case "notempty":
-                regex = /.+/;
+                this_val.validate = function(){
+                    return $.trim($(this_val.this).val()).length > 0;
+                };
 
                 break;
 
             case "notequal":
                 if(attrs.value){
                     this_val.validate = function(){
-                        return ZARK_FX.splitValue(attrs.value).indexOf($(this).val()) == -1;
+                        return ZARK_FX.splitValue(attrs.value).indexOf($.trim($(this_val.this).val())) == -1;
                     };
                 };
 
@@ -124,24 +128,20 @@ ZARK_FX.getFrame('jquery-1.3.2', function($) {
                     return;
                 };
 
-                if(error_obj) {
+                if(this_val.error_obj) {
                     this_val.success = function() {
-                        this_val.is_valid = true;
-                        $(error_obj).html("");
+                        $(this_val.error_obj).html("");
                     };
                     this_val.fail = function() {
-                        this_val.is_valid = false;
-                        $(error_obj).html(attrs["invalid_msg"]);
+                        $(this_val.error_obj).html(this_val.invalid_msg);
                     };
                 } else {
                     this_val.success = function() {
-                        this_val.is_valid = true;
                         if( attrs["valid_fn"] ) {
                             eval(attrs["valid_fn"] + ".call(this_val.this)");
                         };
                     };
                     this_val.fail = function() {
-                        this_val.is_valid = false;
                         if( attrs["invalid_fn"] ) {
                             eval(attrs["invalid_fn"] + ".call(this_val.this)");
                         };
@@ -149,7 +149,7 @@ ZARK_FX.getFrame('jquery-1.3.2', function($) {
                 };
 
                 this_val.validate = function() {
-                    eval(attrs["custom_fn"] +
+                    return eval(attrs["custom_fn"] +
                             '.call(this_val, "' + this_val.this.value + '")');
                 };
 
@@ -167,27 +167,40 @@ ZARK_FX.getFrame('jquery-1.3.2', function($) {
             return;
         };
 
-        $(this).change(function() {
-            this_val.is_valid = false;
-        });
-
-        $(this).blur(function(){
-            if(error_obj) {
-                if( this_val.validate() ) {
-                    this_val.is_valid = true;
-                    $(error_obj).html("");
-                } else {
-                    this_val.is_valid = false;
-                    $(error_obj).html(attrs["invalid_msg"]);
-                };
-            } else {
-                if( this_val.validate() ) {
-                    this_val.is_valid = true;
+        if(!this_val.error_obj && !attrs["valid_fn"] && !attrs["invalid_fn"] ) {
+            return;
+        };
+        
+        if(this_val.error_obj) {
+            this_val.success = function(){
+                $(this_val.error_obj).html("");
+            };
+            this_val.fail = function(){
+                $(this_val.error_obj).html(this_val.invalid_msg);
+            };
+        } else {
+            if (attrs["valid_fn"]){
+                this_val.success = function(){
                     attrs["valid_fn"] && eval(attrs["valid_fn"] + ".call(this_val.this)");
-                } else {
-                    this_val.is_valid = false;
+                };
+            }else{
+                this_val.success = function(){};
+            };
+
+            if (attrs["invalid_fn"]){
+                this_val.fail = function(){
                     attrs["invalid_fn"] && eval(attrs["invalid_fn"] + ".call(this_val.this)");
                 };
+            }else{
+                this_val.fail = function(){};
+            };
+        };
+
+        $(this).blur(function(){
+            if( this_val.validate() ) {
+                this_val.success();
+            } else {
+                this_val.fail();
             };
         });
 
@@ -200,8 +213,10 @@ ZARK_FX.getFrame('jquery-1.3.2', function($) {
             $(form).submit(function() {
                 var data = $.data(form, "zarkfx.validation");
                 for(var i in data) {
-                    data[i].validate();
-                    if( !data[i].is_valid ) {
+                    if (data[i].validate()){
+                        data[i].success();
+                    }else{
+                        data[i].fail();
                         return false;
                     };
                 };
@@ -209,7 +224,7 @@ ZARK_FX.getFrame('jquery-1.3.2', function($) {
             });
         };
 
-        $.data(this.form, "zarkfx.validation").push(this_val);
+        $.data(form, "zarkfx.validation").push(this_val);
 
     }, {
         type: undefined,
