@@ -279,6 +279,11 @@
             return ZARK_FX.parseFX($ZARK(obj).attr(ZARK_FX.FX_NAME))[fx_name];
         };
 
+        ZARK_FX.splitValue = function(value){ 
+            //此函数暂时不支持value里面包含逗号的情况, 需要改进
+            return value.split(',')
+        };
+
         ZARK_FX.hasFX = function(obj, fx_name){
             return ZARK_FX.parseFX($ZARK(obj).attr(ZARK_FX.FX_NAME))[fx_name] !== undefined;
         };

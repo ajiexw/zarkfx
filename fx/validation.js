@@ -11,7 +11,7 @@
  *
  *         function check_user(text) {
  *             if( /^(xdcr|sdjl|davinwang)$/i.test(text) )
- *                 setTimeout(this.ok, 1000);
+ *                 setTimeout(this.success, 1000);
  *             else
  *                 setTimeout(this.fail, 1000);
  *         }
@@ -63,17 +63,17 @@ ZARK_FX.getFrame('jquery-1.3.2', function($) {
 
     ZARK_FX.run('validation', function(attrs) {
 
-        var out = $("#" + attrs["invalid_id"])[0];
+        var error_obj = $("#" + attrs["invalid_id"])[0];
 
-        if(out) {
+        if(error_obj) {
             if( !attrs["invalid_msg"] ) {
-                return;
+                attrs["invalid_msg"] = "validate failed!";
             };
-        } else if( !attrs["valid_fn"] && !attrs["invalid_fn"] ) {
+        }else if( !attrs["valid_fn"] && !attrs["invalid_fn"] ) {
             return;
         };
 
-        var tmp = {this: this, is_valid: false};
+        var this_val = {this: this, is_valid: false, validate: undefined};
         var regex;
 
         switch(attrs["type"]) {
@@ -95,41 +95,25 @@ ZARK_FX.getFrame('jquery-1.3.2', function($) {
 
                 break;
 
-            case "noempty":
+            case "notempty":
                 regex = /.+/;
+
+                break;
+
+            case "notequal":
+                if(attrs.value){
+                    this_val.validate = function(){
+                        return ZARK_FX.splitValue(attrs.value).indexOf($(this).val()) == -1;
+                    };
+                };
 
                 break;
 
             case "identical":
                 var another = $("#" + attrs["another_id"])[0];
-
-                if(!another) {
-                    return;
-                };
-
-                if(out) {
-                    tmp.cb = function() {
-                        if( tmp.this.value === another.value ) {
-                            tmp.is_valid = true;
-                            $(out).html("");
-                        } else {
-                            tmp.is_valid = false;
-                            $(out).html(attrs["invalid_msg"]);
-                        };
-                    };
-                } else {
-                    tmp.cb = function() {
-                        if( tmp.this.value === another.value ) {
-                            tmp.is_valid = true;
-                            if( attrs["valid_fn"] ) {
-                                eval(attrs["valid_fn"] + ".call(tmp.this)");
-                            };
-                        } else {
-                            tmp.is_valid = false;
-                            if( attrs["invalid_fn"] ) {
-                                eval(attrs["invalid_fn"] + ".call(tmp.this)");
-                            };
-                        };
+                if(another){
+                    this_val.validate = function(){
+                        return this_val.this.value === another.value;
                     };
                 };
 
@@ -140,33 +124,33 @@ ZARK_FX.getFrame('jquery-1.3.2', function($) {
                     return;
                 };
 
-                if(out) {
-                    tmp.ok = function() {
-                        tmp.is_valid = true;
-                        $(out).html("");
+                if(error_obj) {
+                    this_val.success = function() {
+                        this_val.is_valid = true;
+                        $(error_obj).html("");
                     };
-                    tmp.fail = function() {
-                        tmp.is_valid = false;
-                        $(out).html(attrs["invalid_msg"]);
+                    this_val.fail = function() {
+                        this_val.is_valid = false;
+                        $(error_obj).html(attrs["invalid_msg"]);
                     };
                 } else {
-                    tmp.ok = function() {
-                        tmp.is_valid = true;
+                    this_val.success = function() {
+                        this_val.is_valid = true;
                         if( attrs["valid_fn"] ) {
-                            eval(attrs["valid_fn"] + ".call(tmp.this)");
+                            eval(attrs["valid_fn"] + ".call(this_val.this)");
                         };
                     };
-                    tmp.fail = function() {
-                        tmp.is_valid = false;
+                    this_val.fail = function() {
+                        this_val.is_valid = false;
                         if( attrs["invalid_fn"] ) {
-                            eval(attrs["invalid_fn"] + ".call(tmp.this)");
+                            eval(attrs["invalid_fn"] + ".call(this_val.this)");
                         };
                     };
                 };
 
-                tmp.cb = function() {
+                this_val.validate = function() {
                     eval(attrs["custom_fn"] +
-                            '.call(tmp, "' + tmp.this.value + '")');
+                            '.call(this_val, "' + this_val.this.value + '")');
                 };
 
                 break;
@@ -175,39 +159,37 @@ ZARK_FX.getFrame('jquery-1.3.2', function($) {
                 return;
         };
 
-        if(regex)
-        {
-            if(out) {
-                tmp.cb = function() {
-                    if( regex.test(tmp.this.value) ) {
-                        tmp.is_valid = true;
-                        $(out).html("");
-                    } else {
-                        tmp.is_valid = false;
-                        $(out).html(attrs["invalid_msg"]);
-                    };
-                };
-            } else {
-                tmp.cb = function() {
-                    if( regex.test(tmp.this.value) ) {
-                        tmp.is_valid = true;
-                        if( attrs["valid_fn"] ) {
-                            eval(attrs["valid_fn"] + ".call(tmp.this)");
-                        };
-                    } else {
-                        tmp.is_valid = false;
-                        if( attrs["invalid_fn"] ) {
-                            eval(attrs["invalid_fn"] + ".call(tmp.this)");
-                        };
-                    };
-                };
+        if(!this_val.validate && regex) {
+            this_val.validate = function(){
+                return regex.test(this_val.this.value);
             };
+        }else if(!this_val.validate){
+            return;
         };
 
         $(this).change(function() {
-            tmp.is_valid = false;
+            this_val.is_valid = false;
         });
-        $(this).blur(tmp.cb);
+
+        $(this).blur(function(){
+            if(error_obj) {
+                if( this_val.validate() ) {
+                    this_val.is_valid = true;
+                    $(error_obj).html("");
+                } else {
+                    this_val.is_valid = false;
+                    $(error_obj).html(attrs["invalid_msg"]);
+                };
+            } else {
+                if( this_val.validate() ) {
+                    this_val.is_valid = true;
+                    attrs["valid_fn"] && eval(attrs["valid_fn"] + ".call(this_val.this)");
+                } else {
+                    this_val.is_valid = false;
+                    attrs["invalid_fn"] && eval(attrs["invalid_fn"] + ".call(this_val.this)");
+                };
+            };
+        });
 
         // for submit
         var form = this.form;
@@ -218,7 +200,7 @@ ZARK_FX.getFrame('jquery-1.3.2', function($) {
             $(form).submit(function() {
                 var data = $.data(form, "zarkfx.validation");
                 for(var i in data) {
-                    data[i].cb();
+                    data[i].validate();
                     if( !data[i].is_valid ) {
                         return false;
                     };
@@ -227,7 +209,7 @@ ZARK_FX.getFrame('jquery-1.3.2', function($) {
             });
         };
 
-        $.data(this.form, "zarkfx.validation").push(tmp);
+        $.data(this.form, "zarkfx.validation").push(this_val);
 
     }, {
         type: undefined,
@@ -242,5 +224,4 @@ ZARK_FX.getFrame('jquery-1.3.2', function($) {
         valid_fn: undefined,
         invalid_fn: undefined
     });
-
 });
