@@ -98,8 +98,8 @@
                             };
                         };// change end
                         cb && cb.call(this, attrs);
+                        if (attrs.finished==='show') $(this).show();
                     };
-                    if (attrs.finished==='show') $(this).show();
                 });
             };
             if (deps !== undefined){
