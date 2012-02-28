@@ -172,11 +172,12 @@ ZARK_FX.getFrame('jquery-1.3.2', function($) {
         };
         
         if(this_val.error_obj) {
+            $(this_val.error_obj).hide();
             this_val.success = function(){
-                $(this_val.error_obj).html("");
+                $(this_val.error_obj).html("").hide();
             };
             this_val.fail = function(){
-                $(this_val.error_obj).html(this_val.invalid_msg);
+                $(this_val.error_obj).html(this_val.invalid_msg).show();
             };
         } else {
             if (attrs["valid_fn"]){
