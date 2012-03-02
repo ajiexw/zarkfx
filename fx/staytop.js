@@ -1,8 +1,27 @@
 /*
- * 不支持IE6
- * <div fx="staytop"></div>
  *
- * */
+ * DOC_BEGIN
+ *
+ * Stay top
+ * ========
+ *
+ * 当页面向下滚动时, 保持某个元素出现的页面的最顶部.
+ *
+ * 默认样式
+ * --------
+ * fx="staytop" 
+ *
+ * 向下滚动页面, 文字将停留在页面最顶部.
+ *
+ * .. zarkfx:: :demo:
+ *
+ *     <div fx="staytop" style="background-color:#66AAFF; width:300px;" >我可以是一个搜索框, 或者广告...</div>
+ *     <div style="height:600px; width:300px;">这个div的存在只是为了把页面拉长.</div>
+ *
+ * DOC_END
+ *
+ */
+
 ZARK_FX.getFrame('jquery-1.3.2', function($){
 
     var getElementLeft = function(element){

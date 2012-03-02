@@ -1,3 +1,25 @@
+/*
+ *
+ * DOC_BEGIN
+ *
+ * Pagination
+ * ==========
+ *
+ * 分页
+ *
+ * 默认样式
+ * --------
+ * fx="pagination[max=15;displaycount=10;firsttext=第一页;lasttext=末页;style=default]" 
+ *
+ * .. zarkfx:: :demo:
+ *
+ *     <div fx="pagination[max=15;displaycount=10;firsttext=第一页;lasttext=末页;style=default]" ></div>
+ *
+ *
+ * DOC_END
+ *
+ */
+
 ZARK_FX.getCSS(ZARK_FX.CSS_PATH + 'pagination.css');
 
 ZARK_FX.getFrame('jquery-1.3.2', function($){
@@ -52,11 +74,12 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
             };
         });
     
-    }, {max         :  10,
+    }, {
+        max         :  10,
         displaycount:  10,
         firsttext   :  'first',
         lasttext    :  'last',
-        style       :  'default',
+        style       :  'none',
         para_name   :  'page_num',
         start_from  :  1
     }, 'url');

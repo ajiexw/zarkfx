@@ -98,6 +98,7 @@
                             };
                         };// change end
                         cb && cb.call(this, attrs);
+                        if (attrs.finished==='show') $(this).show();
                     };
                 });
             };
@@ -124,51 +125,174 @@
         };
 
         // 解析fx字符串, 返回一个字典
-        ZARK_FX.parserFx = function(fx_string){
-            var ret_fx = {};
-            var fxs = fx_string.split(" ");
-            for(var i in fxs){
-                var fx = fxs[i];
-                if ($ZARK.trim(fx).length > 0){
-                    if (fx.indexOf('[') > -1){
-                        var fx_name = fx.substring(0,fx.indexOf('['))
-                        ret_fx[fx_name] = {};
-                        if (fx.indexOf('[') > -1){
-                            var attrs = fx.substring(fx.indexOf('[')+1, fx.indexOf(']')).split(';');
-                            for(var j in attrs){
-                                if($ZARK.trim(attrs[j]) !== ''){
-                                    if(attrs[j].indexOf('=') > -1){
-                                        var attr_name  = $ZARK.trim(attrs[j].substring(0, attrs[j].indexOf('=')));
-                                        var attr_value = $ZARK.trim(attrs[j].substring(attrs[j].indexOf('=')+1));
-                                        ret_fx[fx_name][attr_name] = attr_value;
+        ZARK_FX.parseFX = function(fx_string){
 
-                                    }else{
-                                        var attr_name = attrs[j];
-                                        ret_fx[fx_name][attr_name] = true;
+            var parseOne = function(s_fx){
+                var re_strip = /^\s+|\s+$/g;
+                var re_var_name = /^[A-z_][A-z_0-9]*$/;
+
+                var res = {name: "", attrs: {}, remain: ""};
+                var err = {idx: 0, msg: "", fx_name: "Unknown FX"};
+
+                var idx = s_fx.search(/\S/);
+                if(idx == -1) {
+                    return res;
+                };
+                err.idx = idx;
+
+                var idx2 = idx + s_fx.slice(idx).search(/[\s\[]/);
+                if(idx2 < idx) {
+                    idx2 = s_fx.length;
+                };
+                res.name = s_fx.slice(idx, idx2);
+
+                if( !re_var_name.test(res.name) ) {
+                    err.msg = "Illegal FX name.";
+                    throw err;
+                };
+                err.fx_name = res.name;
+
+                idx = s_fx.indexOf("[", idx2);
+                if( (idx == -1) || (s_fx.slice(idx2, idx).search(/\S/) != -1) ) {
+                    res.remain = s_fx.slice(idx2);
+                    return res;
+                };
+
+                var state = 0, escaped, t;
+                var key, value;
+                for(idx+=1; idx<s_fx.length; idx+=1) {
+                    switch(state) {
+                        case 0: // init
+                            key = "";
+                            value = "";
+                            err.idx = idx;
+                            state = 1;
+                            idx -= 1;
+                            break;
+                        case 1: // parse key
+                            if( /[;\]]/.test(s_fx[idx]) ) {
+                                key = key.replace(re_strip, "");
+                                if(key != "") {
+                                    if( !re_var_name.test(key) ) {
+                                        err.msg = "Illegal FX attr name.";
+                                        throw err;
                                     };
+                                    res.attrs[key] = true;
+                                };
+                                if(s_fx[idx] == ";") {
+                                    state = 0;
+                                } else {
+                                    state = "finished";
+                                };
+                            } else if(s_fx[idx] == "=") {
+                                key = key.replace(re_strip, "");
+                                if( !re_var_name.test(key) ) {
+                                    err.msg = "Illegal FX attr name.";
+                                    throw err;
+                                };
+                                err.idx = idx + 1;
+                                state = 2;
+                                escaped = 0;
+                            } else {
+                                key += s_fx[idx];
+                            };
+                            break;
+                        case 2: // parse value
+                            if(escaped == 0) {
+                                if(s_fx[idx] == "&") {
+                                    escaped = 1;
+                                } else if(s_fx[idx] == ";") {
+                                    res.attrs[key] = value;
+                                    state = 0;
+                                } else if(s_fx[idx] == "]") {
+                                    res.attrs[key] = value;
+                                    state = "finished";
+                                } else {
+                                    value += s_fx[idx];
+                                }
+                            } else if(escaped == 1) {
+                                if(s_fx[idx] == "u") {
+                                    t = "0000";
+                                    escaped = 2;
+                                } else {
+                                    if(s_fx[idx] == "'") {
+                                        value += '"';
+                                    } else if(s_fx[idx] == '"') {
+                                        value += "'";
+                                    } else {
+                                        value += s_fx[idx];
+                                    };
+                                    escaped = 0;
+                                };
+                            } else if(escaped == 2) { // "&uxxxx;"
+                                if(s_fx[idx] == ";") {
+                                    eval('t = "\\u' + t + '"');
+                                    value += t;
+                                    escaped = 0;
+                                } else if( /[A-Fa-f0-9]/.test(s_fx[idx]) ) {
+                                    t = t.slice(1) + s_fx[idx];
+                                } else {
+                                    err.idx = idx;
+                                    err.msg = "Illegal character in hex environment.";
+                                    throw err;
                                 };
                             };
-                        };
-                    }else{
-                        ret_fx[fx] = {};
+                            break;
+                    };
+                    if(state == "finished") {
+                        break;
                     };
                 };
+
+                if(state != "finished") {
+                    err.idx = idx;
+                    err.msg = "Unexpected ending.";
+                    throw err;
+                };
+
+                res.remain = s_fx.slice(idx + 1);
+
+                return res;
+            }; // end of parseOne
+
+            var t, out, ret_fxs = {};
+            t = fx_string;
+            while(t != "") {
+                try {
+                    out = parseOne(t);
+                    if(out.name != "") {
+                        ret_fxs[out.name] = out.attrs;
+                    };
+                    t = out.remain;
+                } catch(err) {
+                    if (err.idx !== undefined) {
+                        alert( err.fx_name + ": " + (err.idx + fx_string.length - t.length) + ": " + err.msg );
+                    } else {
+                        throw err;
+                    };
+                    break;
+                };
             };
-            return ret_fx;
+            return ret_fxs;
         };
 
         ZARK_FX.getFX = function(obj, fx_name){
-            return ZARK_FX.parserFx($ZARK(obj).attr(ZARK_FX.FX_NAME))[fx_name];
+            return ZARK_FX.parseFX($ZARK(obj).attr(ZARK_FX.FX_NAME))[fx_name];
+        };
+
+        ZARK_FX.splitValue = function(value){ 
+            //此函数暂时不支持value里面包含逗号的情况, 需要改进
+            return value.split(',')
         };
 
         ZARK_FX.hasFX = function(obj, fx_name){
-            return ZARK_FX.parserFx($ZARK(obj).attr(ZARK_FX.FX_NAME))[fx_name] !== undefined;
+            return ZARK_FX.parseFX($ZARK(obj).attr(ZARK_FX.FX_NAME))[fx_name] !== undefined;
         };
 
         // 加载并执行所有ZARK_FX.FX_NAME
         $ZARK('['+ZARK_FX.FX_NAME+']').each(function(){
             var fx_string = $ZARK(this).attr(ZARK_FX.FX_NAME);
-            for(var k in ZARK_FX.parserFx(fx_string)){
+            for(var k in ZARK_FX.parseFX(fx_string)){
                 if(ZARK_FX.loaded_fx[k] === undefined){
                     $ZARK.getScript(ZARK_FX.PATH+'fx/'+k+'.js');
                     ZARK_FX.loaded_fx[k] = true;

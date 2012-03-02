@@ -1,12 +1,32 @@
 /*
- * <a fx="ie6png" ></a>
- * <span fx="ie6png" ></span>
  *
- * 注意: 如果你使用ctrl+F5刷新, 可能看不到效果
+ * DOC_BEGIN
  *
- * 警告: DD_belatedPNG是全局变量!
+ * IE6 PNG
+ * =======
  *
- * */
+ * 让IE6下的PNG图片半透明,请用IE6预览本效果. (本FX基于 `DD_belatedPNG <http://www.dillerdesign.com/experiment/DD_belatedPNG/>`_ 开发)
+ *
+ * 让图片半透明
+ * ------------
+ * fx="ie6png"
+ *
+ * .. zarkfx:: :demo:
+ *
+ *     <img fx="ie6png" src="../../../file/ie6png/boxbg2.png" />
+ *
+ * 让div的背景图半透明
+ * -------------------
+ * fx="ie6png"
+ *
+ * .. zarkfx:: :demo:
+ *
+ *     <div fx="ie6png" style="background: url(../../../file/ie6png/boxbg2.png) top left no-repeat transparent; width:80px; height:80px;" ></div>
+ *
+ *
+ * DOC_END
+ *
+ */
 
 if ($.browser.msie && ($.browser.version == "6.0") && (!$.support.style)) {
 

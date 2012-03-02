@@ -1,10 +1,7 @@
 .DS_Store
 *.pyc
 *~
-sessions
-logs
 *.swp
 *.swo
-upload-testing
-zml-testing
-web/cgi/page/zml
+docs/build/
+docs/source/auto_gen/

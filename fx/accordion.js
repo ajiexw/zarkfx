@@ -1,3 +1,74 @@
+/*
+ *
+ * DOC_BEGIN
+ *
+ * Accordion
+ * =========
+ *
+ * 手风琴特效, 常用于目录式的导航.
+ *
+ * 使用默认样式
+ * ------------
+ * fx="accordion[style=default]"
+ *
+ * .. zarkfx:: :demo:
+ *
+ *      <div fx="accordion[style=default]" >
+ *          <ul>
+ *              <li><a>chapter 1</a>
+ *                  <div>
+ *                      <ul>
+ *                          <li><a href="#">part 1.1</a></li>
+ *                          <li><a href="#">part 1.2</a></li>
+ *                          <li><a href="#">part 1.3</a></li>
+ *                      </ul>
+ *                  </div>
+ *              </li>
+ *              <li><a>chapter 2</a>
+ *                  <div>
+ *                      <ul>
+ *                          <li><a href="#">part 2.1</a></li>
+ *                          <li><a href="#">part 2.2</a></li>
+ *                          <li><a href="#">part 2.3</a></li>
+ *                      </ul>
+ *                  </div>
+ *              </li>
+ *          </ul>
+ *      </div>
+ *
+ * 不使用样式
+ * ----------
+ * fx="accordion"
+ *
+ * .. zarkfx:: :demo:
+ *
+ *      <div fx="accordion" >
+ *          <ul>
+ *              <li><a>chapter 1</a>
+ *                  <div>
+ *                      <ul>
+ *                          <li><a href="#">part 1.1</a></li>
+ *                          <li><a href="#">part 1.2</a></li>
+ *                          <li><a href="#">part 1.3</a></li>
+ *                      </ul>
+ *                  </div>
+ *              </li>
+ *              <li><a>chapter 2</a>
+ *                  <div>
+ *                      <ul>
+ *                          <li><a href="#">part 2.1</a></li>
+ *                          <li><a href="#">part 2.2</a></li>
+ *                          <li><a href="#">part 2.3</a></li>
+ *                      </ul>
+ *                  </div>
+ *              </li>
+ *          </ul>
+ *      </div>
+ *
+ * DOC_END
+ *
+ */
+
 ZARK_FX.getFrame('jquery-1.3.2', function($){
     var this_url = window.location.href.replace('http://','');
     var this_url_relative = this_url.substr(this_url.indexOf('/'));
@@ -5,9 +76,11 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
     ZARK_FX.run('accordion', function(attrs){
 
         var $this = $(this);                 
-        ZARK_FX.getCSS(ZARK_FX.CSS_PATH + 'accordion/' + attrs.style +'.css');
+        if (attrs.style !== 'none'){
+            ZARK_FX.getCSS(ZARK_FX.CSS_PATH + 'accordion/' + attrs.style +'.css');
+            $this.addClass('zarkfx_accordion_div1')
+        };
         /*set class*/
-        $this.addClass('zarkfx_accordion_div1')
         $('> ul',$this).addClass('zarkfx_accordion_ul1')
         $('> ul > li',$this).addClass('zarkfx_accordion_li1')
         $('> ul > li > a',$this).addClass('zarkfx_accordion_a1')
@@ -95,7 +168,7 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
         pause       : 0,
         right_img   : ZARK_FX.IMG_PATH + 'accordion/right.png',
         down_img    : ZARK_FX.IMG_PATH + 'accordion/down.png',
-        style       : 'default'
+        style       : 'none'
     }, 'jqueryui-1.8.14');
 });
 
