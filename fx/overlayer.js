@@ -9,7 +9,7 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
             $this.css('height', window.screen.availHeight);
             $this.css('z-index', attrs.zindex);
             $this.css('background-color', attrs.backgroundcolor );
-            $this.css('position', 'absolute');
+            $this.css('position', 'fixed');
             $this.css('top', 0);
             $this.css('left', 0);
             $this.css('opacity', 0.6);
