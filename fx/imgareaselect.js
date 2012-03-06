@@ -60,13 +60,31 @@ ZARK_FX.getFrame('jquery-1.3.2', function($) {
             change_functions.push(function(img, selection){
                 $value.val(selection.x1 + " " + selection.y1 + " " + selection.width + " " + selection.height);
             });
+            var values = $value.val().split(' ');
+            if (values.length === 4){
+                if (!attrs.x1) attrs.x1 = parseInt(values[0]);
+                if (!attrs.x2) attrs.x2 = attrs.x1 + parseInt(values[2]);
+                if (!attrs.y1) attrs.y1 = parseInt(values[1]);
+                if (!attrs.y2) attrs.y2 = attrs.y1 + parseInt(values[3]);
+            };
         };
+
+        if (!attrs.x1) attrs.x1 = 100;
+        if (!attrs.x2) attrs.x2 = 200;
+        if (!attrs.y1) attrs.y1 = 100;
+        if (!attrs.y2) attrs.y2 = 200;
 
         if(attrs.foursquare) {
             attrs.aspectRatio = "1:1";
             delete attrs.foursquare;
         }else if(!attrs.aspectRatio){
             delete attrs.aspectRatio;
+        };
+
+        if(attrs.aspectRatio){
+            var w = parseInt(attrs.aspectRatio.split(':')[0]),
+                h = parseInt(attrs.aspectRatio.split(':')[1]);
+            attrs.y2 = Math.round(attrs.y1 + (attrs.x2-attrs.x1) * h / w);
         };
 
         attrs.onSelectChange = function(img, selection){
@@ -91,10 +109,10 @@ ZARK_FX.getFrame('jquery-1.3.2', function($) {
         valueid:     undefined,
         aspectRatio: undefined,
         handles:    true,
-        x1:         100,
-        x2:         200,
-        y1:         100,
-        y2:         200,
+        x1:         undefined,
+        x2:         undefined,
+        y1:         undefined,
+        y2:         undefined,
         foursquare: false,
         show:       true,
         keys:       false
