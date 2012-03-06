@@ -10,12 +10,13 @@
  *
  * Example 1
  * ---------
+ * fx="imgareaselect[preiviewid=preview;foursquare;valueid=value]"
  *
  * .. zarkfx:: :demo:
  *
- *      <img src="http://p4.42qu.us/721/694/83638.jpg" fx="imgareaselect[preiviewid=preview;foursquare;valueid=value]"/>
- *      <div id="preview" style="width:96px; height:96px;"></div>
- *      <input id="value" type="text" autocomplete="off" />
+ *       <img src="http://p4.42qu.us/721/694/83638.jpg" fx="imgareaselect[preiviewid=preview;foursquare;valueid=value]"/>
+ *       <div id="preview" style="width:96px; height:96px;"></div>
+ *       <input id="value" type="text" autocomplete="off" />
  *
  *
  * DOC_END
@@ -64,6 +65,8 @@ ZARK_FX.getFrame('jquery-1.3.2', function($) {
         if(attrs.foursquare) {
             attrs.aspectRatio = "1:1";
             delete attrs.foursquare;
+        }else if(!attrs.aspectRatio){
+            delete attrs.aspectRatio;
         };
 
         attrs.onSelectChange = function(img, selection){
@@ -82,10 +85,11 @@ ZARK_FX.getFrame('jquery-1.3.2', function($) {
         };
 
     }, {
-        fxvar:      undefined,
-        style:      'default',
-        preiviewid: undefined,
-        valueid:    undefined,
+        fxvar:       undefined,
+        style:       'default',
+        preiviewid:  undefined,
+        valueid:     undefined,
+        aspectRatio: undefined,
         handles:    true,
         x1:         100,
         x2:         200,
