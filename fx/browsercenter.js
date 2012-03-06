@@ -42,7 +42,6 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
 
     ZARK_FX.run('browsercenter', function(attrs){
         var $this = $(this);
-        $this.css('display','block');
         if(ZARK_FX.browser.ie6){ // ie6 hack
             $this.appendTo('#'+join_div_id);
         }else{

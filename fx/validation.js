@@ -117,6 +117,7 @@ ZARK_FX.getFrame('jquery-1.3.2', function($) {
                 var another = $("#" + attrs["another_id"])[0];
                 if(another){
                     this_val.validate = function(){
+                        
                         return this_val.this.value === another.value;
                     };
                 };
@@ -208,24 +209,27 @@ ZARK_FX.getFrame('jquery-1.3.2', function($) {
         // for submit
         var form = this.form;
 
-        if( !$.data(form, "zarkfx.validation") ) {
-            $.data(form, "zarkfx.validation", []);
+        if (form){
+            if( !$.data(form, "zarkfx.validation") ) {
+                $.data(form, "zarkfx.validation", []);
 
-            $(form).submit(function() {
-                var data = $.data(form, "zarkfx.validation");
-                for(var i in data) {
-                    if (data[i].validate()){
-                        data[i].success();
-                    }else{
-                        data[i].fail();
-                        return false;
+                $(form).submit(function() {
+                    var data = $.data(form, "zarkfx.validation");
+                    for(var i in data) {
+                        if (data[i].validate()){
+                            data[i].success();
+                        }else{
+                            data[i].fail();
+                            return false;
+                        };
                     };
-                };
-                return true;
-            });
-        };
+                    return true;
+                });
+            };
 
-        $.data(form, "zarkfx.validation").push(this_val);
+            $.data(form, "zarkfx.validation").push(this_val);
+        
+        };
 
     }, {
         type: undefined,
