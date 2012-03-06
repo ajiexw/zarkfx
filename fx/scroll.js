@@ -9,23 +9,23 @@
  *
  * 滚动到顶部
  * ----------
- * fx="scroll[speed=500;hide_height=-1]"
+ * fx="scroll[speed=500;stayvisiable]"
  *
  * 点击下面的"Scroll"就会滚动到顶部
  *
  * .. zarkfx:: :demo:
  *
- *     <p fx="scroll[speed=500;hide_height=-1]" style="color:#66AAFF; " >Scroll</p>
+ *     <p fx="scroll[speed=500;stayvisiable]" style="color:#66AAFF; " >Scroll</p>
  *
  * 瞬间到达顶部
  * ------------
- * fx="scroll[speed=0;hide_height=-1]"
+ * fx="scroll[speed=0;stayvisiable]"
  *
  * 点击下面的"Go Top"瞬间到达顶部
  *
  * .. zarkfx:: :demo:
  *
- *     <p fx="scroll[speed=0;hide_height=-1]" style="color:#66AAFF; " >Scroll</p>
+ *     <p fx="scroll[speed=0;stayvisiable]" style="color:#66AAFF; " >Scroll</p>
  *
  * 滚动到某个标签
  * --------------
@@ -75,7 +75,9 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
                 if (scroll_objs[i].hide_height < this_top){
                     scroll_objs[i].$hide_obj.fadeIn();
                 }else{
-                    scroll_objs[i].$hide_obj.fadeOut();
+                    if (!scroll_objs[i].stayvisiable){
+                        scroll_objs[i].$hide_obj.fadeOut();
+                    };
                 };
             };
         };
@@ -103,12 +105,14 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
         });
 
         // add to scroll_objs
-        scroll_objs.push({hide_height: attrs.hide_height, $hide_obj: $scroll_obj });
+        scroll_objs.push({hide_height: attrs.hide_height, $hide_obj: $scroll_obj, stayvisiable: attrs.stayvisiable });
 
         // show or hide this obj
         var this_top = $(document).scrollTop();
         if (attrs.hide_height > this_top){
-            $scroll_obj.hide();
+            if (!attrs.stayvisiable){
+                $scroll_obj.hide();
+            };
         }else{
             $scroll_obj.show();
         };
@@ -123,6 +127,7 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
     }, {
         speed:          0,
         hide_height:    200,
+        stayvisiable:   false,
         top:            undefined,
         bottom:         undefined,
         left:           undefined,
