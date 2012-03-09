@@ -110,9 +110,8 @@ ZARK_FX.getFrame('jquery-1.3.2', function($) {
 
         // 偏一修正, 如果没有这个修正, 那么得到的attrs.x2可能会超过真正的宽度
         attrs.x2 = Math.min(attrs.x2, $this.width());
-        attrs.x1 = Math.min(attrs.x1, $this.width() - attrs.x2);
         attrs.y2 = Math.min(attrs.y2, $this.height());
-        attrs.y1 = Math.min(attrs.y1, $this.height() - attrs.y2);
+
 
         if(!attrs["fx_var"]) {
             $(this).imgAreaSelect(attrs);
