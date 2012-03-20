@@ -170,7 +170,7 @@
                             idx -= 1;
                             break;
                         case 1: // parse key
-                            if( /[;\]]/.test(s_fx[idx]) ) {
+                            if( /[;\]]/.test(s_fx.charAt(idx)) ) {
                                 key = key.replace(re_strip, "");
                                 if(key != "") {
                                     if( !re_var_name.test(key) ) {
@@ -179,12 +179,12 @@
                                     };
                                     res.attrs[key] = true;
                                 };
-                                if(s_fx[idx] == ";") {
+                                if(s_fx.charAt(idx) == ";") {
                                     state = 0;
                                 } else {
                                     state = "finished";
                                 };
-                            } else if(s_fx[idx] == "=") {
+                            } else if(s_fx.charAt(idx) == "=") {
                                 key = key.replace(re_strip, "");
                                 if( !re_var_name.test(key) ) {
                                     err.msg = "Illegal FX attr name.";
@@ -194,43 +194,43 @@
                                 state = 2;
                                 escaped = 0;
                             } else {
-                                key += s_fx[idx];
+                                key += s_fx.charAt(idx);
                             };
                             break;
                         case 2: // parse value
                             if(escaped == 0) {
-                                if(s_fx[idx] == "&") {
+                                if(s_fx.charAt(idx) == "&") {
                                     escaped = 1;
-                                } else if(s_fx[idx] == ";") {
+                                } else if(s_fx.charAt(idx) == ";") {
                                     res.attrs[key] = value;
                                     state = 0;
-                                } else if(s_fx[idx] == "]") {
+                                } else if(s_fx.charAt(idx) == "]") {
                                     res.attrs[key] = value;
                                     state = "finished";
                                 } else {
-                                    value += s_fx[idx];
+                                    value += s_fx.charAt(idx);
                                 }
                             } else if(escaped == 1) {
-                                if(s_fx[idx] == "u") {
+                                if(s_fx.charAt(idx) == "u") {
                                     t = "0000";
                                     escaped = 2;
                                 } else {
-                                    if(s_fx[idx] == "'") {
+                                    if(s_fx.charAt(idx) == "'") {
                                         value += '"';
-                                    } else if(s_fx[idx] == '"') {
+                                    } else if(s_fx.charAt(idx) == '"') {
                                         value += "'";
                                     } else {
-                                        value += s_fx[idx];
+                                        value += s_fx.charAt(idx);
                                     };
                                     escaped = 0;
                                 };
                             } else if(escaped == 2) { // "&uxxxx;"
-                                if(s_fx[idx] == ";") {
+                                if(s_fx.charAt(idx) == ";") {
                                     eval('t = "\\u' + t + '"');
                                     value += t;
                                     escaped = 0;
-                                } else if( /[A-Fa-f0-9]/.test(s_fx[idx]) ) {
-                                    t = t.slice(1) + s_fx[idx];
+                                } else if( /[A-Fa-f0-9]/.test(s_fx.charAt(idx)) ) {
+                                    t = t.slice(1) + s_fx.charAt(idx);
                                 } else {
                                     err.idx = idx;
                                     err.msg = "Illegal character in hex environment.";
