@@ -3,10 +3,6 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
     var openBox = function(attrs, $value){
         var $this = $('#'+attrs.boxid);
 
-        $this.css('z-index', attrs.zindex);
-        $this.css('position', 'fixed');
-        $this.css('top', (window.screen.availHeight - $this.height())/2);
-        $this.css('left', (window.screen.availWidth - $this.width())/2);
         $this.show();
 
         $(attrs.choice ,$this).unbind('click').click(function(){
