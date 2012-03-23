@@ -9,7 +9,7 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
         $this.css('left', (window.screen.availWidth - $this.width())/2);
         $this.show();
 
-        $(attrs.choice ,$this).click(function(){
+        $(attrs.choice ,$this).unbind('click').click(function(){
             var val = $(this).val();
             if (!val){
                 val = $(this).html();
