@@ -71,6 +71,8 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
             var li_page_num = $(this).attr('zarkfx_page_num');
             if (this_page_num.toString() !== li_page_num){
                 $(this).html('<a href="'+location_href.setparam(attrs.para_name, li_page_num)+'">'+$(this).html()+'</a>');
+            }else{
+                $(this).html('<a href="">'+$(this).html()+'</a>');
             };
         });
     
