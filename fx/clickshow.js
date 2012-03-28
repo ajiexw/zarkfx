@@ -26,9 +26,24 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
                 if (attrs.hideid) {
                     $('#'+attrs.hideid).hide();
                 };
+
+                if (attrs.toggleHtml) {
+                    if($this.html() === $.data(this, 'old_value')){
+                        $this.html(attrs.toggleHtml);
+                    }else{
+                        $this.html($.data(this, 'old_value'));
+                    };
+                };
+
             });
         };
 
+        if (attrs.toggleHtml) {
+            $.data(this, 'old_value', $this.html());
+        };
+
+    }, {
+        toggleHtml: undefined
     });
 });
 
