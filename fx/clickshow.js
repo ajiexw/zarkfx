@@ -1,11 +1,5 @@
 /*
- *  <* fx="clickshow[showid=atag;(hideme)]" > 
- *  click me show another *
- *  </*>
- *
- *  <* id="atag" style="display:none;" > 
- *  content
- *  </*>
+   本fx已经弃用, 请使用toggle代替
  *
  * */
 
