@@ -80,10 +80,10 @@ ZARK_FX.getFrame('jquery-1.3.2', function($) {
             };
         };
 
-        if (!attrs.x1) attrs.x1 = 100;
-        if (!attrs.x2) attrs.x2 = 200;
-        if (!attrs.y1) attrs.y1 = 100;
-        if (!attrs.y2) attrs.y2 = 200;
+        if (attrs.x1 === undefined) attrs.x1 = 100;
+        if (attrs.x2 === undefined) attrs.x2 = 200;
+        if (attrs.y1 === undefined) attrs.y1 = 100;
+        if (attrs.y2 === undefined) attrs.y2 = 200;
 
         if(attrs.foursquare) {
             attrs.aspectRatio = "1:1";
@@ -91,6 +91,7 @@ ZARK_FX.getFrame('jquery-1.3.2', function($) {
         }else if(!attrs.aspectRatio){
             delete attrs.aspectRatio;
         };
+
 
         if(attrs.aspectRatio){
             var w = parseInt(attrs.aspectRatio.split(':')[0]),
@@ -106,6 +107,11 @@ ZARK_FX.getFrame('jquery-1.3.2', function($) {
         attrs.onSelectBegin = attrs.onSelectChange;
         attrs.onSelectEnd = attrs.onSelectChange;
         attrs.onInit = attrs.onSelectChange;
+
+        // 偏一修正, 如果没有这个修正, 那么得到的attrs.x2可能会超过真正的宽度
+        attrs.x2 = Math.min(attrs.x2, $this.width());
+        attrs.y2 = Math.min(attrs.y2, $this.height());
+
 
         if(!attrs["fx_var"]) {
             $(this).imgAreaSelect(attrs);
