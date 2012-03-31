@@ -1,13 +1,29 @@
 ZARK_FX.getFrame('jquery-1.3.2', function($){
     ZARK_FX.run('defaultvalue', function(attrs){
-        if(attrs.value){
-            if($(this).attr('tagName') === 'INPUT' && $(this).attr('type')==='radio'){
-                $('input[name='+$(this).attr('name')+']').each(function(){
-                    if($(this).attr('type') === 'radio' && $(this).val() === attrs.value) $(this).attr('checked', true);
-                });
+        if($(this).attr('tagName') === 'INPUT' && $(this).attr('type')==='radio'){
+
+            var default_value;
+            var $this = $(this);
+
+            if(attrs.value){
+                default_value = attrs.value;
             }else{
-                $(this).val(attrs.value)
+                default_value = $this.val();
+            };
+
+            $('input[name='+$this.attr('name')+'][type=radio]').each(function(){
+                if ($(this).val() === default_value){
+                    $(this).attr('checked', true);
+                };
+            });
+
+        }else{
+            if(attrs.value){
+                $this.val(attrs.value)
             };
         };
+
+    }, {
+        value: undefined
     });
 });
