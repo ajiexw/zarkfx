@@ -1,5 +1,5 @@
-(function($ZARK) {
-    $ZARK(function(){
+(function($) {
+    $(function(){
         if (!window['ZARK_FX']) window['ZARK_FX'] = {};
         ZARK_FX = window['ZARK_FX'];
 
@@ -21,11 +21,11 @@
         ZARK_FX.loaded_scripts  = {};
         ZARK_FX.loaded_frames   = {};
 
-        ZARK_FX.loaded_frames["jquery-" + $ZARK.fn.jquery] = jQuery;
+        ZARK_FX.loaded_frames["jquery-" + $.fn.jquery] = jQuery;
 
         ZARK_FX.loaded_css      = {};
         ZARK_FX.browser         = {};
-        ZARK_FX.browser.ie6     = $ZARK.browser.msie && ($ZARK.browser.version == "6.0") && (!$ZARK.support.style);
+        ZARK_FX.browser.ie6     = $.browser.msie && ($.browser.version == "6.0") && (!$.support.style);
 
         // get UUID
         ZARK_FX.JSC = (new Date).getTime();
@@ -38,7 +38,7 @@
             if (ZARK_FX.loaded_frames[frame_name] === undefined){
                 ZARK_FX.loaded_frames[frame_name] = 'loading';
 
-                $ZARK.ajax({
+                $.ajax({
                     async:      false,
                     cache:      true,
                     dataType:   'script',
@@ -64,7 +64,7 @@
             if (js_name.length === 0) alert('error: load js name is empty');
             if (ZARK_FX.loaded_scripts[js_name] === undefined){
                 ZARK_FX.loaded_scripts[js_name] = 'loading';
-                $ZARK.ajax({
+                $.ajax({
                     async:      false,
                     cache:      true,
                     dataType:   'script',
@@ -84,7 +84,7 @@
 
         ZARK_FX.run = function(fx_name, cb, defaults, deps){
             var ready = function(){
-                $ZARK('['+ZARK_FX.FX_NAME+'*='+fx_name+']').each(function(){
+                $('['+ZARK_FX.FX_NAME+'*='+fx_name+']').each(function(){
                     var attrs = ZARK_FX.getFX(this, fx_name);
                     if (attrs !== undefined){
                         // change attrs's data type like defaults
@@ -112,13 +112,13 @@
         // 异步加载第三方CSS
         ZARK_FX.getCSS = function(file_url){
             if (ZARK_FX.loaded_css[file_url] === undefined){
-                if ($ZARK.browser.msie) {
+                if ($.browser.msie) {
                     var path = window.location.href.substring(0, window.location.href.lastIndexOf('/')+1) + ZARK_FX.PATH + file_url;
                     document.createStyleSheet(path);
                 }else{
-                    var linkobj=$ZARK('<link type="text/css" rel="stylesheet" />');
+                    var linkobj=$('<link type="text/css" rel="stylesheet" />');
                     linkobj.attr('href', file_url);
-                    $ZARK('head').append(linkobj); 
+                    $('head').append(linkobj); 
                 };
                 ZARK_FX.loaded_css[file_url] = true;
             };
@@ -277,7 +277,7 @@
         };
 
         ZARK_FX.getFX = function(obj, fx_name){
-            return ZARK_FX.parseFX($ZARK(obj).attr(ZARK_FX.FX_NAME))[fx_name];
+            return ZARK_FX.parseFX($(obj).attr(ZARK_FX.FX_NAME))[fx_name];
         };
 
         ZARK_FX.splitValue = function(value){ 
@@ -286,15 +286,15 @@
         };
 
         ZARK_FX.hasFX = function(obj, fx_name){
-            return ZARK_FX.parseFX($ZARK(obj).attr(ZARK_FX.FX_NAME))[fx_name] !== undefined;
+            return ZARK_FX.parseFX($(obj).attr(ZARK_FX.FX_NAME))[fx_name] !== undefined;
         };
 
         // 加载并执行所有ZARK_FX.FX_NAME
-        $ZARK('['+ZARK_FX.FX_NAME+']').each(function(){
-            var fx_string = $ZARK(this).attr(ZARK_FX.FX_NAME);
+        $('['+ZARK_FX.FX_NAME+']').each(function(){
+            var fx_string = $(this).attr(ZARK_FX.FX_NAME);
             for(var k in ZARK_FX.parseFX(fx_string)){
                 if(ZARK_FX.loaded_fx[k] === undefined){
-                    $ZARK.getScript(ZARK_FX.PATH+'fx/'+k+'.js');
+                    $.getScript(ZARK_FX.PATH+'fx/'+k+'.js');
                     ZARK_FX.loaded_fx[k] = true;
                 };
             };
