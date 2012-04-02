@@ -74,7 +74,7 @@ ZARK_FX.getFrame('jquery-1.3.2', function($) {
             return;
         };
 
-        var this_val = {this: this, validate: undefined, unvalidate: undefined};
+        var this_val = {pointer: this, validate: undefined, unvalidate: undefined};
         var regex;
         this_val.invalid_msg = attrs["invalid_msg"];
         this_val.error_obj = error_obj;
@@ -100,7 +100,7 @@ ZARK_FX.getFrame('jquery-1.3.2', function($) {
 
             case "notempty":
                 this_val.validate = function(){
-                    return $.trim($(this_val.this).val()).length > 0;
+                    return $.trim($(this_val.pointer).val()).length > 0;
                 };
 
                 break;
@@ -108,7 +108,7 @@ ZARK_FX.getFrame('jquery-1.3.2', function($) {
             case "notequal":
                 if(attrs.value){
                     this_val.validate = function(){
-                        return ZARK_FX.splitValue(attrs.value).indexOf($.trim($(this_val.this).val())) == -1;
+                        return ZARK_FX.splitValue(attrs.value).indexOf($.trim($(this_val.pointer).val())) == -1;
                     };
                 };
 
@@ -119,7 +119,7 @@ ZARK_FX.getFrame('jquery-1.3.2', function($) {
                 if(another){
                     this_val.validate = function(){
                         
-                        return this_val.this.value === another.value;
+                        return this_val.pointer.value === another.value;
                     };
                 };
 
@@ -140,19 +140,19 @@ ZARK_FX.getFrame('jquery-1.3.2', function($) {
                 } else {
                     this_val.success = function() {
                         if( attrs["valid_fn"] ) {
-                            eval(attrs["valid_fn"] + ".call(this_val.this)");
+                            eval(attrs["valid_fn"] + ".call(this_val.pointer)");
                         };
                     };
                     this_val.fail = function() {
                         if( attrs["invalid_fn"] ) {
-                            eval(attrs["invalid_fn"] + ".call(this_val.this)");
+                            eval(attrs["invalid_fn"] + ".call(this_val.pointer)");
                         };
                     };
                 };
 
                 this_val.validate = function() {
                     return eval(attrs["custom_fn"] +
-                            '.call(this_val, "' + this_val.this.value + '")');
+                            '.call(this_val, "' + this_val.pointer.value + '")');
                 };
 
                 break;
@@ -163,7 +163,7 @@ ZARK_FX.getFrame('jquery-1.3.2', function($) {
 
         if(!this_val.validate && regex) {
             this_val.validate = function(){
-                return regex.test(this_val.this.value);
+                return regex.test(this_val.pointer.value);
             };
         }else if(!this_val.validate){
             return;
@@ -184,7 +184,7 @@ ZARK_FX.getFrame('jquery-1.3.2', function($) {
         } else {
             if (attrs["valid_fn"]){
                 this_val.success = function(){
-                    attrs["valid_fn"] && eval(attrs["valid_fn"] + ".call(this_val.this)");
+                    attrs["valid_fn"] && eval(attrs["valid_fn"] + ".call(this_val.pointer)");
                 };
             }else{
                 this_val.success = function(){};
@@ -192,7 +192,7 @@ ZARK_FX.getFrame('jquery-1.3.2', function($) {
 
             if (attrs["invalid_fn"]){
                 this_val.fail = function(){
-                    attrs["invalid_fn"] && eval(attrs["invalid_fn"] + ".call(this_val.this)");
+                    attrs["invalid_fn"] && eval(attrs["invalid_fn"] + ".call(this_val.pointer)");
                 };
             }else{
                 this_val.fail = function(){};
