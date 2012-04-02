@@ -20,14 +20,16 @@
  *
  */
 
-ZARK_FX.getCSS(ZARK_FX.CSS_PATH + 'pagination.css');
 
 ZARK_FX.getFrame('jquery-1.3.2', function($){
 
     ZARK_FX.run('pagination', function(attrs){
 
         var $this = $(this);
-        if(attrs.style === 'default') $this.addClass('zarkfx_pagination_default').html('');
+        if (attrs.style === 'default'){
+            ZARK_FX.getCSS(ZARK_FX.CSS_PATH + 'pagination.css');
+            $this.addClass('zarkfx_pagination_default').html('');
+        };
 
         var location_href = $.url(window.location.href);
         var this_page_num = location_href.param(attrs.para_name);
