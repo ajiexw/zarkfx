@@ -90,7 +90,7 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
         if (attrs.style === 'default' ){
             $this.hide();
             var scroll_to_top_id = ZARK_FX.getJSC();
-            $('<div id="'+scroll_to_top_id+'" style="position: fixed; bottom: 50px; right: 50px; opacity: 1; cursor: pointer; display: block; width: 48px; height: 48px;"><img src="'+ZARK_FX.IMG_PATH+fx_name+'/default.png"><div>').appendTo('body');
+        $('<div id="'+scroll_to_top_id+'" style="position: fixed; bottom: 50px; right: 50px; opacity: 1; cursor: pointer; display: block; width: 48px; height: 48px;"><img src="'+ZARK_FX.IMG_PATH+fx_name+'/default.png"><div>').appendTo('body');
             $scroll_obj = $('#'+scroll_to_top_id);
         }else{
             $scroll_obj = $this;
@@ -118,7 +118,11 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
         };
 
         // set position
-        if (attrs.top !== undefined || attrs.bottom !== undefined || attrs.left !== undefined || attrs.right !== undefined ) $scroll_obj.css('position','fixed').appendTo('body');
+        if (attrs.top !== undefined || attrs.bottom !== undefined || attrs.left !== undefined || attrs.right !== undefined ){
+            // 此处加入IE6判断，IE6使用绝对定位
+            if(ZARK_FX.browser.ie6) $scroll_obj.css('position','absolute').appendTo('body');
+            else $scroll_obj.css('position','fixed').appendTo('body');
+        }
         if (attrs.bottom !== undefined) $scroll_obj.css('bottom', attrs.bottom + 'px');
         if (attrs.top !== undefined) $scroll_obj.css('top', attrs.top + 'px');
         if (attrs.right !== undefined) $scroll_obj.css('right', attrs.right + 'px');
