@@ -5,6 +5,7 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
 
         $this.show();
 
+
         $(attrs.choice ,$this).unbind('click').click(function(){
             var val = $(this).val();
             if (!val){
@@ -46,11 +47,6 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
         switchid: undefined,
         boxid: undefined,
         choice:     'a',
-        overlay:   false,
-        zindex:     1000,
-        backgroundcolor: '#000',
-        overlayOpacity:    0.6,
-        position:   'center',
         cancel:  undefined
     });
 
