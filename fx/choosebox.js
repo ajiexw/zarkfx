@@ -5,13 +5,20 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
 
         $this.show();
 
-
         $(attrs.choice ,$this).unbind('click').click(function(){
-            var val = $(this).val();
-            if (!val){
-                val = $(this).html();
+            var selected_value = $(this).val();
+            if (!selected_value){
+                selected_value = $(this).html();
             };
-            $value.val(val);
+            if (attrs.action === 'replace'){
+                $value.val(selected_value);
+            }else if(attrs.action === 'append'){
+                if ($value.val() === ''){
+                    $value.val(selected_value);
+                }else{
+                    $value.val($value.val() + '\t' + selected_value);
+                };
+            };
             $this.hide();
             $value.focus();
         });
@@ -22,14 +29,22 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
             });
         };
 
+        if (attrs.escclose){
+            $this.attr('tabindex', '1').keydown(function(event){
+                if (event.keyCode === 27){
+                    $this.hide();
+                };
+            }).focus();
+        };
+
     };
 
     ZARK_FX.run('choosebox', function(attrs){
         var $this = $(this);
         var $switch;
 
-        if (attrs.switchid !== undefined){
-            $switch = $('#'+attrs.switchid);
+        if (attrs.trigger !== undefined){
+            $switch = $(attrs.trigger);
         }else{
             $switch = $this;
         };
@@ -44,10 +59,12 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
 
 
     }, {
-        switchid: undefined,
-        boxid: undefined,
+        boxid:      undefined,
         choice:     'a',
-        cancel:  undefined
+        cancel:     undefined,
+        action:     'replace',  // options: replace append
+        escclose:   true,
+        trigger:    undefined
     });
 
 });
