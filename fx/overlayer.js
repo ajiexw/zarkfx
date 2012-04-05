@@ -5,11 +5,20 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
 
         if (attrs.target === 'screen'){
             var $this = $(this);
-            $this.css('width', window.screen.availWidth);
-            $this.css('height', window.screen.availHeight);
             $this.css('z-index', attrs.zindex);
             $this.css('background-color', attrs.backgroundcolor );
-            $this.css('position', 'fixed');
+            
+            // 如果是IE6 置为静止，覆盖全文档
+            if(ZARK_FX.browser.ie6){ 
+                $this.css('z-index', 0);
+                $this.css('position', 'absolute');
+                $this.height(document.body.clientHeight).width(document.body.clientWidth);
+            }else {
+                $this.css('position', 'fixed');
+                $this.css('width', window.screen.availWidth);
+                $this.css('height', window.screen.availHeight);
+            }
+
             $this.css('top', 0);
             $this.css('left', 0);
             $this.css('opacity', 0.6);

@@ -17,6 +17,7 @@
 ZARK_FX.getFrame('jquery-1.3.2', function($){
 
     if(ZARK_FX.browser.ie6){ // ie6 hack
+        
         var getScrollTop = function(){
             var scrollPos;
             if (typeof window.pageYOffset != 'undefined') {
@@ -31,10 +32,12 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
             };
             return scrollPos;
         };
+
         var wrap_div_id = ZARK_FX.getJSC();
         var join_div_id = ZARK_FX.getJSC();
-        $('<div id="'+wrap_div_id+'" style=" position: absolute; top:0; left:0;"> <div style="position: absolute; top: 50%; left: 50%; "> <div id="'+join_div_id+'" style="position: relative; top: -50%; left: -50%; "></div></div></div>').appendTo('body');
+        $('<div id="'+wrap_div_id+'" style="display: none; position: absolute; top:0; left:0;"> <div style="position: absolute; top: 50%; left: 50%; "> <div id="'+join_div_id+'" style="position: relative; top: -50%; left: -50%; "></div></div></div>').appendTo('body');
         $('#'+wrap_div_id).height(document.documentElement.clientHeight).width(document.documentElement.clientWidth);
+
         $(window).scroll(function(){
             $('#'+wrap_div_id).css('top', getScrollTop());
         });
@@ -43,7 +46,14 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
     ZARK_FX.run('browsercenter', function(attrs){
         var $this = $(this);
         if(ZARK_FX.browser.ie6){ // ie6 hack
-            $this.appendTo('#'+join_div_id);
+            // IE6暂时置为固定， 不随浏览器滚动而滚动
+            var center_top    = (document.documentElement.clientHeight - $this.height()) / 2;
+            var center_left   = (document.documentElement.clientWidth  - $this.width())  / 2;
+            $this.css('top',center_top);
+            $this.css('left',center_left);
+            $this.css('position', 'absolute');
+
+            // $this.appendTo('#'+join_div_id);
         }else{
             var center_top    = (document.documentElement.clientHeight - $this.height()) / 2;
             var center_left   = (document.documentElement.clientWidth  - $this.width())  / 2;
@@ -62,6 +72,7 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
                 };
             };
         };
+            
     });
 
 });
