@@ -17,6 +17,9 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
                         eval('$(\''+attrs.target+'\').'+attrs.action+'()');
                     };
                 });
+                if ($this.attr('tagName') === 'DIV' && ($this.attr('tabindex') === undefined)){
+                    $this.attr('tabindex', 1);
+                };
             };
         };
     
