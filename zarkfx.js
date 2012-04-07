@@ -98,6 +98,7 @@
                             };
                         };// change end
                         cb && cb.call(this, attrs);
+                        // 处理全局参数(所有fx都有的参数)
                         if (attrs.finished==='show') $(this).show();
                     };
                 });
