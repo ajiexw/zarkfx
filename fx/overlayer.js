@@ -1,6 +1,24 @@
 
 ZARK_FX.getFrame('jquery-1.3.2', function($){
 
+    if(ZARK_FX.browser.ie6){ // ie6 hack
+        
+        var getScrollTop = function(){
+            var scrollPos;
+            if (typeof window.pageYOffset != 'undefined') {
+                scrollPos = window.pageYOffset;
+            }
+            else if (typeof document.compatMode != 'undefined' &&
+                document.compatMode != 'BackCompat') {
+                    scrollPos = document.documentElement.scrollTop;
+                }
+            else if (typeof document.body != 'undefined') {
+                scrollPos = document.body.scrollTop;
+            };
+            return scrollPos;
+        };
+    };
+
     ZARK_FX.run('overlayer', function(attrs){
 
         if (attrs.target === 'screen'){
@@ -12,7 +30,10 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
             if(ZARK_FX.browser.ie6){ 
                 $this.css('z-index', 0);
                 $this.css('position', 'absolute');
-                $this.height(document.body.clientHeight).width(document.body.clientWidth);
+                $(window).scroll(function(){
+                    $this.css('top', getScrollTop());
+                });
+                $this.height(document.documentElement.clientHeight).width(document.documentElement.clientWidth);
             }else {
                 $this.css('position', 'fixed');
                 $this.css('width', window.screen.availWidth);
