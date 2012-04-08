@@ -65,6 +65,23 @@
 
 ZARK_FX.getFrame('jquery-1.3.2', function($){
 
+    if(ZARK_FX.browser.ie6){ // ie6 hack
+        var getScrollTop = function(){
+            var scrollPos;
+            if (typeof window.pageYOffset != 'undefined') {
+                scrollPos = window.pageYOffset;
+            }
+            else if (typeof document.compatMode != 'undefined' &&
+                document.compatMode != 'BackCompat') {
+                    scrollPos = document.documentElement.scrollTop;
+                }
+            else if (typeof document.body != 'undefined') {
+                scrollPos = document.body.scrollTop;
+            };
+            return scrollPos;
+        };
+    };
+
     var scroll_objs = []
     var last_top = null;
     $(window).scroll(function(){
@@ -123,8 +140,28 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
             if(ZARK_FX.browser.ie6) $scroll_obj.css('position','absolute').appendTo('body');
             else $scroll_obj.css('position','fixed').appendTo('body');
         }
-        if (attrs.bottom !== undefined) $scroll_obj.css('bottom', attrs.bottom + 'px');
-        if (attrs.top !== undefined) $scroll_obj.css('top', attrs.top + 'px');
+        if (attrs.bottom !== undefined) {
+          if(ZARK_FX.browser.ie6) {
+            /*
+            var scroll_top = document.documentElement.clientHeight - parseInt(attrs.bottom);
+            $(window).scroll(function(){
+                $this.css('top', scroll_top + getScrollTop());
+            });
+            */
+            var scroll_bottom = $(document).height() + parseInt(attrs.bottom) - $(window).height();
+            $(window).scroll(function(){
+                $this.css('bottom', scroll_bottom - getScrollTop());
+            });
+          } else $scroll_obj.css('bottom', attrs.bottom + 'px');
+        }
+        if (attrs.top !== undefined) {
+          if(ZARK_FX.browser.ie6) {
+            var scroll_top = parseInt(attrs.top);
+            $(window).scroll(function(){
+                $scroll_obj.css('top', scroll_top + getScrollTop());
+            });
+          } else $scroll_obj.css('top', attrs.top + 'px');
+        }
         if (attrs.right !== undefined) $scroll_obj.css('right', attrs.right + 'px');
         if (attrs.left !== undefined) $scroll_obj.css('left', attrs.left + 'px');
     
