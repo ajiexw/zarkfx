@@ -59,23 +59,25 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
         };
         switch_groups[group].push($this);
 
-        /*
-        // show the first switched, and hide others
-        if (switch_groups[group].length == 1){
-            if (attrs.nochangeclass === undefined) $this.addClass('zarkfx_chosed').removeClass('zarkfx_unchosed');
-            if (attrs.switchid !== undefined) $('#'+attrs.switchid).show();
-        }else{
-            if (attrs.switchid !== undefined) $('#'+attrs.switchid).hide();
-            if (attrs.switchclass !== undefined) $('.'+attrs.switchclass).hide();
+        if (attrs.autoHidden){
+            // show the first switched, and hide others
+            if (switch_groups[group].length == 1){
+                if (attrs.nochangeclass === undefined) $this.addClass('zarkfx_chosed').removeClass('zarkfx_unchosed');
+                if (attrs.switchid !== undefined) $('#'+attrs.switchid).show();
+            }else{
+                if (attrs.switchid !== undefined) $('#'+attrs.switchid).hide();
+                if (attrs.switchclass !== undefined) $('.'+attrs.switchclass).hide();
+            };
+
+            // change the first switcher's class
+            if (switch_groups[group].length == 1){
+                if (attrs.switchclass !== undefined) $('.'+attrs.switchclass).show();
+            }else{
+                if (attrs.nochangeclass === undefined) $(this).addClass('zarkfx_unchosed').removeClass('zarkfx_chosed');
+            };
         };
 
-        // change the first switcher's class
-        if (switch_groups[group].length == 1){
-            if (attrs.switchclass !== undefined) $('.'+attrs.switchclass).show();
-        }else{
-            if (attrs.nochangeclass === undefined) $(this).addClass('zarkfx_unchosed').removeClass('zarkfx_chosed');
-        };
-        */
-
+    }, {
+        autoHidden: true
     });
 });
