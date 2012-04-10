@@ -74,19 +74,9 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
 
             // change the first switcher's class
             if (switch_groups[group].length == 1){
-                if (attrs.switchid !== undefined) {
-                    $('#' + attrs.switchid).addClass(attrs.selectedClass);
-                };
-                if (attrs.switchClass !== undefined) {
-                    $('.' + attrs.switchClass).addClass(attrs.selectedClass);
-                };
+                $this.addClass(attrs.selectedClass);
             }else{
-                if (attrs.switchid !== undefined) {
-                    $('#' + attrs.switchid).addClass(attrs.unselectedClass);
-                };
-                if (attrs.switchClass !== undefined) {
-                    $('.' + attrs.switchClass).addClass(attrs.unselectedClass);
-                };
+                $this.addClass(attrs.unselectedClass);
             };
         };
 
