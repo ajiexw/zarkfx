@@ -8,6 +8,9 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
         $(attrs.choice ,$this).unbind('click').click(function(){
             var selected_value = $(this).val();
             if (!selected_value){
+                selected_value = $(this).attr('value');
+            };
+            if (!selected_value){
                 selected_value = $(this).html();
             };
             if (attrs.action === 'replace'){
