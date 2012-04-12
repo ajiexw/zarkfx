@@ -55,7 +55,8 @@ ZARK_FX.getFrame('jquery-1.3.2', function($) {
 
     }, {
         fx_var: undefined,
-        timeout: 0
+        timeout: 0,
+        speed:  1000
     
     }, 'cycle');
 
