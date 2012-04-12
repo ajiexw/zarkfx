@@ -57,7 +57,6 @@ ZARK_FX.getFrame('jquery-1.5.1', function(jQuery){
                     if (settings.skip_invisible && !$this.is(":visible")) {
                         return;
                     }
-                    console.log(getScrollTop(this));
                     if ($.abovethetop(this, settings) ||
                         $.leftofbegin(this, settings)) {
                             /* Nothing. */
