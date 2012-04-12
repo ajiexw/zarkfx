@@ -22,8 +22,10 @@
 // todo  switch应该把switchid改为选择器
 
 
-ZARK_FX.getFrame('jquery-1.3.2', function($){
+ZARK_FX.getFrame('jquery-1.5.1', function($){
     var switch_groups = {};
+    var lazyload_top  = {}; // only for with lazyload
+    var lazyload_left = {}; // only for with lazyload
 
     ZARK_FX.run('switch', function(attrs){
 
@@ -80,11 +82,44 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
             };
         };
 
+        // used with lazyload
+        if (attrs.withLazyLoad){
+            var this_scroll_top = $this.offset().top;
+            if (this_scroll_top !== 0 && (typeof lazyload_top[group] === 'undefined' ||  lazyload_top[group] > this_scroll_top)){
+                lazyload_top[group] = this_scroll_top;
+            };
+
+            var this_scroll_left = $this.offset().left;
+            if (this_scroll_left !== 0 && (typeof lazyload_left[group] === 'undefined' ||  lazyload_left[group] > this_scroll_left)){
+                lazyload_left[group] = this_scroll_left;
+            };
+
+            $('#'+attrs.switchid+' img[fx*=lazyload]').each(function(){
+                $.data(this, "zarkfx.lazyload.scrolltop", function(){
+                    if (typeof lazyload_top[group] !== 'undefined'){
+                        return lazyload_top[group];
+                    }else{
+                        return 0;
+                    };
+                });
+                $.data(this, "zarkfx.lazyload.scrollleft", function(){
+                    if (typeof lazyload_left[group] !== 'undefined'){
+                        return lazyload_left[group];
+                    }else{
+                        return 0;
+                    };
+                });
+            });
+
+        };
+
     }, {
         switchid:       undefined,
         switchClass:    undefined,
         autoHidden:     true,
         selectedClass:  'zarkfx_switch_selected',
-        unselectedClass:'zarkfx_switch_unselected'
+        unselectedClass:'zarkfx_switch_unselected',
+        withLazyLoad:   false
     });
+
 });

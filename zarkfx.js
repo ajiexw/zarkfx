@@ -27,6 +27,8 @@
         ZARK_FX.browser         = {};
         ZARK_FX.browser.ie6     = $.browser.msie && ($.browser.version == "6.0") && (!$.support.style);
 
+        ZARK_FX.share_values    = {};
+
         // get UUID
         ZARK_FX.JSC = (new Date).getTime();
         ZARK_FX.getJSC = function(){
