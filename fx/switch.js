@@ -21,6 +21,7 @@
 
 // todo  switch应该把switchid改为选择器
 
+// 因为lazyload.js不支持jquery-1.3.2, 因此如果这里的frame使用了1.3.2, 那么就不能支持withLazyLoad参数.
 
 ZARK_FX.getFrame('jquery-1.5.1', function($){
     var switch_groups = {};
@@ -84,25 +85,25 @@ ZARK_FX.getFrame('jquery-1.5.1', function($){
 
         // used with lazyload
         if (attrs.withLazyLoad){
+            // 按照group分组, 在lazyload_top和lazyload_left中保存大于0的最小值.
             var this_scroll_top = $this.offset().top;
             if (this_scroll_top !== 0 && (typeof lazyload_top[group] === 'undefined' ||  lazyload_top[group] > this_scroll_top)){
                 lazyload_top[group] = this_scroll_top;
             };
-
             var this_scroll_left = $this.offset().left;
             if (this_scroll_left !== 0 && (typeof lazyload_left[group] === 'undefined' ||  lazyload_left[group] > this_scroll_left)){
                 lazyload_left[group] = this_scroll_left;
             };
-
+            // 绑定img的scrollTop和scrollLeft函数, 返回所在group的大于零的最小值
             $('#'+attrs.switchid+' img[fx*=lazyload]').each(function(){
-                $.data(this, "zarkfx.lazyload.scrolltop", function(){
+                $.data(this, "zarkfx.lazyload.scrollTop", function(){
                     if (typeof lazyload_top[group] !== 'undefined'){
                         return lazyload_top[group];
                     }else{
                         return 0;
                     };
                 });
-                $.data(this, "zarkfx.lazyload.scrollleft", function(){
+                $.data(this, "zarkfx.lazyload.scrollLeft", function(){
                     if (typeof lazyload_left[group] !== 'undefined'){
                         return lazyload_left[group];
                     }else{
@@ -119,7 +120,7 @@ ZARK_FX.getFrame('jquery-1.5.1', function($){
         autoHidden:     true,
         selectedClass:  'zarkfx_switch_selected',
         unselectedClass:'zarkfx_switch_unselected',
-        withLazyLoad:   false
+        withLazyLoad:   false // 如果被switch的内容里有lazyload的img, 那么需要把这个参数设置为true才能让img延迟加载.
     });
 
 });

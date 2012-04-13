@@ -13,23 +13,23 @@
  *
  */
 
-
 // lazyload.js 不支持 jquery-.1.3.2
+
 ZARK_FX.getFrame('jquery-1.5.1', function(jQuery){
     (function($, window) {
 
         var $window = $(window);
-        var getScrollTop = function(obj){
-            if ($.data(obj, "zarkfx.lazyload.scrolltop")){
-                return $.data(obj, "zarkfx.lazyload.scrolltop")();
+        // 用getGroupScrollTop/Left函数代替原有的$.offset().top/left, 因为某些img可能是unvisible的, 此时可以用相同group的值替代, 参见 fx/switch.js
+        var getGroupScrollTop = function(obj){
+            if ($.data(obj, "zarkfx.lazyload.scrollTop")){
+                return $.data(obj, "zarkfx.lazyload.scrollTop")();
             }else{
                 return $(obj).offset().top;
             };
         };
-
-        var getScrollLeft = function(obj){
-            if ($.data(obj, "zarkfx.lazyload.scrollleft")){
-                return $.data(obj, "zarkfx.lazyload.scrollleft")();
+        var getGroupScrollLeft = function(obj){
+            if ($.data(obj, "zarkfx.lazyload.scrollLeft")){
+                return $.data(obj, "zarkfx.lazyload.scrollLeft")();
             }else{
                 return $(obj).offset().left;
             };
@@ -168,7 +168,7 @@ ZARK_FX.getFrame('jquery-1.5.1', function(jQuery){
             }
 
             //return fold <= $(element).offset().top - settings.threshold;
-            return fold <= getScrollTop($(element)[0]) - settings.threshold;
+            return fold <= getGroupScrollTop($(element)[0]) - settings.threshold;
         };
         
         $.rightoffold = function(element, settings) {
@@ -181,7 +181,7 @@ ZARK_FX.getFrame('jquery-1.5.1', function(jQuery){
             }
 
             //return fold <= $(element).offset().left - settings.threshold;
-            return fold <= getScrollLeft($(element)[0]) - settings.threshold;
+            return fold <= getGroupScrollLeft($(element)[0]) - settings.threshold;
         };
             
         $.abovethetop = function(element, settings) {
@@ -194,7 +194,7 @@ ZARK_FX.getFrame('jquery-1.5.1', function(jQuery){
             }
 
             //return fold >= $(element).offset().top + settings.threshold  + $(element).height();
-            return fold >= getScrollTop($(element)[0]) + settings.threshold  + $(element).height();
+            return fold >= getGroupScrollTop($(element)[0]) + settings.threshold  + $(element).height();
         };
         
         $.leftofbegin = function(element, settings) {
@@ -207,13 +207,13 @@ ZARK_FX.getFrame('jquery-1.5.1', function(jQuery){
             }
 
             //return fold >= $(element).offset().left + settings.threshold + $(element).width();
-            return fold >= getScrollLeft($(element)[0]) + settings.threshold + $(element).width();
+            return fold >= getGroupScrollLeft($(element)[0]) + settings.threshold + $(element).width();
         };
 
         $.inviewport = function(element, settings) {
              return !$.rightofscreen(element, settings) && !$.leftofscreen(element, settings) && 
                     !$.belowthefold(element, settings) && !$.abovethetop(element, settings);
-         };
+        };
 
         /* Custom selectors for your convenience.   */
         /* Use as $("img:below-the-fold").something() */
