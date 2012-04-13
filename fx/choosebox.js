@@ -22,6 +22,9 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
                     $value.val($value.val() + attrs.delimiter + selected_value);
                 };
             };
+            if (attrs.triggerChange){
+                $value.trigger('change');
+            };
             $this.hide();
             $value.focus();
         });
@@ -68,7 +71,8 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
         action:     'replace',  // options: replace append
         escclose:   true,
         trigger:    undefined,
-        delimiter:  '; '
+        delimiter:  '; ',
+        triggerChange: true
     });
 
 });
