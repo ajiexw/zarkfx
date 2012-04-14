@@ -1,18 +1,41 @@
 ZARK_FX.getFrame('jquery-1.3.2', function($){
 
+    var filter_timeout, last_filter_text;
+
+    var getChoiceValue = function(choice){
+        var selected_value = $(choice).val();
+        if (!selected_value){
+            selected_value = $(choice).attr('value');
+        };
+        if (!selected_value){
+            selected_value = $(choice).html();
+        };
+        return selected_value;
+    };
+
+    var filterChoice = function(obj, $container, choice){
+        var query = $.trim($(obj).val());
+        if (query === ''){
+            $(choice, $container).show();
+        }else{
+            $(choice, $container).each(function (){
+                var choice_value = getChoiceValue(this);
+                if (choice_value.indexOf(query) === -1){
+                    $(this).hide();
+                }else{
+                    $(this).show();
+                };
+            });
+        };
+    };
+
     var openBox = function(attrs, $value){
         var $this = $('#'+attrs.boxid);
 
         $this.show();
 
         $(attrs.choice ,$this).unbind('click').click(function(){
-            var selected_value = $(this).val();
-            if (!selected_value){
-                selected_value = $(this).attr('value');
-            };
-            if (!selected_value){
-                selected_value = $(this).html();
-            };
+            var selected_value = getChoiceValue(this);
             if (attrs.action === 'replace'){
                 $value.val(selected_value);
             }else if(attrs.action === 'append'){
@@ -24,6 +47,9 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
             };
             if (attrs.triggerChange){
                 $value.trigger('change');
+            };
+            if (filter_timeout){
+                window.clearInterval(filter_timeout);
             };
             $this.hide();
             $value.focus();
@@ -41,6 +67,13 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
                     $this.hide();
                 };
             }).focus();
+        };
+
+        if (attrs.filter){
+            $(attrs.filter).each(function(){
+                var filter = this;
+                window.setInterval(function(){filterChoice(filter, $this, attrs.choice);}, 300);
+            });
         };
 
     };
@@ -63,7 +96,6 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
             console.warn('Zark Fx choosebox: miss boxid, ignore.');
         };
 
-
     }, {
         boxid:      undefined,
         choice:     'a',
@@ -72,7 +104,8 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
         escclose:   true,
         trigger:    undefined,
         delimiter:  '; ',
-        triggerChange: true
+        triggerChange: true,
+        filter:     undefined
     });
 
 });
