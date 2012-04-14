@@ -141,26 +141,20 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
             else $scroll_obj.css('position','fixed').appendTo('body');
         }
         if (attrs.bottom !== undefined) {
-          if(ZARK_FX.browser.ie6) {
-            /*
-            var scroll_top = document.documentElement.clientHeight - parseInt(attrs.bottom);
-            $(window).scroll(function(){
-                $this.css('top', scroll_top + getScrollTop());
-            });
-            */
+          /* if(ZARK_FX.browser.ie6) {
             var scroll_bottom = $(document).height() + parseInt(attrs.bottom) - $(window).height();
             $(window).scroll(function(){
                 $this.css('bottom', scroll_bottom - getScrollTop());
             });
-          } else $scroll_obj.css('bottom', attrs.bottom + 'px');
+          } else */ $scroll_obj.css('bottom', attrs.bottom + 'px');
         }
         if (attrs.top !== undefined) {
-          if(ZARK_FX.browser.ie6) {
+          /* if(ZARK_FX.browser.ie6) {
             var scroll_top = parseInt(attrs.top);
             $(window).scroll(function(){
                 $scroll_obj.css('top', scroll_top + getScrollTop());
             });
-          } else $scroll_obj.css('top', attrs.top + 'px');
+          } else */ $scroll_obj.css('top', attrs.top + 'px');
         }
         if (attrs.right !== undefined) $scroll_obj.css('right', attrs.right + 'px');
         if (attrs.left !== undefined) $scroll_obj.css('left', attrs.left + 'px');
