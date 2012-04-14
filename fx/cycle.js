@@ -41,6 +41,8 @@
  *
  */
 
+// 如果要让cycle默认不滚动, 把timeout设置为0即可
+
 ZARK_FX.getFrame('jquery-1.3.2', function($) {
 
     ZARK_FX.run('cycle', function(attrs) {
@@ -53,7 +55,8 @@ ZARK_FX.getFrame('jquery-1.3.2', function($) {
 
     }, {
         fx_var: undefined,
-        timeout: 0
+        timeout: 0,
+        speed:  1000
     
     }, 'cycle');
 

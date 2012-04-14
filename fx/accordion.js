@@ -145,7 +145,8 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
         /*set selected*/
         $('li > a',$this).each(function(){
             //如果此项默认被选中（即为当前页面）
-            if ($(this).attr('href') === this_url || $(this).attr('href') === this_url_relative ){
+            var escaped_href = encodeURI($(this).attr('href'));
+            if ($(this).attr('href') === this_url || escaped_href === this_url || $(this).attr('href') === this_url_relative || escaped_href === this_url_relative ){
                 $(this).parent().attr('fx_selected','selected');
                 $(this).parent().find('.zarkfx_accordion_span1').css("background","url("+attrs.right_img+") top right no-repeat");
             }
@@ -155,7 +156,8 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
         $('.zarkfx_accordion_div2',$this).hide();
         $('.zarkfx_accordion_li2 > a',$this).each(function(){
             //如果此项默认被选中（即为当前页面）
-            if ($(this).attr('href') === this_url || $(this).attr('href') === this_url_relative ){
+            var escaped_href = encodeURI($(this).attr('href'));
+            if ($(this).attr('href') === this_url || escaped_href === this_url || $(this).attr('href') === this_url_relative || escaped_href === this_url_relative ){
                 $(this).parent().attr('fx_selected','selected');
                 $(this).parent().find('.zarkfx_accordion_span2').css("background","url("+attrs.right_img+") top right no-repeat");
                 $(this).parent().parent().parent().parent().find('.zarkfx_accordion_div2').show();
