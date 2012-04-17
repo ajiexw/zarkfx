@@ -1,4 +1,19 @@
 ZARK_FX.getFrame('jquery-1.3.2', function($){
+    var show = function(hideStyle, $obj){
+        if (hideStyle === 'display'){
+            $obj.show();
+        }else if(hideStyle === 'visibility'){{
+            $obj.css('visibility', 'visible');
+        }
+    };
+    var hide = function(hideStyle, $obj){
+        if (hideStyle === 'display'){
+            $obj.hide();
+        }else if(hideStyle === 'visibility'){
+            $obj.css('visibility', 'hidden');
+        }
+    };
+    
     ZARK_FX.run('toggle', function(attrs){
 
         var $this = $(this);
@@ -6,18 +21,18 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
             $this.bind(attrs.on, function(){
                 $(attrs.target).each(function(){
                     if ( $(this).css('display') !== 'none' ){
-                        $(this).hide();
+                        hide(attrs.hideStyle, $(this));
                     }else{
-                        $(this).show();
+                        show(attrs.hideStyle, $(this));
                     };
                 });
 
                 if (attrs.hideme) {
-                    $this.hide();
+                    hide(attrs.hideStyle, $this);
                 };
 
                 if (attrs.hideid) {
-                    $('#'+attrs.hideid).hide();
+                    hide(attrs.hideStyle, $('#'+attrs.hideid));
                 };
 
                 if (attrs.toggleHtml) {
@@ -41,8 +56,7 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
         target: undefined,
         hideme: false,
         hideid: undefined,
-        toggleHtml: undefined
+        toggleHtml: undefined,
+        hideStyle:    'display'
     });
 });
-
-
