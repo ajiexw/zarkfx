@@ -13,6 +13,13 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
             $obj.css('visibility', 'hidden');
         }
     };
+    var isHide = function(hideStyle, $obj){
+        if (hideStyle === 'display'){
+            return $obj.css('display') === 'none';
+        }else if(hideStyle === 'visibility'){
+            return $obj.css('visibility') === 'hidden';
+        }
+    };
     
     ZARK_FX.run('toggle', function(attrs){
 
@@ -20,7 +27,7 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
         if(attrs.target !== undefined){
             $this.bind(attrs.on, function(){
                 $(attrs.target).each(function(){
-                    if ( $(this).css('display') !== 'none' ){
+                    if ( !isHide(attrs.hideStyle, $(this)) ){
                         hide(attrs.hideStyle, $(this));
                     }else{
                         show(attrs.hideStyle, $(this));
