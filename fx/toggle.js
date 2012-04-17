@@ -2,7 +2,7 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
     var show = function(hideStyle, $obj){
         if (hideStyle === 'display'){
             $obj.show();
-        }else if(hideStyle === 'visibility'){{
+        }else if(hideStyle === 'visibility'){
             $obj.css('visibility', 'visible');
         }
     };
@@ -13,6 +13,7 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
             $obj.css('visibility', 'hidden');
         }
     };
+
     var isHide = function(hideStyle, $obj){
         if (hideStyle === 'display'){
             return $obj.css('display') === 'none';
