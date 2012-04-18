@@ -48,14 +48,11 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
     ZARK_FX.run('browsercenter', function(attrs){
         var $this = $(this);
         if(ZARK_FX.browser.ie6){ // ie6 hack
-            // IE6暂时置为固定， 不随浏览器滚动而滚动
-            var center_top    = (document.documentElement.clientHeight - $this.height()) / 2;
-            var center_left   = (document.documentElement.clientWidth  - $this.width())  / 2;
-            $this.css('top',center_top);
-            $this.css('left',center_left);
+            $this.css('top',(dochment.documentElement.clientHeight - $this.height()) / 2);
+            $this.css('left',(document.documentElement.clientWidth  - $this.width())  / 2);
             $this.css('position', 'absolute');
             $(window).scroll(function(){
-                $this.css('top', center_top + getScrollTop());
+                $this.css('top', (dochment.documentElement.clientHeight - $this.height()) / 2 + getScrollTop());
             });
             // $this.appendTo('#'+join_div_id);
         }else{
