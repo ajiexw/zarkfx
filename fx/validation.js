@@ -114,7 +114,13 @@ ZARK_FX.getFrame('jquery-1.3.2', function($) {
             case "notequal":
                 if(attrs.value){
                     this_val.validate = function(){
-                        return ZARK_FX.splitValue(attrs.value).indexOf($.trim($(this_val.node).val())) == -1;
+                        var value = ZARK_FX.splitValue(attrs.value),
+                            match = $.trim($(this_val.node).val());
+                        if (attrs.ignorecase){
+                            value = value.toLowerCase();
+                            match = match.toLowerCase();
+                        };
+                        return value.indexOf(match) === -1;
                     };
                 };
 
@@ -138,9 +144,39 @@ ZARK_FX.getFrame('jquery-1.3.2', function($) {
                 var another = $("#" + attrs["another_id"])[0];
                 if(another){
                     this_val.validate = function(){
-                        
-                        return this_val.node.value === another.value;
+                        var value = this.node.value,
+                            match = another.value;
+                        if (attrs.ignorecase){
+                            value = value.toLowerCase();
+                            match = match.toLowerCase();
+                        };
+                        return value === match;
                     };
+                };
+
+                break;
+
+            case "endswith":
+                var values;
+                if (typeof attrs.values !== 'undefined'){
+                    values = attrs.values.split(',');
+                }else{
+                    values = [];
+                };
+                this_val.validate = function(){
+                    var i = 0,
+                        value = $this.val();
+                    for ( ; i < values.length; i++){
+                        var type = $.trim(values[i]);
+                        if (attrs.ignorecase){
+                            value = value.toLowerCase();
+                            type = type.toLowerCase();
+                        };
+                        if (value.indexOf(type) + type.length === value.length){
+                            return true;
+                        };
+                    };
+                    return false;
                 };
 
                 break;
@@ -223,7 +259,7 @@ ZARK_FX.getFrame('jquery-1.3.2', function($) {
             if( !$.data(this, "zarkfx.input_validations") ) {
                 $.data(this, "zarkfx.input_validations", []);
 
-                $this.blur(function(){
+                var thisValidation = function(){
                     var val_functions = $.data(this, "zarkfx.input_validations"),
                         i = 0;
                     for( ; i < val_functions.length; i++){
@@ -231,7 +267,13 @@ ZARK_FX.getFrame('jquery-1.3.2', function($) {
                             return false;
                         };
                     };
-                });
+                }
+
+                if ($this.attr('tagName') === 'INPUT' && $this.attr('type') === 'file'){
+                    $this.change(thisValidation);
+                }else{
+                    $this.blur(thisValidation);
+                };
 
             };
 
@@ -285,6 +327,7 @@ ZARK_FX.getFrame('jquery-1.3.2', function($) {
         valid_fn: undefined,
         invalid_fn: undefined,
         blurValidate: true,
-        submitValidate: true
+        submitValidate: true,
+        ignorecase: false
     });
 });
