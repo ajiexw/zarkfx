@@ -166,17 +166,21 @@ ZARK_FX.getFrame('jquery-1.3.2', function($) {
                 this_val.validate = function(){
                     var i = 0,
                         value = $this.val();
-                    for ( ; i < values.length; i++){
-                        var type = $.trim(values[i]);
-                        if (attrs.ignorecase){
-                            value = value.toLowerCase();
-                            type = type.toLowerCase();
+                    if (value.length === 0){
+                        return true;
+                    }else{
+                        for ( ; i < values.length; i++){
+                            var type = $.trim(values[i]);
+                            if (attrs.ignorecase){
+                                value = value.toLowerCase();
+                                type = type.toLowerCase();
+                            };
+                            if (value.indexOf(type) + type.length === value.length){
+                                return true;
+                            };
                         };
-                        if (value.indexOf(type) + type.length === value.length){
-                            return true;
-                        };
+                        return false;
                     };
-                    return false;
                 };
 
                 break;
