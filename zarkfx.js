@@ -84,22 +84,29 @@
 
         ZARK_FX.run = function(fx_name, cb, defaults, deps){
             var ready = function(){
+                //todo 这里有一个隐患, 如果某个fx的名称包含另一个fx的名称, 那么选择器会出错
                 $('['+ZARK_FX.FX_NAME+'*='+fx_name+']').each(function(){
-                    var attrs = ZARK_FX.getFX(this, fx_name);
-                    if (attrs !== undefined){
-                        // change attrs's data type like defaults
-                        // 不要使用jQuery的extend函数, 因为extend会改变attrs的数据类型
-                        for(var k in defaults){
-                            if (attrs[k] === undefined){
-                                attrs[k] = defaults[k];
-                            }else{
-                                if(typeof(defaults[k]) === 'number')  attrs[k] = parseInt(attrs[k]);
-                                if(typeof(defaults[k]) === 'boolean') attrs[k] = attrs[k] === true;
+                    var attrs_array = ZARK_FX.getFX(this, fx_name);
+                    if (attrs_array !== undefined){
+                        var i = 0;
+                        for ( ; i < attrs_array.length; i++){
+                            var attrs = attrs_array[i];
+                            // change attrs's data type like defaults
+                            // 不要使用jQuery的extend函数, 因为extend会改变attrs的数据类型
+                            for(var k in defaults){
+                                if (attrs[k] === undefined){
+                                    attrs[k] = defaults[k];
+                                }else{
+                                    if(typeof(defaults[k]) === 'number')  attrs[k] = parseInt(attrs[k]);
+                                    if(typeof(defaults[k]) === 'boolean') attrs[k] = attrs[k] === true;
+                                };
+                            };// change end
+                            cb && cb.call(this, attrs);
+                            // 处理全局参数(所有fx都有的参数)
+                            if (attrs.finished === 'show'){
+                                $(this).show();
                             };
-                        };// change end
-                        cb && cb.call(this, attrs);
-                        // 处理全局参数(所有fx都有的参数)
-                        if (attrs.finished==='show') $(this).show();
+                        };
                     };
                 });
             };
@@ -125,7 +132,8 @@
             };
         };
 
-        // 解析fx字符串, 返回一个字典
+        // 解析fx字符串, 返回一个list, 每个list元素类型为dict, 代表一个fx的attrs
+        // 如某html node上多次调用同一个fx, 那么返回的list长度大于1
         ZARK_FX.parseFX = function(fx_string){
 
             var parseOne = function(s_fx){
@@ -262,7 +270,10 @@
                 try {
                     out = parseOne(t);
                     if(out.name != "") {
-                        ret_fxs[out.name] = out.attrs;
+                        if (typeof ret_fxs[out.name] === 'undefined'){
+                            ret_fxs[out.name] = [];
+                        }
+                        ret_fxs[out.name].push(out.attrs);
                     };
                     t = out.remain;
                 } catch(err) {
@@ -287,7 +298,7 @@
         };
 
         ZARK_FX.hasFX = function(obj, fx_name){
-            return ZARK_FX.parseFX($(obj).attr(ZARK_FX.FX_NAME))[fx_name] !== undefined;
+            return typeof ZARK_FX.parseFX($(obj).attr(ZARK_FX.FX_NAME))[fx_name] !== 'undefined';
         };
 
         // 加载并执行所有ZARK_FX.FX_NAME

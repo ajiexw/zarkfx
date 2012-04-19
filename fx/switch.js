@@ -35,8 +35,8 @@ ZARK_FX.getFrame('jquery-1.5.1', function($){
         var switchFunction = function(){
             for(var i in switch_groups[group]){
                 var $a = switch_groups[group][i];
-                var hide_id = ZARK_FX.parseFX($a.attr(ZARK_FX.FX_NAME))['switch'].switchid;
-                var hide_cl = ZARK_FX.parseFX($a.attr(ZARK_FX.FX_NAME))['switch'].switchClass;
+                var hide_id = ZARK_FX.parseFX($a.attr(ZARK_FX.FX_NAME))['switch'][0].switchid;
+                var hide_cl = ZARK_FX.parseFX($a.attr(ZARK_FX.FX_NAME))['switch'][0].switchClass;
                 if (hide_id !== undefined) $('#'+hide_id).hide();
                 if (hide_cl !== undefined) $('.'+hide_cl).hide();
                 $a.addClass(attrs.unselectedClass).removeClass(attrs.selectedClass);
