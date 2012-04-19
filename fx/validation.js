@@ -70,7 +70,7 @@ ZARK_FX.getFrame('jquery-1.3.2', function($) {
                 attrs["invalid_msg"] = "validate failed!";
             };
         }else if( !attrs["valid_fn"] && !attrs["invalid_fn"] ) {
-            console.warn('zarkfx validation: error_obj is undefined');
+            //console.warn('zarkfx validation: error_obj is undefined');
             return;
         };
 

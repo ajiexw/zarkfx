@@ -44,11 +44,11 @@ ZARK_FX.getFrame('jquery-1.3.2', function($) {
             ZARK_FX.getCSS(ZARK_FX.CSS_PATH + 'imgareaselect/imgareaselect-'+attrs.style+'.css');
         };
 
+        var $this = $(this);
         var change_functions = [];
 
         if(attrs.previewid){
             var $preview = $('#'+attrs.previewid);
-            var $this = $(this);
             $('<img/>').attr('src',$(this).attr('src')).css({display:'inline'}).appendTo('#'+attrs.previewid);
             $preview.css({overflow:'hidden', margin:'auto'});
 
@@ -80,10 +80,10 @@ ZARK_FX.getFrame('jquery-1.3.2', function($) {
             };
         };
 
-        if (attrs.x1 === undefined) attrs.x1 = 100;
-        if (attrs.x2 === undefined) attrs.x2 = 200;
-        if (attrs.y1 === undefined) attrs.y1 = 100;
-        if (attrs.y2 === undefined) attrs.y2 = 200;
+        if (attrs.x1 === undefined) attrs.x1 = 0;
+        if (attrs.x2 === undefined) attrs.x2 = 50;
+        if (attrs.y1 === undefined) attrs.y1 = 0;
+        if (attrs.y2 === undefined) attrs.y2 = 50;
 
         if(attrs.foursquare) {
             attrs.aspectRatio = "1:1";
@@ -109,12 +109,19 @@ ZARK_FX.getFrame('jquery-1.3.2', function($) {
         attrs.onInit = attrs.onSelectChange;
 
         // 偏一修正, 如果没有这个修正, 那么得到的attrs.x2可能会超过真正的宽度
-        attrs.x2 = Math.min(attrs.x2, $this.width());
-        attrs.y2 = Math.min(attrs.y2, $this.height());
+        if ($this.width() > attrs.x1){ //某些浏览器下, $this.width()可能为0
+            attrs.x2 = Math.min(attrs.x2, $this.width());
+        }
+        if ($this.height() > attrs.y1){ //某些浏览器下, $this.height()可能为0
+            attrs.y2 = Math.min(attrs.y2, $this.height());
+        }
 
+        // 修正, 要求x2 y2要比x1 y1大
+        attrs.x2 = Math.max(attrs.x2, attrs.x1+1);
+        attrs.y2 = Math.max(attrs.y2, attrs.y1+1);
 
         if(!attrs["fx_var"]) {
-            $(this).imgAreaSelect(attrs);
+            $this.imgAreaSelect(attrs);
         } else {
             eval("$(this).imgAreaSelect(" + attrs["fx_var"] + ")");
         };

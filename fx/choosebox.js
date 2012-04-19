@@ -93,7 +93,7 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
                 openBox(attrs, $this);
             });
         }else{
-            console.warn('Zark Fx choosebox: miss boxid, ignore.');
+            //console.warn('Zark Fx choosebox: miss boxid, ignore.');
         };
 
     }, {
