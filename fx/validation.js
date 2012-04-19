@@ -63,22 +63,28 @@ ZARK_FX.getFrame('jquery-1.3.2', function($) {
 
     ZARK_FX.run('validation', function(attrs) {
 
+        var $this = $(this);
+        // 获得错误提示的对象
         var error_obj = $("#" + attrs["invalid_id"])[0];
 
+        // 当有错误提示对象时必须同时有错误提示消息
         if(error_obj) {
             if( !attrs["invalid_msg"] ) {
                 attrs["invalid_msg"] = "validate failed!";
             };
-        }else if( !attrs["valid_fn"] && !attrs["invalid_fn"] ) {
-            //console.warn('zarkfx validation: error_obj is undefined');
+        // 如果没有错误提示对象, 且也没有错误处理函数, 则此validation被忽略
+        }else if( !attrs["invalid_fn"] ) {
+            if (typeof console !== 'undefined') console.warn('zarkfx validation: error_obj is undefined');
             return;
         };
 
-        var this_val = {pointer: this, validate: undefined, unvalidate: undefined};
-        var regex;
-        this_val.invalid_msg = attrs["invalid_msg"];
-        this_val.error_obj = error_obj;
+        var this_val = {node: this, validate: undefined}, // 当前验证对象, node是原始html的dom, validate为验证函数
+            regex;  // 正则表达式, 当不指明验证函数validate时, 自动有regex生成validate
 
+        this_val.invalid_msg = attrs["invalid_msg"];  // 错误提示
+        this_val.error_obj = error_obj; // 提示错误的元素
+
+        // 根据验证类型的到不同的validate或regex
         switch(attrs["type"]) {
             case "numbers":
                 regex = /^[0-9]+$/;
@@ -100,7 +106,7 @@ ZARK_FX.getFrame('jquery-1.3.2', function($) {
 
             case "notempty":
                 this_val.validate = function(){
-                    return $.trim($(this_val.pointer).val()).length > 0;
+                    return $.trim($(this_val.node).val()).length > 0;
                 };
 
                 break;
@@ -108,8 +114,22 @@ ZARK_FX.getFrame('jquery-1.3.2', function($) {
             case "notequal":
                 if(attrs.value){
                     this_val.validate = function(){
-                        return ZARK_FX.splitValue(attrs.value).indexOf($.trim($(this_val.pointer).val())) == -1;
+                        return ZARK_FX.splitValue(attrs.value).indexOf($.trim($(this_val.node).val())) == -1;
                     };
+                };
+
+                break;
+
+            case "minlen":
+                this_val.validate = function(){
+                    return $.trim($(this_val.node).val()).length >= parseInt(attrs.len);
+                };
+
+                break;
+
+            case "maxlen":
+                this_val.validate = function(){
+                    return $.trim($(this_val.node).val()).length <= parseInt(attrs.len);
                 };
 
                 break;
@@ -119,7 +139,7 @@ ZARK_FX.getFrame('jquery-1.3.2', function($) {
                 if(another){
                     this_val.validate = function(){
                         
-                        return this_val.pointer.value === another.value;
+                        return this_val.node.value === another.value;
                     };
                 };
 
@@ -140,19 +160,19 @@ ZARK_FX.getFrame('jquery-1.3.2', function($) {
                 } else {
                     this_val.success = function() {
                         if( attrs["valid_fn"] ) {
-                            eval(attrs["valid_fn"] + ".call(this_val.pointer)");
+                            eval(attrs["valid_fn"] + ".call(this_val.node)");
                         };
                     };
                     this_val.fail = function() {
                         if( attrs["invalid_fn"] ) {
-                            eval(attrs["invalid_fn"] + ".call(this_val.pointer)");
+                            eval(attrs["invalid_fn"] + ".call(this_val.node)");
                         };
                     };
                 };
 
                 this_val.validate = function() {
                     return eval(attrs["custom_fn"] +
-                            '.call(this_val, "' + this_val.pointer.value + '")');
+                            '.call(this_val, "' + this_val.node.value + '")');
                 };
 
                 break;
@@ -161,18 +181,16 @@ ZARK_FX.getFrame('jquery-1.3.2', function($) {
                 return;
         };
 
+        // 如果没有validate的话就用regex生成validate
         if(!this_val.validate && regex) {
             this_val.validate = function(){
-                return regex.test(this_val.pointer.value);
+                return regex.test(this_val.node.value);
             };
         }else if(!this_val.validate){
             return;
         };
 
-        if(!this_val.error_obj && !attrs["valid_fn"] && !attrs["invalid_fn"] ) {
-            return;
-        };
-        
+        // 如果使用错误提示对象, 则在验证成功和失败时修改对象的提示值
         if(this_val.error_obj) {
             $(this_val.error_obj).hide();
             this_val.success = function(){
@@ -181,10 +199,11 @@ ZARK_FX.getFrame('jquery-1.3.2', function($) {
             this_val.fail = function(){
                 $(this_val.error_obj).html(this_val.invalid_msg).show();
             };
+        // 否则运行valid_fn和invalid_fn函数
         } else {
             if (attrs["valid_fn"]){
                 this_val.success = function(){
-                    attrs["valid_fn"] && eval(attrs["valid_fn"] + ".call(this_val.pointer)");
+                    attrs["valid_fn"] && eval(attrs["valid_fn"] + ".call(this_val.node)");
                 };
             }else{
                 this_val.success = function(){};
@@ -192,44 +211,65 @@ ZARK_FX.getFrame('jquery-1.3.2', function($) {
 
             if (attrs["invalid_fn"]){
                 this_val.fail = function(){
-                    attrs["invalid_fn"] && eval(attrs["invalid_fn"] + ".call(this_val.pointer)");
+                    attrs["invalid_fn"] && eval(attrs["invalid_fn"] + ".call(this_val.node)");
                 };
             }else{
                 this_val.fail = function(){};
             };
         };
 
-        $(this).blur(function(){
-            if( this_val.validate() ) {
-                this_val.success();
-            } else {
-                this_val.fail();
-            };
-        });
+        // 失焦时验证
+        if (attrs.blurValidate){
+            if( !$.data(this, "zarkfx.input_validations") ) {
+                $.data(this, "zarkfx.input_validations", []);
 
-        // for submit
-        var form = this.form;
-
-        if (form){
-            if( !$.data(form, "zarkfx.validation") ) {
-                $.data(form, "zarkfx.validation", []);
-
-                $(form).submit(function() {
-                    var data = $.data(form, "zarkfx.validation");
-                    for(var i in data) {
-                        if (data[i].validate()){
-                            data[i].success();
-                        }else{
-                            data[i].fail();
+                $this.blur(function(){
+                    var val_functions = $.data(this, "zarkfx.input_validations"),
+                        i = 0;
+                    for( ; i < val_functions.length; i++){
+                        if (!val_functions[i]()){
                             return false;
                         };
                     };
-                    return true;
                 });
+
             };
 
-            $.data(form, "zarkfx.validation").push(this_val);
-        
+            $.data(this, "zarkfx.input_validations").push(function(){
+                if( this_val.validate() ) {
+                    this_val.success();
+                    return true;
+                } else {
+                    this_val.fail();
+                    return false;
+                };
+            });
+
+        };
+
+        // form提交时验证
+        if (attrs.submitValidate){
+            var form = this.form;
+
+            if (form){
+                if( !$.data(form, "zarkfx.validations") ) {
+                    $.data(form, "zarkfx.validations", []);
+
+                    $(form).submit(function() {
+                        var data = $.data(form, "zarkfx.validations");
+                        for(var i in data) {
+                            if (data[i].validate()){
+                                data[i].success();
+                            }else{
+                                data[i].fail();
+                                return false;
+                            };
+                        };
+                        return true;
+                    });
+                };
+                $.data(form, "zarkfx.validations").push(this_val);
+            };
         };
 
     }, {
@@ -243,6 +283,8 @@ ZARK_FX.getFrame('jquery-1.3.2', function($) {
         invalid_msg: undefined,
 
         valid_fn: undefined,
-        invalid_fn: undefined
+        invalid_fn: undefined,
+        blurValidate: true,
+        submitValidate: true
     });
 });
