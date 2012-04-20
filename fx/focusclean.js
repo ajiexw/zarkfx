@@ -34,6 +34,21 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
         var $this = $(this);
         var old_value = $this.val();
         var old_color = $this.css('color');
+
+        // 如果fx用于密码框, 则新建一个text在没有点击密码框时覆盖在原来的密码框上
+        var on_password = attrs.onPassword && $this.attr('tagName') === 'INPUT' && $this.attr('type') === 'password';
+        if (on_password){
+            var $input_text = $('<input type="text" />').attr('class', $this.attr('class')).val(old_value);
+            $input_text.focus(function(){
+                $input_text.hide();
+                $this.show();
+                $this.focus();
+            });
+            $this.after($input_text);
+            $this.hide();
+            $input_text.show();
+        };
+
         $this.focus(function(){
             if($this.val()==old_value){
                 $this.val('');
@@ -43,9 +58,18 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
             if($this.val()==''){
                 $this.css('color',attrs.color);
                 $this.val(old_value);
+                if (on_password){
+                    $this.hide();
+                    $input_text.show();
+                };
             };
         });
-        $this.css('color',attrs.color);
+        $this.css('color', attrs.color);
     
-    }, {color:  '#666666'} );
+
+    }, {
+        color:  '#666666',
+        onPassword: false
+    });
+
 });
