@@ -302,16 +302,17 @@ ZARK_FX.getFrame('jquery-1.3.2', function($) {
                     $.data(form, "zarkfx.validations", []);
 
                     $(form).submit(function() {
-                        var data = $.data(form, "zarkfx.validations");
+                        var data = $.data(form, "zarkfx.validations"),
+                            success = true;
                         for(var i in data) {
                             if (data[i].validate()){
                                 data[i].success();
                             }else{
                                 data[i].fail();
-                                return false;
+                                success = false;
                             };
                         };
-                        return true;
+                        return success;
                     });
                 };
                 $.data(form, "zarkfx.validations").push(this_val);
