@@ -46,7 +46,7 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
             });
             $this.after($input_text);
             $this.hide();
-            $input_text.show();
+            $input_text.css('color', attrs.color).show();
         };
 
         $this.focus(function(){
