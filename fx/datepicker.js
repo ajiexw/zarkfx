@@ -27,6 +27,8 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
     
         if (attrs.style === 'default'){
             ZARK_FX.getCSS(ZARK_FX.CSS_PATH + 'jqueryui/jqueryui-eggplant/jquery-ui-1.8.16.custom.css');
+        }else if (attrs.style === 'overcast'){
+            ZARK_FX.getCSS(ZARK_FX.CSS_PATH + 'jqueryui/jqueryui-overcast/jquery-ui-1.8.19.custom.css');
         };
 
         if (attrs.language === 'chinese'){

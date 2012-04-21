@@ -96,8 +96,12 @@ ZARK_FX.getFrame('jquery-1.3.2', function($) {
 
                 break;
 
+            case "chinamobile":
+                regex= /^1[0-9]{10}$|^$/;
+                break;
+
             case "regex":
-                eval("regex = " + attrs["regex"]);
+                eval("regex = /" + attrs["regex"] +"/");
                 if( !(regex instanceof RegExp) ) {
                     return;
                 };
@@ -136,6 +140,23 @@ ZARK_FX.getFrame('jquery-1.3.2', function($) {
             case "maxlen":
                 this_val.validate = function(){
                     return $.trim($(this_val.node).val()).length <= parseInt(attrs.len);
+                };
+
+                break;
+
+            case "filesize":
+                this_val.validate = function(){
+                    var $node = $(this_val.node);
+                    if ($node.attr('tagName') === 'INPUT' && $node.attr('type') === 'file'){
+                        if (attrs.max){
+                            if ($node[0].files[0].size > parseInt(attrs.max)) return false;
+                        };
+                        if (attrs.min){
+                            if ($node[0].files[0].size < parseInt(attrs.min)) return false;
+                        };
+                        
+                    };
+                    return true;
                 };
 
                 break;
