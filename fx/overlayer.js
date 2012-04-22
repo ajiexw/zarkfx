@@ -1,7 +1,7 @@
 
 ZARK_FX.getFrame('jquery-1.3.2', function($){
 
-    if(ZARK_FX.browser.ie6){ // ie6 hack
+    if(ZARK_FX.detect.browser === 'IE' && ZARK_FX.detect.version === 6){ // ie6 hack
         
         var getScrollTop = function(){
             var scrollPos;
@@ -27,7 +27,7 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
             $this.css('background-color', attrs.backgroundcolor );
             
             // 如果是IE6 置为静止，覆盖全文档
-            if(ZARK_FX.browser.ie6){ 
+            if(ZARK_FX.detect.browser === 'IE' && ZARK_FX.detect.version === 6){
                 $this.css('z-index', 0);
                 $this.css('position', 'absolute');
                 $(window).scroll(function(){

@@ -24,8 +24,6 @@
         ZARK_FX.loaded_frames["jquery-" + $.fn.jquery] = jQuery;
 
         ZARK_FX.loaded_css      = {};
-        ZARK_FX.browser         = {};
-        ZARK_FX.browser.ie6     = $.browser.msie && ($.browser.version == "6.0") && (!$.support.style);
 
         // get UUID
         ZARK_FX.JSC = (new Date).getTime();
@@ -105,6 +103,8 @@
                             // 处理全局参数(所有fx都有的参数)
                             if (attrs.finished === 'show'){
                                 $(this).show();
+                            };
+                            if (typeof attrs.noBrowser !== 'undefined'){
                             };
                         };
                     };
@@ -300,6 +300,56 @@
             return typeof ZARK_FX.parseFX($(obj).attr(ZARK_FX.FX_NAME))[fx_name] !== 'undefined';
         };
 
+        ZARK_FX.detect = {
+            _init: function () {
+                this.browser = this._searchString(this._dataBrowser) || "unknown";
+                this.version = this._searchVersion(navigator.userAgent)
+                    || this._searchVersion(navigator.appVersion)
+                    || "unknown";
+                this.OS = this._searchString(this.dataOS) || "unknown";
+            },
+            _searchString: function (data) {
+                for (var i=0;i<data.length;i++)	{
+                    var dataString = data[i].string;
+                    var dataProp = data[i].prop;
+                    this.versionSearchString = data[i].versionSearch || data[i].identity;
+                    if (dataString) {
+                        if (dataString.indexOf(data[i].subString) != -1)
+                            return data[i].identity;
+                    }
+                    else if (dataProp)
+                        return data[i].identity;
+                }
+            },
+            _searchVersion: function (dataString) {
+                var index = dataString.indexOf(this.versionSearchString);
+                if (index == -1) return;
+                return parseFloat(dataString.substring(index+this.versionSearchString.length+1));
+            },
+            _dataBrowser: [
+                { string: navigator.userAgent, subString: "Chrome", identity: "Chrome" },
+                { 	string: navigator.userAgent, subString: "OmniWeb", versionSearch: "OmniWeb/", identity: "OmniWeb" },
+                { string: navigator.vendor, subString: "Apple", identity: "Safari", versionSearch: "Version" },
+                { prop: window.opera, identity: "Opera", versionSearch: "Version" },
+                { string: navigator.vendor, subString: "iCab", identity: "iCab" },
+                { string: navigator.vendor, subString: "KDE", identity: "Konqueror" },
+                { string: navigator.userAgent, subString: "Firefox", identity: "Firefox" },
+                { string: navigator.vendor, subString: "Camino", identity: "Camino" },
+                { string: navigator.userAgent, subString: "Netscape", identity: "Netscape" },
+                { string: navigator.userAgent, subString: "MSIE", identity: "IE", versionSearch: "MSIE" },
+                { string: navigator.userAgent, subString: "Gecko", identity: "Mozilla", versionSearch: "rv" },
+                { string: navigator.userAgent, subString: "Mozilla", identity: "Netscape", versionSearch: "Mozilla" }
+            ],
+            dataOS : [
+                { string: navigator.platform, subString: "Win", identity: "Windows" },
+                { string: navigator.platform, subString: "Mac", identity: "Mac" },
+                { string: navigator.userAgent, subString: "iPhone", identity: "iPhone/iPod" },
+                { string: navigator.platform, subString: "Linux", identity: "Linux" }
+            ]
+
+        };
+        ZARK_FX.detect._init();
+
         // 加载并执行所有ZARK_FX.FX_NAME
         $('['+ZARK_FX.FX_NAME+']').each(function(){
             var fx_string = $(this).attr(ZARK_FX.FX_NAME);
@@ -313,3 +363,4 @@
 
     });
 })(jQuery);
+

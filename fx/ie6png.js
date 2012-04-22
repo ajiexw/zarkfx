@@ -28,7 +28,7 @@
  *
  */
 
-if ($.browser.msie && ($.browser.version == "6.0") && (!$.support.style)) {
+if(ZARK_FX.detect.browser === 'IE' && ZARK_FX.detect.version === 6){
 
     try { document.execCommand("BackgroundImageCache", false, true); }
     catch (err) {};

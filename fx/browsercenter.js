@@ -16,7 +16,7 @@
 
 ZARK_FX.getFrame('jquery-1.3.2', function($){
 
-    if(ZARK_FX.browser.ie6){ // ie6 hack
+    if(ZARK_FX.detect.browser === 'IE' && ZARK_FX.detect.version === 6){ // ie6 hack
         
         var getScrollTop = function(){
             var scrollPos;
@@ -47,7 +47,7 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
 
     ZARK_FX.run('browsercenter', function(attrs){
         var $this = $(this);
-        if(ZARK_FX.browser.ie6){ // ie6 hack
+        if(ZARK_FX.detect.browser === 'IE' && ZARK_FX.detect.version === 6){ // ie6 hack
             // IE6暂时置为固定， 不随浏览器滚动而滚动
             var center_top    = (document.documentElement.clientHeight - $this.height()) / 2;
             var center_left   = (document.documentElement.clientWidth  - $this.width())  / 2;
