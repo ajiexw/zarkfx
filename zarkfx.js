@@ -87,8 +87,9 @@
                     if (attrs_array !== undefined){
                         var i = 0;
                         for ( ; i < attrs_array.length; i++){
-                            var attrs = attrs_array[i];
-                            // pass some browsers by notWork attribute
+                            var attrs = attrs_array[i],
+                                jump = false;
+                            // jump some browsers by notWork attribute
                             if (typeof attrs.notWork !== 'undefined'){
                                 var no_browsers = FX.splitValue(attrs.notWork),
                                     j = 0,
@@ -96,10 +97,12 @@
                                 for( ; j < no_browsers.length; j++){
                                     var no_browser = no_browsers[j].toLowerCase();
                                     if (current_browser.indexOf(no_browser) === 0){
-                                        return false;
+                                        jump = true; // jump this one
+                                        break;
                                     }
                                 };
                             };
+                            if (jump) continue;
                             // change attrs's data type like defaults
                             // don't use $.extend function, coz it will change the type of data of attrs
                             for(var k in defaults){
@@ -110,6 +113,7 @@
                                     if(typeof(defaults[k]) === 'boolean') attrs[k] = attrs[k] === true;
                                 };
                             };
+                            if (fx_name === 'corner') alert(fx_name)
                             cb && cb.call(this, attrs);
                             if (attrs.finished === 'show'){
                                 $(this).show();
