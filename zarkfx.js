@@ -113,7 +113,6 @@
                                     if(typeof(defaults[k]) === 'boolean') attrs[k] = attrs[k] === true;
                                 };
                             };
-                            if (fx_name === 'corner') alert(fx_name)
                             cb && cb.call(this, attrs);
                             if (attrs.finished === 'show'){
                                 $(this).show();
