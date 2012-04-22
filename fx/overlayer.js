@@ -28,7 +28,7 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
             
             // 如果是IE6 置为静止，覆盖全文档
             if(ZARK_FX.browser.ie6){ 
-                $this.css('z-index', 0);
+                $this.css('z-index', 2);
                 $this.css('position', 'absolute');
                 $(window).scroll(function(){
                     $this.css('top', getScrollTop());
