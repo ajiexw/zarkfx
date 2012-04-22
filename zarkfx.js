@@ -83,11 +83,23 @@
             var ready = function(){
                 //todo 这里有一个隐患, 如果某个fx的名称包含另一个fx的名称, 那么选择器会出错
                 $('['+FX.FX_NAME+'*='+fx_name+']').each(function(){
-                    var attrs_array = FX.getFX(this, fx_name);
+                    var attrs_array = FX.getAllAttrs(this, fx_name);
                     if (attrs_array !== undefined){
                         var i = 0;
                         for ( ; i < attrs_array.length; i++){
                             var attrs = attrs_array[i];
+                            // pass some browsers by notWork attribute
+                            if (typeof attrs.notWork !== 'undefined'){
+                                var no_browsers = FX.splitValue(attrs.notWork),
+                                    j = 0,
+                                    current_browser = (FX.detect.browser + FX.detect.version).toLowerCase();
+                                for( ; j < no_browsers.length; j++){
+                                    var no_browser = no_browsers[j].toLowerCase();
+                                    if (current_browser.indexOf(no_browser) === 0){
+                                        return false;
+                                    }
+                                };
+                            };
                             // change attrs's data type like defaults
                             // don't use $.extend function, coz it will change the type of data of attrs
                             for(var k in defaults){
@@ -101,8 +113,6 @@
                             cb && cb.call(this, attrs);
                             if (attrs.finished === 'show'){
                                 $(this).show();
-                            };
-                            if (typeof attrs.noBrowser !== 'undefined'){
                             };
                         };
                     };
@@ -129,7 +139,8 @@
             };
         };
 
-        // parse fx string, return a list which made up of dict. per dict is a attrs.
+        // parse fx string, return a dict which made up of list.
+        // and per list is made up of attrs.
         FX.parseFX = function(fx_string){
 
             var parseOne = function(s_fx){
@@ -284,13 +295,18 @@
             return ret_fxs;
         };
 
-        FX.getFX = function(obj, fx_name){
+        FX.getAllAttrs = function(obj, fx_name){
             return FX.parseFX($(obj).attr(FX.FX_NAME))[fx_name];
         };
 
+        // 此函数暂时不支持value里面包含逗号的情况, 需要改进
         FX.splitValue = function(value){ 
-            //此函数暂时不支持value里面包含逗号的情况, 需要改进
-            return value.split(',')
+            var values = value.split(','),
+                i = 0;
+            for ( ; i < values.length; i++){
+                values[i]  = $.trim(values[i]);
+            };
+            return values;
         };
 
         FX.hasFX = function(obj, fx_name){
