@@ -23,12 +23,12 @@ FX.getFrame('jquery-1.3.2', function($){
 
         if (attrs.target === 'screen'){
             var $this = $(this);
-            $this.css('z-index', attrs.zindex);
+            $this.css('z-index', attrs.zIndex);
             $this.css('background-color', attrs.backgroundcolor );
             
             // 如果是IE6 置为静止，覆盖全文档
             if(FX.detect.browser === 'IE' && FX.detect.version === 6){
-                $this.css('z-index', 0);
+                $this.css('z-index', attrs.zIndex);
                 $this.css('position', 'absolute');
                 $(window).scroll(function(){
                     $this.css('top', getScrollTop());
@@ -57,10 +57,10 @@ FX.getFrame('jquery-1.3.2', function($){
 
     }, {target:     'screen',
         autoshow:   false,
-        zindex:     1000,
         backgroundcolor: '#000',
         opacity:    0.6,
-        scroll:     false
+        scroll:     false,
+        zIndex:     1000
     });
 
 });
