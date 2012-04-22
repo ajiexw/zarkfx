@@ -1,6 +1,6 @@
-ZARK_FX.getFrame('jquery-1.3.2', function($){
+FX.getFrame('jquery-1.3.2', function($){
 
-    ZARK_FX.run('keydown', function(attrs){
+    FX.run('keydown', function(attrs){
 
         var $this = $(this);
         if (attrs.key && attrs.target){

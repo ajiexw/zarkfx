@@ -1,4 +1,4 @@
-ZARK_FX.getFrame('jquery-1.3.2', function($){
+FX.getFrame('jquery-1.3.2', function($){
 
     var filter_timeout, last_filter_text;
 
@@ -78,7 +78,7 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
 
     };
 
-    ZARK_FX.run('choosebox', function(attrs){
+    FX.run('choosebox', function(attrs){
         var $this = $(this);
         var $switch;
 

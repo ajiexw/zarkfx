@@ -63,9 +63,9 @@
  *
  */
 
-ZARK_FX.getFrame('jquery-1.3.2', function($){
+FX.getFrame('jquery-1.3.2', function($){
 
-    if(ZARK_FX.detect.browser === 'IE' && ZARK_FX.detect.version === 6){ // ie6 hack
+    if(FX.detect.browser === 'IE' && FX.detect.version === 6){ // ie6 hack
         var getScrollTop = function(){
             var scrollPos;
             if (typeof window.pageYOffset != 'undefined') {
@@ -100,14 +100,14 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
         };
     });
 
-    ZARK_FX.run('scroll', function(attrs){
+    FX.run('scroll', function(attrs){
         var $this = $(this);
         var $scroll_obj;
         var fx_name = 'scroll';
         if (attrs.style === 'default' ){
             $this.hide();
-            var scroll_to_top_id = ZARK_FX.getJSC();
-        $('<div id="'+scroll_to_top_id+'" style="position: fixed; bottom: 50px; right: 50px; opacity: 1; cursor: pointer; display: block; width: 48px; height: 48px;"><img src="'+ZARK_FX.IMG_PATH+fx_name+'/default.png"><div>').appendTo('body');
+            var scroll_to_top_id = FX.getJSC();
+        $('<div id="'+scroll_to_top_id+'" style="position: fixed; bottom: 50px; right: 50px; opacity: 1; cursor: pointer; display: block; width: 48px; height: 48px;"><img src="'+FX.IMG_PATH+fx_name+'/default.png"><div>').appendTo('body');
             $scroll_obj = $('#'+scroll_to_top_id);
         }else{
             $scroll_obj = $this;
@@ -137,14 +137,14 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
         // set position
         if (attrs.top !== undefined || attrs.bottom !== undefined || attrs.left !== undefined || attrs.right !== undefined ){
             // 此处加入IE6判断，IE6使用绝对定位
-            if(ZARK_FX.detect.browser === 'IE' && ZARK_FX.detect.version === 6){ // ie6 hack
+            if(FX.detect.browser === 'IE' && FX.detect.version === 6){ // ie6 hack
                  $scroll_obj.css('position','absolute').appendTo('body');
             }else{
                 $scroll_obj.css('position','fixed').appendTo('body');
             };
         };
         if (attrs.bottom !== undefined) {
-            if(ZARK_FX.detect.browser === 'IE' && ZARK_FX.detect.version === 6){ // ie6 hack
+            if(FX.detect.browser === 'IE' && FX.detect.version === 6){ // ie6 hack
               $(window).scroll(function(){
                   var scroll_bottom = $(document).height() + parseInt(attrs.bottom) - $(window).height();
                   $this.css('bottom', scroll_bottom - getScrollTop());
@@ -154,7 +154,7 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
             };
         }
         if (attrs.top !== undefined) {
-            if(ZARK_FX.detect.browser === 'IE' && ZARK_FX.detect.version === 6){ // ie6 hack
+            if(FX.detect.browser === 'IE' && FX.detect.version === 6){ // ie6 hack
               $(window).scroll(function(){
                   var scroll_top = parseInt(attrs.top);
                   $scroll_obj.css('top', scroll_top + getScrollTop());

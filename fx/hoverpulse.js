@@ -13,7 +13,7 @@
  *
  */
 
-ZARK_FX.getFrame('jquery-1.3.2', function(jQuery){
+FX.getFrame('jquery-1.3.2', function(jQuery){
 
     (function($) {
         /*
@@ -92,7 +92,7 @@ ZARK_FX.getFrame('jquery-1.3.2', function(jQuery){
 
     })(jQuery);
 
-    ZARK_FX.run('hoverpulse', function(attrs){
+    FX.run('hoverpulse', function(attrs){
         var $this = jQuery(this);
         if(attrs.size !== undefined) { attrs.size  = parseInt(attrs.size);  };
         if(attrs.speed !== undefined){ attrs.speed = parseInt(attrs.speed); };

@@ -69,15 +69,15 @@
  *
  */
 
-ZARK_FX.getFrame('jquery-1.3.2', function($){
+FX.getFrame('jquery-1.3.2', function($){
     var this_url = window.location.href.replace('http://','');
     var this_url_relative = this_url.substr(this_url.indexOf('/'));
 
-    ZARK_FX.run('accordion', function(attrs){
+    FX.run('accordion', function(attrs){
 
         var $this = $(this);                 
         if (attrs.style !== 'none'){
-            ZARK_FX.getCSS(ZARK_FX.CSS_PATH + 'accordion/' + attrs.style +'.css');
+            FX.getCSS(FX.CSS_PATH + 'accordion/' + attrs.style +'.css');
             $this.addClass('zarkfx_accordion_div1')
         };
         /*set class*/
@@ -168,8 +168,8 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
         speed       : 200,
         auto        : false,
         pause       : 0,
-        right_img   : ZARK_FX.IMG_PATH + 'accordion/right.png',
-        down_img    : ZARK_FX.IMG_PATH + 'accordion/down.png',
+        right_img   : FX.IMG_PATH + 'accordion/right.png',
+        down_img    : FX.IMG_PATH + 'accordion/down.png',
         style       : 'none'
     }, 'jqueryui-1.8.14');
 });

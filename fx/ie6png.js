@@ -28,13 +28,13 @@
  *
  */
 
-if(ZARK_FX.detect.browser === 'IE' && ZARK_FX.detect.version === 6){
+if(FX.detect.browser === 'IE' && FX.detect.version === 6){
 
     try { document.execCommand("BackgroundImageCache", false, true); }
     catch (err) {};
 
-    ZARK_FX.getFrame('jquery-1.3.2', function($){
-        ZARK_FX.run('ie6png', function(attrs){
+    FX.getFrame('jquery-1.3.2', function($){
+        FX.run('ie6png', function(attrs){
             DD_belatedPNG.fixPng(this);
         }, {}, 'ddpng');
     });

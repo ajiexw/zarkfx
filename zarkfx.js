@@ -1,96 +1,95 @@
 (function($) {
     $(function(){
-        if (!window['ZARK_FX']) window['ZARK_FX'] = {};
-        ZARK_FX = window['ZARK_FX'];
+        if (!window['FX']) window['FX'] = {};
+        FX = window['FX'];
 
-        ZARK_FX.FX_NAME         = 'fx';
-        ZARK_FX.PATH            = '';
+        FX.FX_NAME         = 'fx';
+        FX.PATH            = '';
 
         $("script").each(function() {
             if( /zarkfx.js$/.test(this.src) ) {
-                ZARK_FX.PATH = this.src.replace(/zarkfx.js$/, "");
+                FX.PATH = this.src.replace(/zarkfx.js$/, "");
             }
         });
 
-        ZARK_FX.JS_PATH         = ZARK_FX.PATH + 'jslib/';
-        ZARK_FX.CSS_PATH        = ZARK_FX.PATH + 'css/';
-        ZARK_FX.SWF_PATH        = ZARK_FX.PATH + 'swf/';
-        ZARK_FX.IMG_PATH        = ZARK_FX.PATH + 'img/';
-        ZARK_FX.FRAME_PATH      = ZARK_FX.PATH + 'frame/';
-        ZARK_FX.loaded_fx       = {};
-        ZARK_FX.loaded_scripts  = {};
-        ZARK_FX.loaded_frames   = {};
+        FX.JS_PATH         = FX.PATH + 'jslib/';
+        FX.CSS_PATH        = FX.PATH + 'css/';
+        FX.SWF_PATH        = FX.PATH + 'swf/';
+        FX.IMG_PATH        = FX.PATH + 'img/';
+        FX.FRAME_PATH      = FX.PATH + 'frame/';
+        FX.loaded_fx       = {};
+        FX.loaded_scripts  = {};
+        FX.loaded_frames   = {};
 
-        ZARK_FX.loaded_frames["jquery-" + $.fn.jquery] = jQuery;
+        FX.loaded_frames["jquery-" + $.fn.jquery] = jQuery;
 
-        ZARK_FX.loaded_css      = {};
+        FX.loaded_css      = {};
 
         // get UUID
-        ZARK_FX.JSC = (new Date).getTime();
-        ZARK_FX.getJSC = function(){
-            return 'zarkfx_'+ZARK_FX.JSC++;
+        FX.JSC = (new Date).getTime();
+        FX.getJSC = function(){
+            return 'zarkfx_'+FX.JSC++;
         };
 
-        // 获得frame, 比如jquery1.3.2
-        ZARK_FX.getFrame = function(frame_name, cb){
-            if (ZARK_FX.loaded_frames[frame_name] === undefined){
-                ZARK_FX.loaded_frames[frame_name] = 'loading';
+        FX.getFrame = function(frame_name, cb){
+            if (FX.loaded_frames[frame_name] === undefined){
+                FX.loaded_frames[frame_name] = 'loading';
 
                 $.ajax({
                     async:      false,
                     cache:      true,
                     dataType:   'script',
                     type:       'GET',
-                    url:        ZARK_FX.FRAME_PATH + frame_name + '.js'
+                    url:        FX.FRAME_PATH + frame_name + '.js'
                 });
 
-                ZARK_FX.loaded_frames[frame_name] = jQuery.noConflict(true);
+                FX.loaded_frames[frame_name] = jQuery.noConflict(true);
 
-                cb && cb(ZARK_FX.loaded_frames[frame_name]);
+                cb && cb(FX.loaded_frames[frame_name]);
 
-            }else if(ZARK_FX.loaded_frames[frame_name] === 'loading'){
+            }else if(FX.loaded_frames[frame_name] === 'loading'){
                 setTimeout(function(){
-                    ZARK_FX.getFrame(frame_name, cb);
+                    FX.getFrame(frame_name, cb);
                 }, 10);
             }else{
-                cb && cb(ZARK_FX.loaded_frames[frame_name]);
+                cb && cb(FX.loaded_frames[frame_name]);
             };
         };
 
-        // 加载第三方库, 如果已经加载过, 则直接运行callback
-        ZARK_FX.getScript = function(js_name, cb){
+        // load js file and run cb function, bug only load once
+        FX.getScript = function(js_name, cb){
             if (js_name.length === 0) alert('error: load js name is empty');
-            if (ZARK_FX.loaded_scripts[js_name] === undefined){
-                ZARK_FX.loaded_scripts[js_name] = 'loading';
+            if (FX.loaded_scripts[js_name] === undefined){
+                FX.loaded_scripts[js_name] = 'loading';
                 $.ajax({
                     async:      false,
                     cache:      true,
                     dataType:   'script',
                     type:       'GET',
-                    url:        ZARK_FX.JS_PATH + js_name + '.js'
+                    url:        FX.JS_PATH + js_name + '.js'
                 });
-                ZARK_FX.loaded_scripts[js_name] = true;
+                FX.loaded_scripts[js_name] = true;
                 cb && cb();
-            }else if(ZARK_FX.loaded_scripts[js_name] === 'loading'){
+            }else if(FX.loaded_scripts[js_name] === 'loading'){
                 setTimeout(function(){
-                    ZARK_FX.getScript(js_name, cb);
+                    FX.getScript(js_name, cb);
                 }, 10);
             }else{
                 cb && cb();
             };
         };
 
-        ZARK_FX.run = function(fx_name, cb, defaults, deps){
+        FX.run = function(fx_name, cb, defaults, deps){
             var ready = function(){
                 //todo 这里有一个隐患, 如果某个fx的名称包含另一个fx的名称, 那么选择器会出错
-                $('['+ZARK_FX.FX_NAME+'*='+fx_name+']').each(function(){
-                    var attrs_array = ZARK_FX.getFX(this, fx_name);
+                $('['+FX.FX_NAME+'*='+fx_name+']').each(function(){
+                    var attrs_array = FX.getFX(this, fx_name);
                     if (attrs_array !== undefined){
                         var i = 0;
                         for ( ; i < attrs_array.length; i++){
                             var attrs = attrs_array[i];
                             // change attrs's data type like defaults
-                            // 不要使用jQuery的extend函数, 因为extend会改变attrs的数据类型
+                            // don't use $.extend function, coz it will change the type of data of attrs
                             for(var k in defaults){
                                 if (attrs[k] === undefined){
                                     attrs[k] = defaults[k];
@@ -98,9 +97,8 @@
                                     if(typeof(defaults[k]) === 'number')  attrs[k] = parseInt(attrs[k]);
                                     if(typeof(defaults[k]) === 'boolean') attrs[k] = attrs[k] === true;
                                 };
-                            };// change end
+                            };
                             cb && cb.call(this, attrs);
-                            // 处理全局参数(所有fx都有的参数)
                             if (attrs.finished === 'show'){
                                 $(this).show();
                             };
@@ -111,15 +109,15 @@
                 });
             };
             if (deps !== undefined){
-                ZARK_FX.getScript(deps, ready);
+                FX.getScript(deps, ready);
             }else{
                 ready();
             };
         };
 
-        // 异步加载CSS
-        ZARK_FX.getCSS = function(css_url){
-            if (ZARK_FX.loaded_css[css_url] === undefined){
+        // load CSS dynamic
+        FX.getCSS = function(css_url){
+            if (FX.loaded_css[css_url] === undefined){
                 if (document.createStyleSheet) {
                     document.createStyleSheet(css_url);
                 }else{
@@ -127,13 +125,12 @@
                     linkobj.attr('href', css_url);
                     $('head').append(linkobj); 
                 };
-                ZARK_FX.loaded_css[css_url] = true;
+                FX.loaded_css[css_url] = true;
             };
         };
 
-        // 解析fx字符串, 返回一个list, 每个list元素类型为dict, 代表一个fx的attrs
-        // 如某html node上多次调用同一个fx, 那么返回的list长度大于1
-        ZARK_FX.parseFX = function(fx_string){
+        // parse fx string, return a list which made up of dict. per dict is a attrs.
+        FX.parseFX = function(fx_string){
 
             var parseOne = function(s_fx){
                 var re_strip = /^\s+|\s+$/g;
@@ -287,38 +284,37 @@
             return ret_fxs;
         };
 
-        ZARK_FX.getFX = function(obj, fx_name){
-            return ZARK_FX.parseFX($(obj).attr(ZARK_FX.FX_NAME))[fx_name];
+        FX.getFX = function(obj, fx_name){
+            return FX.parseFX($(obj).attr(FX.FX_NAME))[fx_name];
         };
 
-        ZARK_FX.splitValue = function(value){ 
+        FX.splitValue = function(value){ 
             //此函数暂时不支持value里面包含逗号的情况, 需要改进
             return value.split(',')
         };
 
-        ZARK_FX.hasFX = function(obj, fx_name){
-            return typeof ZARK_FX.parseFX($(obj).attr(ZARK_FX.FX_NAME))[fx_name] !== 'undefined';
+        FX.hasFX = function(obj, fx_name){
+            return typeof FX.parseFX($(obj).attr(FX.FX_NAME))[fx_name] !== 'undefined';
         };
 
-        ZARK_FX.detect = {
+        // detect client browser, version, and OS
+        var ua = navigator.userAgent, pf = navigator.platform, ve = navigator.vendor;
+        FX.detect = {
             _init: function () {
                 this.browser = this._searchString(this._dataBrowser) || "unknown";
-                this.version = this._searchVersion(navigator.userAgent)
+                this.version = this._searchVersion(ua)
                     || this._searchVersion(navigator.appVersion)
                     || "unknown";
                 this.OS = this._searchString(this.dataOS) || "unknown";
             },
             _searchString: function (data) {
                 for (var i=0;i<data.length;i++)	{
-                    var dataString = data[i].string;
-                    var dataProp = data[i].prop;
-                    this.versionSearchString = data[i].versionSearch || data[i].identity;
+                    var dataString = data[i].s;
+                    this.versionSearchString = data[i].versionSearch || data[i].i;
                     if (dataString) {
-                        if (dataString.indexOf(data[i].subString) != -1)
-                            return data[i].identity;
-                    }
-                    else if (dataProp)
-                        return data[i].identity;
+                        if (dataString.indexOf(data[i].k) != -1)
+                            return data[i].i;
+                    }else if (data[i].prop) return data[i].i;
                 }
             },
             _searchVersion: function (dataString) {
@@ -327,40 +323,39 @@
                 return parseFloat(dataString.substring(index+this.versionSearchString.length+1));
             },
             _dataBrowser: [
-                { string: navigator.userAgent, subString: "Chrome", identity: "Chrome" },
-                { 	string: navigator.userAgent, subString: "OmniWeb", versionSearch: "OmniWeb/", identity: "OmniWeb" },
-                { string: navigator.vendor, subString: "Apple", identity: "Safari", versionSearch: "Version" },
-                { prop: window.opera, identity: "Opera", versionSearch: "Version" },
-                { string: navigator.vendor, subString: "iCab", identity: "iCab" },
-                { string: navigator.vendor, subString: "KDE", identity: "Konqueror" },
-                { string: navigator.userAgent, subString: "Firefox", identity: "Firefox" },
-                { string: navigator.vendor, subString: "Camino", identity: "Camino" },
-                { string: navigator.userAgent, subString: "Netscape", identity: "Netscape" },
-                { string: navigator.userAgent, subString: "MSIE", identity: "IE", versionSearch: "MSIE" },
-                { string: navigator.userAgent, subString: "Gecko", identity: "Mozilla", versionSearch: "rv" },
-                { string: navigator.userAgent, subString: "Mozilla", identity: "Netscape", versionSearch: "Mozilla" }
+                { s: ua, k: "Chrome", i: "Chrome" },
+                { s: ua, k: "OmniWeb", versionSearch: "OmniWeb/", i: "OmniWeb" },
+                { s: ve, k: "Apple", i: "Safari", versionSearch: "Version" },
+                { prop: window.opera, i: "Opera", versionSearch: "Version" },
+                { s: ve, k: "iCab", i: "iCab" },
+                { s: ve, k: "KDE", i: "Konqueror" },
+                { s: ua, k: "Firefox", i: "Firefox" },
+                { s: ve, k: "Camino", i: "Camino" },
+                { s: ua, k: "Netscape", i: "Netscape" },
+                { s: ua, k: "MSIE", i: "IE", versionSearch: "MSIE" },
+                { s: ua, k: "Gecko", i: "Mozilla", versionSearch: "rv" },
+                { s: ua, k: "Mozilla", i: "Netscape", versionSearch: "Mozilla" }
             ],
             dataOS : [
-                { string: navigator.platform, subString: "Win", identity: "Windows" },
-                { string: navigator.platform, subString: "Mac", identity: "Mac" },
-                { string: navigator.userAgent, subString: "iPhone", identity: "iPhone/iPod" },
-                { string: navigator.platform, subString: "Linux", identity: "Linux" }
+                { s: pf, k: "Win", i: "Windows" },
+                { s: pf, k: "Mac", i: "Mac" },
+                { s: ua, k: "iPhone", i: "iPhone/iPod" },
+                { s: pf, k: "Linux", i: "Linux" }
             ]
 
         };
-        ZARK_FX.detect._init();
+        FX.detect._init();
 
-        // 加载并执行所有ZARK_FX.FX_NAME
-        $('['+ZARK_FX.FX_NAME+']').each(function(){
-            var fx_string = $(this).attr(ZARK_FX.FX_NAME);
-            for(var k in ZARK_FX.parseFX(fx_string)){
-                if(ZARK_FX.loaded_fx[k] === undefined){
-                    $.getScript(ZARK_FX.PATH+'fx/'+k+'.js');
-                    ZARK_FX.loaded_fx[k] = true;
+        // load and run all FXs
+        $('['+FX.FX_NAME+']').each(function(){
+            var fx_string = $(this).attr(FX.FX_NAME);
+            for(var k in FX.parseFX(fx_string)){
+                if(FX.loaded_fx[k] === undefined){
+                    $.getScript(FX.PATH+'fx/'+k+'.js');
+                    FX.loaded_fx[k] = true;
                 };
             };
         });
 
     });
 })(jQuery);
-

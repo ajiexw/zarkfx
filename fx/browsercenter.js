@@ -14,9 +14,9 @@
  *
  * */
 
-ZARK_FX.getFrame('jquery-1.3.2', function($){
+FX.getFrame('jquery-1.3.2', function($){
 
-    if(ZARK_FX.detect.browser === 'IE' && ZARK_FX.detect.version === 6){ // ie6 hack
+    if(FX.detect.browser === 'IE' && FX.detect.version === 6){ // ie6 hack
         
         var getScrollTop = function(){
             var scrollPos;
@@ -34,8 +34,8 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
         };
 
         /*
-        var wrap_div_id = ZARK_FX.getJSC();
-        var join_div_id = ZARK_FX.getJSC();
+        var wrap_div_id = FX.getJSC();
+        var join_div_id = FX.getJSC();
         $('<div id="'+wrap_div_id+'" style="display: none; position: absolute; top:0; left:0;"> <div style="position: absolute; top: 50%; left: 50%; "> <div id="'+join_div_id+'" style="position: relative; top: -50%; left: -50%; "></div></div></div>').appendTo('body');
         $('#'+wrap_div_id).height(document.documentElement.clientHeight).width(document.documentElement.clientWidth);
 
@@ -45,9 +45,9 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
         */
     };
 
-    ZARK_FX.run('browsercenter', function(attrs){
+    FX.run('browsercenter', function(attrs){
         var $this = $(this);
-        if(ZARK_FX.detect.browser === 'IE' && ZARK_FX.detect.version === 6){ // ie6 hack
+        if(FX.detect.browser === 'IE' && FX.detect.version === 6){ // ie6 hack
             // IE6暂时置为固定， 不随浏览器滚动而滚动
             var center_top    = (document.documentElement.clientHeight - $this.height()) / 2;
             var center_left   = (document.documentElement.clientWidth  - $this.width())  / 2;

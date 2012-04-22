@@ -23,20 +23,20 @@
 
 // 因为lazyload.js不支持jquery-1.3.2, 因此如果这里的frame使用了1.3.2, 那么就不能支持withLazyLoad参数.
 
-ZARK_FX.getFrame('jquery-1.5.1', function($){
+FX.getFrame('jquery-1.5.1', function($){
     var switch_groups = {};
     var lazyload_top  = {}; // only for with lazyload
     var lazyload_left = {}; // only for with lazyload
 
-    ZARK_FX.run('switch', function(attrs){
+    FX.run('switch', function(attrs){
 
         var $this = $(this);
         var group = attrs.group !== undefined ? attrs.group : 'default_group';
         var switchFunction = function(){
             for(var i in switch_groups[group]){
                 var $a = switch_groups[group][i];
-                var hide_id = ZARK_FX.parseFX($a.attr(ZARK_FX.FX_NAME))['switch'][0].switchid;
-                var hide_cl = ZARK_FX.parseFX($a.attr(ZARK_FX.FX_NAME))['switch'][0].switchClass;
+                var hide_id = FX.parseFX($a.attr(FX.FX_NAME))['switch'][0].switchid;
+                var hide_cl = FX.parseFX($a.attr(FX.FX_NAME))['switch'][0].switchClass;
                 if (hide_id !== undefined) $('#'+hide_id).hide();
                 if (hide_cl !== undefined) $('.'+hide_cl).hide();
                 $a.addClass(attrs.unselectedClass).removeClass(attrs.selectedClass);

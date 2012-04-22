@@ -7,7 +7,7 @@
  * http://jquery.malsup.com/license.html
  * Requires: jQuery v1.3.2 or later
  */
-ZARK_FX.getFrame('jquery-1.3.2', function(jQuery){
+FX.getFrame('jquery-1.3.2', function(jQuery){
     (function($) {
 
     var ver = '2.9994';

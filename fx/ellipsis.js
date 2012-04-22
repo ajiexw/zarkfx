@@ -13,12 +13,12 @@
  *
  * */
 
-ZARK_FX.getFrame('jquery-1.3.2', function($) {
+FX.getFrame('jquery-1.3.2', function($) {
 
-    ZARK_FX.run('ellipsis', function(attrs){
+    FX.run('ellipsis', function(attrs){
 
         var $this = $(this);
-        var text_span_class = ZARK_FX.getJSC();
+        var text_span_class = FX.getJSC();
         $this.width($this.width()).html('<span style="width:100%; height:100%;" class="'+text_span_class+'">'+$this.html()+'</span>');
         $this.ThreeDots({
             max_rows:        parseInt(attrs.max_rows),

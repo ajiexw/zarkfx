@@ -5,9 +5,9 @@
  *
  * */
 
-ZARK_FX.getFrame('jquery-1.3.2', function($){
+FX.getFrame('jquery-1.3.2', function($){
 
-    ZARK_FX.run('firstchar', function(attrs){
+    FX.run('firstchar', function(attrs){
 
         var $this = $(this);
         if (attrs.class){

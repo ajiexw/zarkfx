@@ -21,13 +21,13 @@
  */
 
 
-ZARK_FX.getFrame('jquery-1.3.2', function($){
+FX.getFrame('jquery-1.3.2', function($){
 
-    ZARK_FX.run('pagination', function(attrs){
+    FX.run('pagination', function(attrs){
 
         var $this = $(this);
         if (attrs.style === 'default'){
-            ZARK_FX.getCSS(ZARK_FX.CSS_PATH + 'pagination.css');
+            FX.getCSS(FX.CSS_PATH + 'pagination.css');
             $this.addClass('zarkfx_pagination_default').html('');
         };
 

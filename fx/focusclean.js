@@ -27,9 +27,9 @@
  *
  */
 
-ZARK_FX.getFrame('jquery-1.3.2', function($){
+FX.getFrame('jquery-1.3.2', function($){
 
-    ZARK_FX.run('focusclean', function(attrs){
+    FX.run('focusclean', function(attrs){
 
         var $this = $(this);
         var old_value = $this.val();

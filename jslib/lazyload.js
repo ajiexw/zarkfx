@@ -15,7 +15,7 @@
 
 // lazyload.js 不支持 jquery-.1.3.2
 
-ZARK_FX.getFrame('jquery-1.5.1', function(jQuery){
+FX.getFrame('jquery-1.5.1', function(jQuery){
     (function($, window) {
 
         var $window = $(window);

@@ -1,4 +1,4 @@
-ZARK_FX.getFrame('jquery-1.3.2', function($){
+FX.getFrame('jquery-1.3.2', function($){
     var show = function(hideStyle, $obj){
         if (hideStyle === 'display'){
             $obj.show();
@@ -22,7 +22,7 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
         }
     };
     
-    ZARK_FX.run('toggle', function(attrs){
+    FX.run('toggle', function(attrs){
 
         var $this = $(this);
         if(attrs.target !== undefined){

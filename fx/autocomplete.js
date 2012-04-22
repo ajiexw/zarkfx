@@ -32,12 +32,12 @@
  *
  */
 
-ZARK_FX.getFrame('jquery-1.3.2', function($){
+FX.getFrame('jquery-1.3.2', function($){
 
-    ZARK_FX.getCSS(ZARK_FX.CSS_PATH + 'jquery-autocomplete.css');
+    FX.getCSS(FX.CSS_PATH + 'jquery-autocomplete.css');
     var source_cache = {};
 
-    ZARK_FX.run('autocomplete', function(attrs){
+    FX.run('autocomplete', function(attrs){
 
         var $this = $(this);
         var source;

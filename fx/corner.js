@@ -44,13 +44,13 @@
  *
  */
 
-ZARK_FX.getFrame('jquery-1.3.2', function($){
+FX.getFrame('jquery-1.3.2', function($){
 
-    ZARK_FX.run('corner', function(attrs){
+    FX.run('corner', function(attrs){
 
         var $this = $(this);
         var radius;
-        var temp_jsc = ZARK_FX.getJSC();
+        var temp_jsc = FX.getJSC();
         $this.addClass(temp_jsc);
         if (typeof attrs.radius === 'string' && attrs.radius.indexOf(',') > -1){
             radius = '';

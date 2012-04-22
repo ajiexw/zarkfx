@@ -14,11 +14,11 @@
  *
  * */
 
-ZARK_FX.getFrame('jquery-1.3.2', function($){
+FX.getFrame('jquery-1.3.2', function($){
 
-    ZARK_FX.run('hoverfade', function(attrs){
+    FX.run('hoverfade', function(attrs){
         var $this = $(this);
-        var temp_id = ZARK_FX.getJSC();
+        var temp_id = FX.getJSC();
         $('<div id="'+temp_id+'" style="display:none"></div>').appendTo('body');
         $this.cycle({ 
             fx:     'fade', 

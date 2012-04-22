@@ -59,9 +59,9 @@
  *
  */
 
-ZARK_FX.getFrame('jquery-1.3.2', function($) {
+FX.getFrame('jquery-1.3.2', function($) {
 
-    ZARK_FX.run('validation', function(attrs) {
+    FX.run('validation', function(attrs) {
 
         var $this = $(this);
         // 获得错误提示的对象
@@ -118,7 +118,7 @@ ZARK_FX.getFrame('jquery-1.3.2', function($) {
             case "notequal":
                 if(attrs.value){
                     this_val.validate = function(){
-                        var value = ZARK_FX.splitValue(attrs.value),
+                        var value = FX.splitValue(attrs.value),
                             match = $.trim($(this_val.node).val());
                         if (attrs.ignorecase){
                             value = value.toLowerCase();
@@ -180,7 +180,7 @@ ZARK_FX.getFrame('jquery-1.3.2', function($) {
             case "endswith":
                 var values;
                 if (typeof attrs.values !== 'undefined'){
-                    values = attrs.values.split(',');
+                    values = FX.splitValue(attrs.values);
                 }else{
                     values = [];
                 };

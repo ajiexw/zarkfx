@@ -22,7 +22,7 @@
  *
  */
 
-ZARK_FX.getFrame('jquery-1.3.2', function($){
+FX.getFrame('jquery-1.3.2', function($){
 
     var getElementLeft = function(element){
         var actualLeft = element.offsetLeft;
@@ -43,7 +43,7 @@ ZARK_FX.getFrame('jquery-1.3.2', function($){
         return actualTop;
     };
 
-    ZARK_FX.run('staytop', function(attrs){
+    FX.run('staytop', function(attrs){
 
         var $this = $(this);
         var old_position = getElementTop(this);

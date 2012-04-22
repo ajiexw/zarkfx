@@ -1,11 +1,11 @@
-ZARK_FX.getFrame('jquery-1.3.2', function($){
+FX.getFrame('jquery-1.3.2', function($){
 
-    ZARK_FX.run('richtext', function(attrs){
+    FX.run('richtext', function(attrs){
 
         var $this = $(this);
         $this.tinymce({
             // Location of TinyMCE script
-            script_url : ZARK_FX.JS_PATH+'tiny_mce/tiny_mce.js',
+            script_url : FX.JS_PATH+'tiny_mce/tiny_mce.js',
 
             // General options
             theme : "advanced",

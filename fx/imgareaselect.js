@@ -35,13 +35,13 @@
  *
  */
 
-ZARK_FX.getFrame('jquery-1.3.2', function($) {
+FX.getFrame('jquery-1.3.2', function($) {
 
 
-    ZARK_FX.run('imgareaselect', function(attrs) {
+    FX.run('imgareaselect', function(attrs) {
 
         if (attrs.style !== 'none'){
-            ZARK_FX.getCSS(ZARK_FX.CSS_PATH + 'imgareaselect/imgareaselect-'+attrs.style+'.css');
+            FX.getCSS(FX.CSS_PATH + 'imgareaselect/imgareaselect-'+attrs.style+'.css');
         };
 
         var $this = $(this);
