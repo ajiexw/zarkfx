@@ -330,7 +330,11 @@ ZARK_FX.getFrame('jquery-1.3.2', function($) {
                                 data[i].success();
                             }else{
                                 data[i].fail();
-                                success = false;
+                                if (!attrs.checkAll){
+                                    return false;
+                                }else{
+                                    success = false;
+                                };
                             };
                         };
                         return success;
@@ -354,6 +358,7 @@ ZARK_FX.getFrame('jquery-1.3.2', function($) {
         invalid_fn: undefined,
         blurValidate: true,
         submitValidate: true,
-        ignorecase: false
+        ignorecase: false,
+        checkAll:   false
     });
 });
