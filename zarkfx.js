@@ -117,18 +117,17 @@
             };
         };
 
-        // 异步加载第三方CSS
-        ZARK_FX.getCSS = function(file_url){
-            if (ZARK_FX.loaded_css[file_url] === undefined){
-                if ($.browser.msie) { //issue ie6下不能加载成功
-                    var path = window.location.href.substring(0, window.location.href.lastIndexOf('/')+1) + ZARK_FX.PATH + file_url;
-                    document.createStyleSheet(path);
+        // 异步加载CSS
+        ZARK_FX.getCSS = function(css_url){
+            if (ZARK_FX.loaded_css[css_url] === undefined){
+                if (document.createStyleSheet) {
+                    document.createStyleSheet(css_url);
                 }else{
                     var linkobj=$('<link type="text/css" rel="stylesheet" />');
-                    linkobj.attr('href', file_url);
+                    linkobj.attr('href', css_url);
                     $('head').append(linkobj); 
                 };
-                ZARK_FX.loaded_css[file_url] = true;
+                ZARK_FX.loaded_css[css_url] = true;
             };
         };
 
