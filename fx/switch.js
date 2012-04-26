@@ -53,11 +53,7 @@ FX.getFrame('jquery-1.5.1', function($){
         };
 
         // bind event
-        if(attrs['event'] === undefined){
-            $this.click(switchFunction);
-        }else{
-            $this.bind(attrs['event'], switchFunction);
-        };
+        $this.bind(attrs.event, switchFunction);
         
         // add $this to switch_groups
         if(switch_groups[group] === undefined){
@@ -117,6 +113,7 @@ FX.getFrame('jquery-1.5.1', function($){
     }, {
         switchid:       undefined,
         switchClass:    undefined,
+        event:          'click',
         autoHidden:     true,
         selectedClass:  'zarkfx_switch_selected',
         unselectedClass:'zarkfx_switch_unselected',
