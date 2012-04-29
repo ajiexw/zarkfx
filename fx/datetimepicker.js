@@ -18,7 +18,9 @@ FX.getFrame('jquery-1.3.2', function($){
         $this.datetimepicker(attrs)
     
     }, {
-        language: 'english'
+        language: 'english',
+        dateFormat: 'mm/dd/yy'
+
 
     }, ['jqueryui-1.8.14', 'jquery-datetimepicker/timepicker'] );
 

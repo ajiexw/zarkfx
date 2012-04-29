@@ -56,7 +56,7 @@
             };
         };
 
-        // load js file and run cb function, bug only load once
+        // load js files and run cb function, bug only load once per file
         FX.getScript = function(scripts, cb){
             if (typeof scripts === 'string'){
                 scripts = [scripts];
