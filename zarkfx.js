@@ -57,26 +57,36 @@
         };
 
         // load js file and run cb function, bug only load once
-        FX.getScript = function(js_name, cb){
-            if (js_name.length === 0) alert('error: load js name is empty');
-            if (FX.loaded_scripts[js_name] === undefined){
-                FX.loaded_scripts[js_name] = 'loading';
-                $.ajax({
-                    async:      false,
-                    cache:      true,
-                    dataType:   'script',
-                    type:       'GET',
-                    url:        FX.JS_PATH + js_name + '.js'
-                });
-                FX.loaded_scripts[js_name] = true;
-                cb && cb();
-            }else if(FX.loaded_scripts[js_name] === 'loading'){
-                setTimeout(function(){
-                    FX.getScript(js_name, cb);
-                }, 10);
-            }else{
-                cb && cb();
+        FX.getScript = function(scripts, cb){
+            if (typeof scripts === 'string'){
+                scripts = [scripts];
             };
+
+            if (scripts.length === 0){
+                cb && cb();
+            }else{
+                var first_script = $.trim(scripts[0]),
+                    sub_scrpits  = scripts.slice(1);
+                if (FX.loaded_scripts[first_script] === undefined){
+                    FX.loaded_scripts[first_script] = 'loading';
+                    $.ajax({
+                        async:      false,
+                        cache:      true,
+                        dataType:   'script',
+                        type:       'GET',
+                        url:        FX.JS_PATH + first_script + '.js'
+                    });
+                    FX.loaded_scripts[first_script] = true;
+                    FX.getScript(sub_scrpits, cb);
+                }else if(FX.loaded_scripts[first_script] === 'loading'){
+                    setTimeout(function(){
+                        FX.getScript(scripts, cb);
+                    }, 10);
+                }else{
+                    FX.getScript(sub_scrpits, cb);
+                };
+            };
+
         };
 
         FX.run = function(fx_name, cb, defaults, deps){
