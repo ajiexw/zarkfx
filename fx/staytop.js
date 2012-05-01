@@ -49,7 +49,8 @@ FX.getFrame('jquery-1.3.2', function($){
         var old_position = getElementTop(this);
         var fixed_left = getElementLeft(this);
         $(window).scroll(function(){
-            if (document.documentElement.scrollTop > old_position){
+            var scrollTop = $(document).scrollTop();
+            if (scrollTop > old_position){
                 $this.css('top',0).css('left',fixed_left).css('position','fixed');
             }else{
                 $this.css('position','static').css('top','').css('left','');
