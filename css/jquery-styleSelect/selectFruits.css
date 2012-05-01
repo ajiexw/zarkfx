@@ -1,0 +1,58 @@
+/*------------------ selectFruits -----------------*/
+
+.selectFruits{
+		font-family:Verdana, Arial, Helvetica, sans-serif;
+		font-size:12px;
+		background:url("images/fruitsBackground.jpg") repeat-x top right;
+		height:27px;
+		width:160px;
+		}
+
+.selectFruits .passiveSelect,.selectFruits .activeSelect{
+		height:25px;
+		line-height:2.4em;
+		display:block;
+		cursor:pointer;	
+		padding-left:10px;
+		margin-right:6px;
+		color:#fff;
+		font-weight:bold;
+		background:url("images/fruitsNormal.jpg") no-repeat top right;
+		}
+		
+.selectFruits .activeSelect{
+		color:#86c729;
+		background:url("images/fruitsSelected.jpg") no-repeat top right;
+		}
+		
+.selectFruits ul{
+		padding:0;
+		margin:0;
+		list-style:none;
+		max-height:350px;
+		overflow-y: visible;
+		overflow-x: visible;
+		cursor:pointer;
+		width:350px;
+		padding:3px;
+		background:#5a5a5a url("images/fruitsBackground2.jpg") repeat-x top right;
+		}
+		
+.selectFruits li{
+		padding:0;
+		margin:0;
+		width:110px;
+		color:#fff;
+		display:block;
+		float:left;
+		padding:3px;
+		}
+	
+.selectFruits  .special{
+		font-weight:bold;
+		}
+		
+.selectFruits .selected,.selectFruits li:hover{
+		color:#86c729;
+		}
+

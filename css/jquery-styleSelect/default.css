@@ -1,0 +1,71 @@
+/*------------------ selectDark -----------------*/
+		
+.selectDark .styleSelect_item{
+		width:203px;
+		}
+		
+.selectDark .styleSelect_item_start{
+		height:8px;
+		background:url("images/darkFirst.jpg") no-repeat top left;
+		}
+		
+.selectDark .styleSelect_item_content{
+		height:140px;
+		overflow-x: hidden;
+		overflow-y: scroll;
+		background:#525252;
+		}
+		
+.selectDark .styleSelect_item_end{
+		height:8px;
+		background:url("images/darkLast.jpg") no-repeat top left;
+		}
+
+.selectDark{
+		background: url("images/darkBackground.jpg") no-repeat top left;
+		font-family:Verdana, Arial, Helvetica, sans-serif;
+		font-size:12px;
+		}
+
+.selectDark .passiveSelect,.selectDark .activeSelect{
+		height:25px;
+		line-height:2em;
+		display:block;
+		cursor:pointer;	
+		padding-left:10px;
+		margin-right:10px;
+		}
+		
+.selectDark .passiveSelect{
+		background:url("images/darkNormal.jpg") no-repeat top right;
+		color:#fff;
+		}
+		
+.selectDark .activeSelect{
+		background:url("images/darkActive.jpg") no-repeat top right;
+		color:#00aeef;
+		}
+		
+.selectDark ul{
+		padding:0;
+		margin:0;
+		list-style:none;
+		cursor:pointer;	
+		}
+		
+.selectDark li{
+		padding:0;
+		margin:0;
+		font-weight:normal;
+		padding:2px 0 2px 12px;
+		color:#aeaeae;
+		}
+		
+.selectDark li:hover{
+		color:#00aeef;
+		}
+		
+.selectDark .selected{
+		color:#fff;
+		}
+		
