@@ -12,5 +12,293 @@
  */
 
 FX.getFrame('jquery-1.3.2', function(jQuery){
-(function(a){function q(m,n){a("."+m).each(function(){var b=a(this).find(".styleSelect_item");a(this).find("span").each(function(){var k=a(this).attr("class");if(k=="passiveSelect"||k=="activeSelect")a(this).remove()});var i=a(this).find(".selected");a("<span></span>").text(i.text()).attr("id",i.parent().attr("id")).addClass("passiveSelect").appendTo(a(this));n===0&&a(this).css({width:b.width()})});a("."+m+" span").each(function(){if(a(this).attr("id")){a(this).removeClass();a(this).addClass("activeSelect")}})} a.fn.styleSelect=function(m){var n=1,b=a.extend({},a.fn.styleSelect.defaults,m);a("input,select,textarea,button").each(function(){var i=a(this);if(!i.attr("tabindex")){i.attr("tabindex",n);n++}});return this.each(function(){mainSelect=a(this);var i=mainSelect.attr("name"),k=i.replace(/\[.*\]/,""),l=mainSelect.attr("tabindex"),e="selectbox_"+k+(new Date).getTime();mainSelect.hide();k=a('<div tabindex="'+l+'"></div>').css({position:"relative","z-index":parseInt(1E3-l)}).addClass(b.styleClass).attr("id", e).insertBefore(mainSelect);a('<div class="styleSelect_item"></div>').appendTo(k).css({position:"absolute","z-index":""+parseInt(500-l)+"",top:b.optionsTop,left:b.optionsLeft}).hide();a('<div class="styleSelect_item_start"></div><div class="styleSelect_item_content"></div><div class="styleSelect_item_end">').appendTo(a("#"+e+" .styleSelect_item"));l=a("<ul></ul>").appendTo(a("#"+e+" .styleSelect_item_content"));var f="";mainSelect.find("option").each(function(){f+='<li id="'+a(this).val()+'"';if(a(this).attr("class"))f+= ' class="'+a(this).attr("class")+'" ';f+=">";f+='<span style="display: block;"';if(a(this).attr("selected"))f+=' class="selected" ';f+=">";f+=a(this).text();f+="</span>";f+="</li>"});l.append(f);q(b.styleClass,b.optionsWidth);a("#"+e).click(function(c){a(c.target).parents(".jspVerticalBar").attr("class")||a(this).find(".styleSelect_item").slideToggle(b.speed,function(){if(a(this).css("display")!="none"&&b.jScrollPane==1){a(this).find(".styleSelect_item_content").jScrollPane(b.jScrollPaneOptions); var d=a(".styleSelect_item_content").data("jsp"),g=a(".styleSelect_item_content").height(),h=a(".styleSelect_item_content .selected").position();if(h.top&&d!=null&&h.top>g)d.scrollTo(0,parseInt(h.top-g/2));else if(h.top&&h.top<g)d.scrollTo(0,parseInt(h.top-g));else d!=null&&d.scrollTo(0,0)}})});a("#"+e+" li").click(function(){o(a(this))});a("#"+e).keydown(function(c){var d=a(this).find(".selected").parent();if(b.jScrollPane==1)var g=a(".styleSelect_item_content").data("jsp"),h=a(".styleSelect_item_content").height(); if(c.keyCode==40||c.keyCode==39){var j=d.next();if(j.index()>0&&g!=null&&a("#"+e).find(".styleSelect_item").css("display")!="none"){var p=j.position();p.top!=null&&p.top>h&&g.scrollTo(0,parseInt(p.top))}o(j)}if(c.keyCode==37||c.keyCode==38){d=d.prev();j=d.index();if(g!=null&&b.jScrollPane==1&&a("#"+e).find(".styleSelect_item").css("display")!="none")if(j>0){j=d.position();j.top-h<h&&g.scrollTo(0,parseInt(j.top))}else g.scrollTo(0,0);o(d)}if(c.keyCode==13||c.keyCode==0||c.keyCode==32){a(this).find(".styleSelect_item").slideToggle(b.speed, function(){!a(c.target).find(".jspContainer").attr("class")&&b.jScrollPane==1&&a(this).find(".styleSelect_item_content").jScrollPane(b.jScrollPaneOptions)});return false}c.keyCode==9&&a(this).find(".styleSelect_item").hide(b.speed)});var o=function(c){c.siblings().find("span").removeClass("selected");c.find("span").addClass("selected");c=c.attr("id");var d=a('select[name="'+i+'"]');d.siblings().selected=false;d.find('option[value="'+c+'"]').attr("selected","selected");d.trigger(b.selectTrigger);q(b.styleClass, b.optionsWidth)};a("#"+e).click(function(c){c.stopPropagation()});a(document).click(function(){a("#"+e+" .styleSelect_item").hide()})})};a.fn.styleSelect.defaults={optionsTop:"26px",optionsLeft:"0px",optionsWidth:0,styleClass:"selectMenu",speed:0,selectTrigger:"change",jScrollPane:0,jScrollPaneOptions:""}})(jQuery);
+    (function($){
+
+        $.fn.styleSelect = function(options){
+            
+            var tabindex = 1;
+            
+            var opts = $.extend({}, $.fn.styleSelect.defaults , options);
+            
+            //set tabindex		
+            $('input,select,textarea,button').each(function() {
+                
+                var input = $(this);
+                    
+                if (!input.attr('tabindex')){
+                    
+                    input.attr('tabindex', tabindex);
+                    tabindex++;
+                }
+            });
+            
+            return this.each(function(){
+
+                mainSelect = $(this);
+
+                var orgSelectbox = mainSelect.attr('name');
+                var mainId = orgSelectbox.replace(/\[.*\]/, '');
+                
+                var styledTabIndex = mainSelect.attr('tabindex');
+                
+                var date = new Date;
+                var selectId = 'selectbox_'+mainId+date.getTime();
+                
+                //Hidde select box
+                mainSelect.hide();
+        
+                //Main container 
+                var mainContainer = $('<div tabindex="'+styledTabIndex+'"></div>')
+                        .css({position : 'relative', 'z-index' : parseInt(1000 - styledTabIndex)})
+                        .addClass(opts.styleClass)
+                        .attr('id', selectId)
+                        .insertBefore(mainSelect);
+                        
+                $('<div class="styleSelect_item"></div>')
+                    .appendTo(mainContainer)
+                    .css({'position' : 'absolute', 'z-index' : '' + parseInt(500 - styledTabIndex) + '', 'top' : opts.optionsTop, 'left' : opts.optionsLeft})
+                    .hide();
+                
+                $('<div class="styleSelect_item_start"></div><div class="styleSelect_item_content"></div><div class="styleSelect_item_end">').appendTo($('#'+selectId + ' .styleSelect_item'));
+                
+                //Options container
+                var subContainer = $('<ul></ul>').appendTo($('#'+selectId + ' .styleSelect_item_content'));
+                    
+                //Generate options list
+                var optionsList = "";
+                
+                mainSelect.find('option').each(function(){
+                
+                    optionsList += '<li id="'+$(this).val()+'"';
+                    if($(this).attr('class')) optionsList += ' class="'+$(this).attr('class')+'" ';
+                    optionsList += '>';
+                    optionsList += '<span style="display: block;"';
+                    if ($(this).attr('selected')) optionsList += ' class="selected" ';
+                    optionsList += '>';
+                    optionsList += $(this).text();
+                    optionsList += '</span>';
+                    optionsList += '</li>';
+                    
+                });
+
+                subContainer.append(optionsList);
+
+                checkSelected(opts.width, opts.height, opts.styleClass,opts.optionsWidth, opts.optionsHeight);
+
+                //Show otions   
+                $('#'+selectId).click(function(event){
+                    
+                    var eitem = $(event.target);
+                    
+                    if (!eitem.parents(".jspVerticalBar").attr('class')){ 
+                    
+                        $(this).find('.styleSelect_item').slideToggle(opts.speed, function(){ 
+                            
+                            if ($(this).css('display') != 'none' && opts.jScrollPane == 1){
+                            
+                                //Use jScrollPane
+                                $(this).find(".styleSelect_item_content").jScrollPane(opts.jScrollPaneOptions);
+
+                                //jScrollPane api
+                                var api = $('.styleSelect_item_content').data('jsp');
+                                var container_height = $(".styleSelect_item_content").height();
+                                var active_item_position = $('.styleSelect_item_content .selected').position();
+                                
+                                if (active_item_position.top && api != null && active_item_position.top > container_height){
+                                
+                                    api.scrollTo(0, parseInt(active_item_position.top - container_height/2));
+                                    
+                                } else if (active_item_position.top && active_item_position.top < container_height){
+                                
+                                    api.scrollTo(0, parseInt(active_item_position.top - container_height));
+                                
+                                } else if (api != null){
+                            
+                                    api.scrollTo(0, 0);
+                                }
+                            }
+                        });
+                    }
+                });
+
+                //On click
+                $('#'+selectId+' li').click(function(){
+                    
+                    doSelection($(this));
+                });
+                
+                //Keyboard support
+                $('#'+selectId).keydown(function(event){
+                    
+                    var active = $(this).find('.selected').parent();
+                    
+                    //jScrollPane api
+                    if (opts.jScrollPane == 1){ 
+                        
+                        var api = $('.styleSelect_item_content').data('jsp');
+                        var container_height = $(".styleSelect_item_content").height();
+                    }
+                    
+                    //Next item
+                    if (event.keyCode == 40 || event.keyCode == 39 ){ 
+                    
+                        var next_item = active.next();
+                        
+                        if (next_item.index() > 0 && api != null && $('#'+selectId).find('.styleSelect_item').css('display') != 'none'){
+                        
+                            var position_next = next_item.position();
+                        
+                            if (position_next.top != null && position_next.top > container_height){
+                                
+                                api.scrollTo(0, parseInt(position_next.top));
+                            }
+                        }
+                        
+                        doSelection(next_item); 
+                    }
+                    
+                    //Prev item
+                    if (event.keyCode == 37 || event.keyCode == 38 ){ 
+                    
+                        var prev_item = active.prev();
+                        var prev_item_index = prev_item.index();
+                        
+                        if (api != null && opts.jScrollPane == 1 && $('#'+selectId).find('.styleSelect_item').css('display') != 'none'){
+                            
+                            if (prev_item_index > 0){
+                            
+                                var position_prev = prev_item.position();
+                            
+                                if (position_prev.top-container_height < container_height){
+                                    
+                                    api.scrollTo(0, parseInt(position_prev.top));
+                                }
+                                
+                            } else {
+                                
+                                api.scrollTo(0, 0);
+                            }
+                        }
+                    
+                        doSelection(prev_item); 
+                    }
+                    
+
+                    if (event.keyCode == 13 || event.keyCode == 0 || event.keyCode == 32){ 
+                    
+                        $(this).find('.styleSelect_item').slideToggle(opts.speed,function(){ 
+                            
+                            var eitem = $(event.target);
+                            
+                            //Use jScrollPane
+                            if (!eitem.find(".jspContainer").attr('class') && opts.jScrollPane == 1){
+                            
+                                $(this).find(".styleSelect_item_content").jScrollPane(opts.jScrollPaneOptions);
+                            }
+                        });
+                        
+                        return false;
+                    }
+                    
+                    if (event.keyCode == 9){ $(this).find('.styleSelect_item').hide(opts.speed); }
+                    
+                });
+                
+                //Do selection
+                var doSelection = function(item){
+                    
+                    item.siblings().find("span").removeClass('selected');
+                    item.find("span").addClass('selected');
+            
+                    var selectedItem = item.attr('id');
+
+                    var realSelector = $('select[name="'+orgSelectbox+'"]');
+                    realSelector.siblings().selected = false;
+                    realSelector.find('option[value="'+selectedItem+'"]').attr('selected','selected');
+                    realSelector.trigger(opts.selectTrigger);
+            
+                    checkSelected(opts.width, opts.height, opts.styleClass,opts.optionsWidth, opts.optionsHeight);
+                }
+                
+                $('#'+selectId).click(function(event){
+                
+                    event.stopPropagation();
+                });
+                
+                $(document).click(function() {
+                
+                    $('#'+selectId+' .styleSelect_item').hide();
+                });
+            });	
+        }
+            
+            //Selected items check
+            function checkSelected(width, height, mainClass,mainWidth, mainHeight){
+                    
+                    $('.'+mainClass).each(function(){
+                    
+                        var elementList = $(this).find('.styleSelect_item');
+                        
+                        $(this).find('span').each(function(){
+                        
+                            var spanClass = $(this).attr("class");
+                            if (spanClass == "passiveSelect" || spanClass == "activeSelect") $(this).remove();
+                        
+                        });
+                        
+                        var selectedName = $(this).find('.selected');
+                        
+                        if (width !== 0){
+                            $(this).width(width);
+                            if(mainWidth === 0){
+                                mainWidth = width;
+                            }
+                        }
+                        if (height !== 0){
+                            $(this).height(height);
+                            if(mainHeight === 0){
+                                mainHeight = height;
+                            }
+                        }
+                    
+                
+                        $('<span></span>').text(selectedName.text())
+                                .attr('id', selectedName.parent().attr('id'))
+                                .addClass('passiveSelect')
+                                .appendTo($(this));
+                        
+                        if (mainWidth === 0){
+                            $(this).css({'width' :  elementList.width()});
+                        }
+
+                        if (mainHeight === 0){
+                            $(this).css({'height' :  elementList.height()});
+                        }
+                        
+                    });
+                    
+                    $('.'+mainClass+' span').each(function(){
+                        if ($(this).attr('id')){
+                            $(this).removeClass();
+                            $(this).addClass('activeSelect');
+                        }
+                    });
+            }	
+        
+            $.fn.styleSelect.defaults = {
+            
+                optionsTop: '34px',
+                optionsLeft: '0px',
+                optionsWidth: 0,
+                optionsHeight: 0,
+                width: 0,
+                height: 0,
+                styleClass: 'selectMenu',
+                speed: 0,
+                selectTrigger: 'change',
+                jScrollPane: 0,
+                jScrollPaneOptions: ''
+            };
+            
+    })(jQuery);
 });

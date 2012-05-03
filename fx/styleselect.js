@@ -26,7 +26,16 @@ FX.getFrame('jquery-1.3.2', function($){
     }, {
 
         style: 'default',
-        jScrollPane: 1
+        jScrollPane: 0,
+        optionsTop: '31px',//弹出层距离顶部的高度
+        optionsLeft: '0px',
+        optionsWidth: 0,
+        optionsHeight: 0,
+        width: 0,
+        height: 0,
+        speed: 0,
+        selectTrigger: 'change',
+        jScrollPaneOptions: ''
 
     }, ['jquery-mousewheel', 'jquery-jscrollpane', 'jquery-styleSelect'] );
 
