@@ -1,9 +1,9 @@
 FX.getFrame('jquery-1.3.2', function($){
     FX.run('defaultvalue', function(attrs){
+        var $this = $(this);
         if($(this).attr('tagName') === 'INPUT' && $(this).attr('type')==='radio'){
 
             var default_value;
-            var $this = $(this);
 
             if(attrs.value){
                 default_value = attrs.value;
