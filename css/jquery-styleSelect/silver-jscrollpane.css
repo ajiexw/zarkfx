@@ -5,18 +5,18 @@
  * may not operate correctly without them.
  */
 
-.jspContainer
+.fx_styleselect_silver .jspContainer
 {
 	overflow: hidden;
 	position: relative;
 }
 
-.jspPane
+.fx_styleselect_silver .jspPane
 {
 	position: absolute;
 }
 
-.jspVerticalBar
+.fx_styleselect_silver .jspVerticalBar
 {
 	position: absolute;
 	top: 0;
@@ -27,7 +27,7 @@
 	background: red;
 }
 
-.jspHorizontalBar
+.fx_styleselect_silver .jspHorizontalBar
 {
 	position: absolute;
 	bottom: 0;
@@ -37,47 +37,48 @@
 	background: red;
 }
 
-.jspVerticalBar *,
-.jspHorizontalBar *
+.fx_styleselect_silver .jspVerticalBar *,
+.fx_styleselect_silver .jspHorizontalBar *
 {
 	margin: 0;
 	padding: 0;
 }
 
-.jspCap
+.fx_styleselect_silver .jspCap
 {
 	display: none;
 }
 
-.jspHorizontalBar .jspCap
+.fx_styleselect_silver .jspHorizontalBar .jspCap
 {
 	float: left;
 }
 
-.jspTrack
+.fx_styleselect_silver .jspTrack
 {
 	background: #a3a3a3;
 	position: relative;
 }
 
-.jspDrag
+.fx_styleselect_silver .jspDrag
 {
 	background: #02b5ef;
 	position: relative;
 	top: 0;
 	right: 3px;
+	left: -5;
 	cursor: pointer;
 	width: 8px;
 }
 
-.jspHorizontalBar .jspTrack,
-.jspHorizontalBar .jspDrag
+.fx_styleselect_silver .jspHorizontalBar .jspTrack,
+.fx_styleselect_silver .jspHorizontalBar .jspDrag
 {
 	float: left;
 	height: 100%;
 }
 
-.jspArrow
+.fx_styleselect_silver .jspArrow
 {
 	background: #50506d;
 	text-indent: -20000px;
@@ -85,30 +86,30 @@
 	cursor: pointer;
 }
 
-.jspArrow.jspDisabled
+.fx_styleselect_silver .jspArrow.jspDisabled
 {
 	cursor: default;
 	background: #80808d;
 }
 
-.jspVerticalBar .jspArrow
+.fx_styleselect_silver .jspVerticalBar .jspArrow
 {
 	height: 16px;
 }
 
-.jspHorizontalBar .jspArrow
+.fx_styleselect_silver .jspHorizontalBar .jspArrow
 {
 	width: 16px;
 	float: left;
 	height: 100%;
 }
 
-.jspVerticalBar .jspArrow:focus
+.fx_styleselect_silver .jspVerticalBar .jspArrow:focus
 {
 	outline: none;
 }
 
-.jspCorner
+.fx_styleselect_silver .jspCorner
 {
 	background: #eeeef4;
 	float: left;
