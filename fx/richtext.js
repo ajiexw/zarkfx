@@ -12,7 +12,7 @@ FX.getFrame('jquery-1.3.2', function($){
             plugins : "autolink,lists,style,iespell,media,fullscreen,template,advlist,sparker5image,table,searchreplace,advhr,directionality,preview,",
 
             // Theme options
-            theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,styleselect,formatselect,fontselect,fontsizeselect,sparker5image",
+            theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,styleselect,formatselect,fontselect,fontsizeselect,sparker5image,code",
             theme_advanced_buttons2 : "tablecontrols,|,search,replace,|,bullist,numlist,outdent,indent,forecolor,backcolor,removeformat,|,preview,hr,advhr,|,ltr,rtl,|,undo,redo,link,unlink,image,charmap,media,styleprops,template,|,fullscreen", 
             theme_advanced_buttons3 : "",
             theme_advanced_toolbar_location : "top",
