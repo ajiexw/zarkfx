@@ -42,7 +42,6 @@ FX.getFrame('jquery-1.3.2', function($){
 
             $this.css('top', 0);
             $this.css('left', 0);
-            alert(attrs.opacity)
             $this.css('opacity', attrs.opacity);
         };
 
