@@ -119,7 +119,13 @@
                                 if (attrs[k] === undefined){
                                     attrs[k] = defaults[k];
                                 }else{
-                                    if(typeof(defaults[k]) === 'number')  attrs[k] = parseInt(attrs[k]);
+                                    if(typeof(defaults[k]) === 'number') {
+                                        if (attrs[k].indexOf('.') === -1){
+                                            attrs[k] = parseInt(attrs[k]);
+                                        }else{
+                                            attrs[k] = parseFloat(attrs[k]);
+                                        }
+                                    }
                                     if(typeof(defaults[k]) === 'boolean') attrs[k] = attrs[k] === true;
                                 };
                             };
