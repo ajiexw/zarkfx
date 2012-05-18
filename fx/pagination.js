@@ -72,7 +72,11 @@ FX.getFrame('jquery-1.3.2', function($){
         $('li', $this).each(function(){
             var li_page_num = $(this).attr('zarkfx_page_num');
             if (li_page_num && (this_page_num.toString() !== li_page_num)){
-                $(this).html('<a href="'+location_href.setparam(attrs.para_name, li_page_num)+'">'+$(this).html()+'</a>');
+                var new_href = location_href.setparam(attrs.para_name, li_page_num);
+                if (attrs.plusToSpace){
+                    new_href = new_href.replace('+',' ').replace('%2B',' ');
+                }
+                $(this).html('<a href="'+new_href+'">'+$(this).html()+'</a>');
             }else{
                 $(this).html('<a href="">'+$(this).html()+'</a>');
             };
@@ -85,7 +89,8 @@ FX.getFrame('jquery-1.3.2', function($){
         lasttext    :  'last',
         style       :  'none',
         para_name   :  'page_num',
-        start_from  :  1
+        start_from  :  1,
+        plusToSpace :  true
     }, 'url');
 
 });
