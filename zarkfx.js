@@ -133,6 +133,13 @@
                             if (attrs.finished === 'show'){
                                 $(this).show();
                             };
+                            if (typeof attrs.hoverClass !== 'undefined'){
+                                $(this).mouseover(function(){
+                                    $(this).addClass(attrs.hoverClass);
+                                }).mouseout(function(){
+                                    $(this).removeClass(attrs.hoverClass);
+                                });
+                            }
                         };
                     };
                 });

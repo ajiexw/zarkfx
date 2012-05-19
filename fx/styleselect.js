@@ -26,7 +26,7 @@ FX.getFrame('jquery-1.3.2', function($){
                 
         var $main_container = $('<div></div>')
             .addClass('fx_styleselect_item')
-            .css({'position' : 'absolute'})
+            .css({position : 'absolute'})
             .hide()
             .appendTo($new_select);
 
