@@ -22,6 +22,7 @@
     }
     
 .fx_styleselect_silver .fx_styleselect_item_content{
+    _position:relative; _top:-9px; /*针对ie6图片之间产生空隙的hack*/
     height:140px;
     overflow-x: hidden;
     overflow-y: scroll;
@@ -31,6 +32,7 @@
     }
     
 .fx_styleselect_silver .fx_styleselect_item_end{
+    _position:relative; _top:-9px; /*针对ie6图片之间产生空隙的hack*/
     height:8px;
     background:url("silver_images/silverLast.jpg") no-repeat top left;
     }
