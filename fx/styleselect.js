@@ -4,6 +4,17 @@ FX.getFrame('jquery-1.3.2', function($){
         FX.getCSS(FX.CSS_PATH + 'jquery-styleSelect/default-ie6.css');
     };
 
+
+    var fx_index = 100,
+        incIndex = function(base){
+            fx_index += 1;
+            if (typeof base === 'undefined'){
+                return fx_index;
+            }else{
+                return fx_index + parseInt(base);
+            }
+        }
+
     FX.run('styleselect', function(attrs){
     
         var $old_select = $(this);
@@ -23,12 +34,16 @@ FX.getFrame('jquery-1.3.2', function($){
             .css({position : 'relative', display: 'none'})
             .addClass('fx_styleselect_' + attrs.style)
             .insertBefore($old_select);
-                
+
+
         var $main_container = $('<div></div>')
             .addClass('fx_styleselect_item')
             .css({position : 'absolute'})
             .hide()
             .appendTo($new_select);
+
+        $new_select.css('z-index', incIndex(attrs.baseZIndex));
+        $main_container.css('z-index', incIndex(attrs.baseZIndex));
 
         // resize width and height for new_select and options
         if (attrs.width !== 0){
@@ -53,12 +68,18 @@ FX.getFrame('jquery-1.3.2', function($){
         $('<div class="fx_styleselect_item_start"></div><div class="fx_styleselect_item_content"></div><div class="fx_styleselect_item_end">').appendTo($main_container);
         var $middle_container = $('.fx_styleselect_item_content', $main_container);
 
+        $('div', $main_container).each(function(){
+            $(this).css('z-index', incIndex(attrs.baseZIndex));
+        });
+
         // create new options
         var $ul_container = $('<ul></ul>').appendTo($middle_container);
+        $ul_container.css('z-index', incIndex(attrs.baseZIndex));
             
         $old_select.find('option').each(function(){
             var $old_option = $(this);
             var $new_option = $('<li></li>');
+            $new_option.css('z-index', incIndex(attrs.baseZIndex));
 
             var copy_attrs = FX.splitValue(attrs.copyAttrs),
                 i = 0;
@@ -71,7 +92,8 @@ FX.getFrame('jquery-1.3.2', function($){
             if ( $old_option.is(':selected') )
                 $new_option.attr('selected', 'selected');
 
-            $('<span style="display: block;"></span> ').text($old_option.text()).appendTo($new_option);
+            $('<span style="display: block;"></span> ').text($old_option.text()).appendTo($new_option)
+                .css('z-index', incIndex(attrs.baseZIndex));
 
             $.data($new_option[0], 'fx_org_value', $old_option.attr('value'));
 
@@ -128,6 +150,7 @@ FX.getFrame('jquery-1.3.2', function($){
             if (attrs.jScrollPane && first_jscrollpane){
                 first_jscrollpane = false;
                 $middle_container.jScrollPane();
+                $('.jspContainer, .jspPane', $middle_container).css('z-index', $middle_container.css('z-index'));
             }
         });
 
@@ -182,7 +205,8 @@ FX.getFrame('jquery-1.3.2', function($){
         jScrollPaneOptions: '',
         copyAttrs:      'id, class',
         triggerChange:     true,
-        blurClose:      true
+        blurClose:      true,
+        baseZIndex:     undefined
 
     }, ['jquery-mousewheel', 'jquery-jscrollpane'] );
 
