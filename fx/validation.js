@@ -92,7 +92,7 @@ FX.getFrame('jquery-1.3.2', function($) {
                 break;
 
             case "email":
-                regex = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/;
+                regex = /^([a-zA-Z0-9_-.])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/;
 
                 break;
 
