@@ -59,7 +59,6 @@
  *
  */
 
-alert(1);
 FX.getFrame('jquery-1.3.2', function($) {
 
     FX.run('validation', function(attrs) {
