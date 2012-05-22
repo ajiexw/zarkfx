@@ -90,6 +90,7 @@
         };
 
         FX.run = function(fx_name, cb, defaults, deps){
+            var current_browser = (FX.detect.browser + FX.detect.version).toLowerCase();
             var ready = function(){
                 //todo 这里有一个隐患, 如果某个fx的名称包含另一个fx的名称, 那么选择器会出错
                 $('['+FX.FX_NAME+'*='+fx_name+']').each(function(){
@@ -98,16 +99,28 @@
                         var i = 0;
                         for ( ; i < attrs_array.length; i++){
                             var attrs = attrs_array[i],
-                                jump = false;
-                            // jump some browsers by notWork attribute
+                                jump = false,
+                                j = 0;
+                            // jump some browsers by notWork or onlyWork attributes
                             if (typeof attrs.notWork !== 'undefined'){
                                 var no_browsers = FX.splitValue(attrs.notWork),
-                                    j = 0,
-                                    current_browser = (FX.detect.browser + FX.detect.version).toLowerCase();
+                                    no_browser;
                                 for( ; j < no_browsers.length; j++){
-                                    var no_browser = no_browsers[j].toLowerCase();
+                                    no_browser = no_browsers[j].toLowerCase();
                                     if (current_browser.indexOf(no_browser) === 0){
                                         jump = true; // jump this one
+                                        break;
+                                    }
+                                };
+                            };
+                            if (jump === false && typeof attrs.onlyWork !== 'undefined'){
+                                jump = true;
+                                var only_browsers = FX.splitValue(attrs.onlyWork),
+                                    only_browser;
+                                for( ; j < only_browsers.length; j++){
+                                    only_browser = only_browsers[j].toLowerCase();
+                                    if (current_browser.indexOf(only_browser) === 0){
+                                        jump = false;
                                         break;
                                     }
                                 };
