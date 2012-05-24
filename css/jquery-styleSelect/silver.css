@@ -4,15 +4,16 @@
 .fx_styleselect_silver {
     width:180px;
     height: 34px;
-    background: url("silver_images/silver_bg.png") no-repeat top left;
+    background: url("silver_images/silver_bg.gif") no-repeat top left;
     font-family:Verdana, Arial, Helvetica, sans-serif;
     font-size:14px;
     }
 
 .fx_styleselect_silver .fx_styleselect_item{
     top: 32px;
+    left: 0;
     width:180px;
-    z-index: 10000;
+    z-index: 20000;
     }
     
 .fx_styleselect_silver .fx_styleselect_item_start{
@@ -21,6 +22,7 @@
     }
     
 .fx_styleselect_silver .fx_styleselect_item_content{
+    _position:relative; _top:-9px; /*针对ie6图片之间产生空隙的hack*/
     height:140px;
     overflow-x: hidden;
     overflow-y: scroll;
@@ -30,6 +32,7 @@
     }
     
 .fx_styleselect_silver .fx_styleselect_item_end{
+    _position:relative; _top:-9px; /*针对ie6图片之间产生空隙的hack*/
     height:8px;
     background:url("silver_images/silverLast.jpg") no-repeat top left;
     }
@@ -53,12 +56,12 @@
     }
     
 .fx_styleselect_silver .fx_closed{
-    background:url("silver_images/silver_normal.png") no-repeat top right;
+    background:url("silver_images/silver_normal.gif") no-repeat top right;
     line-height:34px;
 }
 
 .fx_styleselect_silver .fx_expended{
-    background:url("silver_images/silver_active.png") no-repeat top right;
+    background:url("silver_images/silver_active.gif") no-repeat top right;
     line-height:34px;
 }
     
