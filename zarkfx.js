@@ -31,6 +31,8 @@
             return 'zarkfx_'+FX.JSC++;
         };
 
+        $.ajaxSetup({ cache: true });
+
         FX.getFrame = function(frame_name, cb){
             if (FX.loaded_frames[frame_name] === undefined){
                 FX.loaded_frames[frame_name] = 'loading';
