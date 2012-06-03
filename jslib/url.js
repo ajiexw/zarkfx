@@ -141,6 +141,21 @@ FX.getFrame('jquery-1.3.2', function(jQuery){
                     if (this.data.attr['fragment'].length > 0) ret += '#'+this.data.attr['fragment'];
                     return ret;
                 },
+
+                // remove one query, and return the result (add by sparker5)
+                removeparam : function( param )
+                {
+                    if (typeof this.data.param.query !== 'undefined'){
+                        delete this.data.param.query[param];
+                    }
+
+                    var ret = this.data.attr['base'] + this.data.attr['path'];
+                    if ($.param(this.data.param.query).length>0){
+                        ret = ret +'?'+ $.param(this.data.param.query) ;
+                    }
+                    if (this.data.attr['fragment'].length > 0) ret += '#'+this.data.attr['fragment'];
+                    return ret;
+                },
                 
                 // return fragment parameters
                 fparam : function( param )

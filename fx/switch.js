@@ -32,7 +32,7 @@ FX.getFrame('jquery-1.5.1', function($){
 
         var $this = $(this);
         var group = attrs.group !== undefined ? attrs.group : 'default_group';
-        var switchFunction = function(){
+        var showThis = function(){
             for(var i in switch_groups[group]){
                 var $a = switch_groups[group][i];
                 var hide_id = FX.parseFX($a.attr(FX.FX_NAME))['switch'][0].switchid;
@@ -48,12 +48,11 @@ FX.getFrame('jquery-1.5.1', function($){
             $this.addClass(attrs.selectedClass).removeClass(attrs.unselectedClass);
             if ($this.attr('nodeName') === 'A') {
                 $this.blur();
-                return false;
             };
         };
 
         // bind event
-        $this.bind(attrs.event, switchFunction);
+        $this.bind(attrs.event, showThis);
         
         // add $this to switch_groups
         if(switch_groups[group] === undefined){
@@ -61,23 +60,27 @@ FX.getFrame('jquery-1.5.1', function($){
         };
         switch_groups[group].push($this);
 
-        if (attrs.autoHidden){
-            // show the first switched, and hide others
-            if (switch_groups[group].length == 1){
-                if (attrs.switchid !== undefined) $('#'+attrs.switchid).show();
-                if (attrs.switchClass !== undefined) $('.'+attrs.switchClass).show();
-            }else{
-                if (attrs.switchid !== undefined) $('#'+attrs.switchid).hide();
-                if (attrs.switchClass !== undefined) $('.'+attrs.switchClass).hide();
-            };
+        var show_this = false,
+            href = window.location.href;
 
-            // change the first switcher's class
-            if (switch_groups[group].length == 1){
-                $this.addClass(attrs.selectedClass);
-            }else{
-                $this.addClass(attrs.unselectedClass);
-            };
-        };
+        if (attrs.autoHidden && switch_groups[group].length == 1){
+            show_this = true;
+        }
+
+        if (attrs.switchByAnchor && href.indexOf('#!') !== -1){
+            var auto_show_id = href.substr(href.indexOf('#!') + 2);
+            if ( auto_show_id.length > 0 && attrs.switchid === auto_show_id){
+                show_this = true;
+            }
+        }
+
+        if (show_this){
+            showThis();
+        }else if(attrs.autoHidden){
+            if (attrs.switchid !== undefined) $('#'+attrs.switchid).hide();
+            if (attrs.switchClass !== undefined) $('.'+attrs.switchClass).hide();
+            $this.addClass(attrs.unselectedClass);
+        }
 
         // used with lazyload
         if (attrs.withLazyLoad){
@@ -114,10 +117,13 @@ FX.getFrame('jquery-1.5.1', function($){
         switchid:       undefined,
         switchClass:    undefined,
         event:          'click',
-        autoHidden:     true,
+        autoHidden:     true,  // 在onload时自动隐藏其它div
         selectedClass:  'zarkfx_switch_selected',
         unselectedClass:'zarkfx_switch_unselected',
-        withLazyLoad:   false // 如果被switch的内容里有lazyload的img, 那么需要把这个参数设置为true才能让img延迟加载.
+        // 如果被switch的内容里有lazyload的img, 那么需要把这个参数设置为true才能让img延迟加载.
+        withLazyLoad:   false,
+        // 根据url最后制定的id自动显示, 比如 /index?#!showme
+        switchByAnchor:     true
     });
 
 });
