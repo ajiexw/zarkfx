@@ -22,7 +22,7 @@ FX.getFrame('jquery-1.3.2', function($){
 
             if (attrs.key && attrs.value){
                 new_href = url.setparam(attrs.key, attrs.value);
-            }else if(attrs.currentValue){
+            }else if(attrs.keepValue){
                 var current_value = current_url.param(attrs.key);
                 if (typeof current_value !== 'undefined' &&  current_value.length>0){
                     new_href = url.setparam(attrs.key, current_value);
@@ -50,7 +50,7 @@ FX.getFrame('jquery-1.3.2', function($){
         key         :  undefined,
         value       :  undefined,
         chosedClass : 'chosed',
-        currentValue: false,
+        keepValue: false,
         quote       : false
     }, 'url');
 
