@@ -31,7 +31,7 @@ FX.getFrame('jquery-1.3.2', function($){
         }
 
         if (new_href){
-            if (attrs.chosedClass && (new_href === current_href)){
+            if (attrs.chosedClass && (new_href === current_href || new_href.indexOf(window.location.hostname + current_href) !== -1 )){
                 $this.addClass(attrs.chosedClass);
             }
 
