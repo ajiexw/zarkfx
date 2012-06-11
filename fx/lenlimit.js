@@ -12,8 +12,8 @@ FX.getFrame('jquery-1.3.2', function($){
         
             var val = $this.val();
 
-            if (attrs.len && val.length >= attrs.len){
-                $this.val($this.val().substr(parseInt(attrs.len)));
+            if (attrs.len && val.length > attrs.len){
+                $this.val($this.val().substr(0, parseInt(attrs.len)));
             }
 
             if (attrs.len && attrs.tipTarget){
