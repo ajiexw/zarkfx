@@ -1,72 +1,131 @@
-/*
- *  <* fx="score[hoversrc=**;clicksrc=**;showclass=**]" > 
- *      <img src="**" />
- *      <img src="**" />
- *      ...
- *  </*>
- *
- *  <* class=showclass></*>
- *  <* class=showclass></*>
- *  ...
- *
- *  when hover or click an image,change its src *
- * */
-
 FX.getFrame('jquery-1.3.2', function($){
     FX.run('score', function(attrs){
         
-        var $score=$(this),
-            $img = $score.children('img'),
-            $originsrc=$img.attr('src'),
-            $show=$("."+attrs.showclass);
+        var $this = $(this);
 
-        if(attrs.hoversrc !== undefined){
-            $img.each(function(){
-                var i=$score.children().index($(this));
+        $this.find('> *').each(function(){
+            var old_image = '';
+            if (old_image === '' && $(this).attr('tagName') === 'IMG' && $(this).attr('src') ){
+                old_image = $(this).attr('src');
+            }
+            if (old_image === '' && attrs.defaultImage ){
+                old_image = attrs.defaultImage;
+            }
+            if (old_image){
+                if ($(this).attr('tagName') === 'IMG'){
+                    $(this).attr('src', old_image);
+                }else{
+                    $(this).css('background-image:', 'url(' + old_image + ')');
+                }
+            }
+            $.data(this, 'zarkfx.score.old_image', old_image);
+        });
 
-                $(this).hover(function(){
-                    $(this).add($(this).prevAll()).attr('src',attrs.hoversrc);
-                    $show.eq(i).show();  
-                },function(){
-                    $(this).add($(this).prevAll()).attr('src',$originsrc);
-                    $show.hide();
-                });
+        var setHover = function($obj, url){
+            $obj.each(function(){
+                if ($(this).attr('tagName') === 'IMG'){
+                    $(this).attr('src', url);
+                }else{
+                    $(this).css('background-image:', 'url(' + url + ')');
+                }
             });
-        };
-
+        }
         
-         if(attrs.clicksrc !== undefined){
-            $img.each(function(){ 
-                var k=$score.children().index($(this));
+        var unsetHover = function($obj){
+            $obj.each(function(){
+                var url = ''
+                if ($.data(this, 'zarkfx.score.chosed_image')){
+                    url = $.data(this, 'zarkfx.score.chosed_image');
+                }else{
+                    url = $.data(this, 'zarkfx.score.old_image');
+                }
+                if ($(this).attr('tagName') === 'IMG'){
+                    $(this).attr('src', url);
+                }else{
+                    $(this).css('background-image:', 'url(' + url + ')');
+                }
+            });
+        }
 
-                $(this).click(function(){
+        var setText = function($obj, text){
+            $obj.each(function(){
+                var value_tag_name = $(this).attr('tagName');
+                if (value_tag_name === 'INPUT' || value_tag_name === 'TEXTAREA'){
+                    $(this).val(text);
+                }else{
+                    $(this).html(text);
+                }
+            });
+        }
 
-                    $img.unbind('mouseenter').unbind('mouseleave');
-                    $(this).add($(this).prevAll()).attr('src',attrs.clicksrc);
-                    $(this).nextAll().attr('src',$originsrc);
-                    $show.eq(k).show();
-
-
-                    var $current_img=$(this);
-                    $img.each(function(){
-                        $(this).hover(function(){
-                            var j=$score.children().index($(this));   
-                            $(this).add($(this).prevAll()).attr('src',attrs.hoversrc);
-                            $show.hide().eq(j).show();
-                        },function(){
-                            $current_img.add($current_img.prevAll()).attr('src',attrs.clicksrc);
-                            $current_img.nextAll().attr('src',$originsrc); 
-                            $show.hide().eq(k).show();                          
-                        });    
-                   
-                   
-                    });
+        if(typeof attrs.hoverImage !== 'undefined'){
+            $this.find('> *').each(function(){
+                var old_src = $(this).attr('src');
+                $(this).hover(function(){
+                    setHover($(this).add( $(this).prevAll() ), attrs.hoverImage);
+                }, function(){
+                    unsetHover($(this).add( $(this).prevAll() ));
                 });
             });
         };
 
+        if(typeof attrs.chosedImage !== 'undefined'){
+            $this.find('> *').click(function(){
+                $this.find('> *').each(function(){
+                    $.data(this, 'zarkfx.score.chosed_image', '');
+                });
 
+                $(this).add($(this).prevAll()).each(function(){
+                    $.data(this, 'zarkfx.score.chosed_image', attrs.chosedImage);
+                });
 
+                unsetHover($this.find('> *'));
 
+                // set chosed value to anthor tag
+                if (typeof attrs.valueId !== 'undefined'){
+                    var val=null;
+                    if (!val && $(this).val() ){
+                        val = $(this).val();
+                    }
+                    if (!val && $(this).attr('value') ){
+                        val = $(this).attr('value');
+                    }
+                    if (val){
+                        setText($('#'+attrs.valueId), val);
+                    }
+                }
+
+            });
+
+        };
+
+        // set chosed text to anthor tag
+        if (typeof attrs.textId !== 'undefined'){
+            $this.find('> *').hover(function(){
+                var text=null;
+                if (!text && $(this).attr('text') ){
+                    text = $(this).attr('text');
+                }
+                if (!text && $(this).val() ){
+                    text = $(this).val();
+                }
+                if (!text && $(this).attr('value') ){
+                    text = $(this).attr('value');
+                }
+                if (text){
+                    setText($('#'+attrs.textId), text);
+                }
+            }, function(){
+                setText($('#'+attrs.textId), '');
+            });
+        }
+
+    }, {
+        defaultImage:        undefined,
+        hoverImage:   undefined,
+        chosedImage:   undefined,
+        valueId:    undefined,
+        textId:    undefined
     });
+
 });
