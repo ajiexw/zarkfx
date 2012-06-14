@@ -149,8 +149,14 @@ FX.getFrame('jquery-1.3.2', function($){
             }
             if (attrs.jScrollPane && first_jscrollpane){
                 first_jscrollpane = false;
-                $middle_container.jScrollPane();
+                $middle_container.jScrollPane({
+                    verticalDragMinHeight:  20,
+                    verticalDragMaxHeight:  20
+                });
+
                 $('.jspContainer, .jspPane', $middle_container).css('z-index', $middle_container.css('z-index'));
+                $('.jspPane', $middle_container).width($('.jspPane', $middle_container).width() - attrs.scrollWidth);
+                
             }
         });
 
@@ -206,7 +212,8 @@ FX.getFrame('jquery-1.3.2', function($){
         copyAttrs:      'id, class',
         triggerChange:     true,
         blurClose:      true,
-        baseZIndex:     undefined
+        baseZIndex:     undefined,
+        scrollWidth:    20
 
     }, ['jquery-mousewheel', 'jquery-jscrollpane'] );
 
