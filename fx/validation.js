@@ -206,6 +206,35 @@ FX.getFrame('jquery-1.3.2', function($) {
 
                 break;
 
+            case "startswith":
+                var values;
+                if (typeof attrs.values !== 'undefined'){
+                    values = FX.splitValue(attrs.values);
+                }else{
+                    values = [];
+                };
+                this_val.validate = function(){
+                    var i = 0,
+                        value = $this.val();
+                    if (value.length === 0){
+                        return true;
+                    }else{
+                        for ( ; i < values.length; i++){
+                            var type = $.trim(values[i]);
+                            if (attrs.ignorecase){
+                                value = value.toLowerCase();
+                                type = type.toLowerCase();
+                            };
+                            if (value.indexOf(type) === 0){
+                                return true;
+                            };
+                        };
+                        return false;
+                    };
+                };
+
+                break;
+
             case "custom":
                 if( !attrs["custom_fn"] ) {
                     return;
