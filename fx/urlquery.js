@@ -47,7 +47,7 @@ FX.getFrame('jquery-1.3.2', function($){
         value       :  undefined,
         chosedClass : 'chosed',
         keepValue: false,
-        quote       : false
+        quote       : true
     }, 'url');
 
 });
