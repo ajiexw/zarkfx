@@ -116,15 +116,22 @@ FX.getFrame('jquery-1.3.2', function($) {
                 break;
 
             case "notequal":
-                if(attrs.value){
+                if(attrs.value || (typeof attrs.defaultValue !== 'undefined')){
+                    var old_value;
+                    if (typeof attrs.defaultValue !== 'undefined'){
+                        old_value = $this.val();
+                    }else{
+                        old_value = FX.splitValue(attrs.value);
+                    }
+
                     this_val.validate = function(){
-                        var value = FX.splitValue(attrs.value),
-                            match = $.trim($(this_val.node).val());
+                        var match;
+                        match = $.trim($(this_val.node).val());
                         if (attrs.ignorecase){
-                            value = value.toLowerCase();
+                            old_value = old_value.toLowerCase();
                             match = match.toLowerCase();
                         };
-                        return value.indexOf(match) === -1;
+                        return old_value.indexOf(match) === -1;
                     };
                 };
 
