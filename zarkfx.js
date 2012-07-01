@@ -68,24 +68,26 @@
                 cb && cb();
             }else{
                 var first_script = $.trim(scripts[0]),
-                    sub_scrpits  = scripts.slice(1);
+                    sub_scripts  = scripts.slice(1);
                 if (FX.loaded_scripts[first_script] === undefined){
                     FX.loaded_scripts[first_script] = 'loading';
                     $.ajax({
-                        async:      false,
+                        async:      true,
                         cache:      true,
                         dataType:   'script',
                         type:       'GET',
-                        url:        FX.JS_PATH + first_script + '.js'
+                        url:        FX.JS_PATH + first_script + '.js',
+                        success:    function(){
+                            FX.loaded_scripts[first_script] = true;
+                            FX.getScript(sub_scripts, cb);
+                        }
                     });
-                    FX.loaded_scripts[first_script] = true;
-                    FX.getScript(sub_scrpits, cb);
                 }else if(FX.loaded_scripts[first_script] === 'loading'){
                     setTimeout(function(){
                         FX.getScript(scripts, cb);
                     }, 10);
                 }else{
-                    FX.getScript(sub_scrpits, cb);
+                    FX.getScript(sub_scripts, cb);
                 };
             };
 
