@@ -26,7 +26,7 @@ FX.getFrame('jquery-1.3.2', function($){
             new_href = url.removeparam(attrs.key);
         }
 
-        if (attrs.quote){
+        if (new_href && attrs.quote){
             new_href = encodeURI(new_href);
         }
 
@@ -47,7 +47,7 @@ FX.getFrame('jquery-1.3.2', function($){
         value       :  undefined,
         chosedClass : 'chosed',
         keepValue: false,
-        quote       : false
+        quote       : true
     }, 'url');
 
 });

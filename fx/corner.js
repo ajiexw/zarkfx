@@ -44,6 +44,7 @@
  *
  */
 
+/*
 FX.getFrame('jquery-1.3.2', function($){
 
     FX.run('corner', function(attrs){
@@ -68,3 +69,4 @@ FX.getFrame('jquery-1.3.2', function($){
     }, {radius: '4'}, 'ddroundies');
 
 });
+*/

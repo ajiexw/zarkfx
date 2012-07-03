@@ -38,7 +38,9 @@ FX.getFrame('jquery-1.3.2', function($){
         // 如果fx用于密码框, 则新建一个text在没有点击密码框时覆盖在原来的密码框上
         var on_password = attrs.onPassword && $this.attr('tagName') === 'INPUT' && $this.attr('type') === 'password';
         if (on_password){
-            var $input_text = $('<input type="text" />').attr('class', $this.attr('class')).val(old_value);
+            var $input_text = $('<input type="text" />').attr('class', $this.attr('class'));
+            if (!attrs.notResume) $input_text.val(old_value);
+
             $input_text.focus(function(){
                 $input_text.hide();
                 $this.show();
@@ -57,7 +59,7 @@ FX.getFrame('jquery-1.3.2', function($){
         }).blur(function(){
             if($this.val()==''){
                 $this.css('color',attrs.color);
-                $this.val(old_value);
+                if (!attrs.notResume) $this.val(old_value);
                 if (on_password){
                     $this.hide();
                     $input_text.show();
@@ -69,7 +71,8 @@ FX.getFrame('jquery-1.3.2', function($){
 
     }, {
         color:  '#666666',
-        onPassword: false
+        onPassword: false,
+        notResume: false
     });
 
 });
