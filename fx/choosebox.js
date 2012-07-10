@@ -1,7 +1,5 @@
 FX.getFrame('jquery-1.3.2', function($){
 
-    var filter_timeout, last_filter_text;
-
     var getChoiceValue = function(choice){
         var selected_value = $(choice).val();
         if (!selected_value){
@@ -48,11 +46,9 @@ FX.getFrame('jquery-1.3.2', function($){
             if (attrs.triggerChange){
                 $value.trigger('change');
             };
-            if (filter_timeout){
-                window.clearInterval(filter_timeout);
-            };
             $this.hide();
             $value.focus();
+            return false;
         });
     
         if(attrs.cancel){
