@@ -185,7 +185,7 @@ FX.getFrame('jquery-1.3.2', function($){
 			$(document).click(function(event){
                 //因为span_selected的click事件会冒泡到document,
                 //所以如果不做此判断的话, 点击span_selected就会立刻关闭main_container
-                if (event.target !== $span_selected[0]){
+                if (event.target !== $span_selected[0] && event.target !== $('.jspDrag', $middle_container)[0]){
                     closeMainContainer();
                 }
 			});
