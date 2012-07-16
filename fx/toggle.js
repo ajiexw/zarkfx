@@ -51,6 +51,15 @@ FX.getFrame('jquery-1.3.2', function($){
                     };
                 };
 
+                if (typeof attrs.triggerOver !== 'undefined'){
+                    var funcs = FX.splitValue(attrs.triggerOver),
+                        i = 0, this_;
+                    for(i in funcs){
+                        this_ = this;
+                        eval(funcs[i] + ".call(this_)");
+                    }
+                }
+
             });
 
             if (attrs.toggleHtml) {
@@ -65,6 +74,7 @@ FX.getFrame('jquery-1.3.2', function($){
         hideme: false,
         hideid: undefined,
         toggleHtml: undefined,
-        hideStyle:    'display'
+        hideStyle:    'display',
+        triggerOver: undefined
     });
 });
