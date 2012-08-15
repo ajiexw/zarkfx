@@ -378,10 +378,40 @@ FX.getFrame('jquery-1.3.2', function($) {
                 };
                 $.data(form, "zarkfx.validations").push(this_val);
             };
+
+        };
+
+        if (attrs.trigger){
+            $(attrs.trigger).each(function(){
+                var $this = $(this);
+                if( !$.data(this, "zarkfx.validations") ) {
+                    $.data(this, "zarkfx.validations", []);
+
+                    $this.click(function() {
+                        var data = $.data(this, "zarkfx.validations"),
+                            success = true;
+                        for(var i in data) {
+                            if (data[i].validate()){
+                                data[i].success();
+                            }else{
+                                data[i].fail();
+                                if (!attrs.checkAll){
+                                    return false;
+                                }else{
+                                    success = false;
+                                };
+                            };
+                        };
+                        return success;
+                    });
+                };
+                $.data(this, "zarkfx.validations").push(this_val);
+            });
         };
 
     }, {
         type: undefined,
+        trigger: undefined,
 
         regex: undefined,
         another_id: undefined,
