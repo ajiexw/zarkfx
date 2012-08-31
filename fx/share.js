@@ -97,31 +97,34 @@ FX.getFrame('jquery-1.3.2', function($) {
     }
 
     FX.run('share', function(attrs) {
-        var $this = $(this), content = '', title = '', link = '', pic = '';
+        var $this = $(this);
 
-        if (attrs.content_selector && $(attrs.content_selector).length > 0){
-            content = $(attrs.content_selector).text();
-        }
-        if (attrs.title_selector && $(attrs.title_selector).length > 0){
-            title = $(attrs.title_selector).text();
-        }
-        if (attrs.link_selector && $(attrs.link_selector).length > 0){
-            var link = $(attrs.link_selector).attr('href');
-            link = toHTTP(link);
-        }else{
-            link = window.location.href;
-        }
-        if (attrs.pic_selector && $(attrs.pic_selector).length > 0){
-            var pic = $(attrs.pic_selector).attr('src') || $(attrs.pic_selector).val();
-            pic = toHTTP(pic);
-        }
+        $this.bind(attrs.event_type, function(){
+            // 把下面这段代码放到bind函数里面， 是为了避免share过多时ie6下假死
+            var content = '', title = '', link = '', pic = '';
 
-        content = content.replace( /\s+/g, " " );
-        if (content.length > attrs.content_limit){
-            content = content.substr(0, attrs.content_limit) + '...';
-        };
+            if (attrs.content_selector && $(attrs.content_selector).length > 0){
+                content = $(attrs.content_selector).text();
+            }
+            if (attrs.title_selector && $(attrs.title_selector).length > 0){
+                title = $(attrs.title_selector).text();
+            }
+            if (attrs.link_selector && $(attrs.link_selector).length > 0){
+                var link = $(attrs.link_selector).attr('href');
+                link = toHTTP(link);
+            }else{
+                link = window.location.href;
+            }
+            if (attrs.pic_selector && $(attrs.pic_selector).length > 0){
+                var pic = $(attrs.pic_selector).attr('src') || $(attrs.pic_selector).val();
+                pic = toHTTP(pic);
+            }
 
-        $(this).bind(attrs.event_type, function(){
+            content = content.replace( /\s+/g, " " );
+            if (content.length > attrs.content_limit){
+                content = content.substr(0, attrs.content_limit) + '...';
+            };
+
             if (attrs.site === 'renren'){
                 shareToRenRen(link, title, content, pic, attrs);
             }else if (attrs.site === 'tencentweibo'){
@@ -133,6 +136,7 @@ FX.getFrame('jquery-1.3.2', function($) {
             }else if (attrs.site === 'qzone'){
                 shareToQZone(link, title, content, pic, attrs);
             };
+
         });
 
 
