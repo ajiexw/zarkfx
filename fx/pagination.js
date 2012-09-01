@@ -74,8 +74,7 @@ FX.getFrame('jquery-1.3.2', function($){
             if (li_page_num && (this_page_num.toString() !== li_page_num)){
                 var new_href = location_href.setparam(attrs.para_name, li_page_num);
                 if (attrs.plusToSpace){
-                    new_href = new_href.replace(/\+/g,' ');
-                    //new_href = new_href.replace(/%2B/g,' ');
+                    new_href = new_href.replace(/\+/g,' ').replace(/\%2B/g,' ');
                 }
                 $(this).html('<a href="'+new_href+'">'+$(this).html()+'</a>');
             }else{
