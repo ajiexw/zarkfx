@@ -148,7 +148,9 @@ FX.getFrame('jquery-1.3.2', function($) {
         pic_selector:   undefined,
         content_limit: 100,
         event_type: 'click',
-        appkey:     undefined
+        appkey:     undefined,
+        relateUid:  undefined,
+        assname:    undefined
     });
 
 });
