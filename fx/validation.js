@@ -96,6 +96,11 @@ FX.getFrame('jquery-1.3.2', function($) {
 
                 break;
 
+            case "domain":
+                regex = /^[a-zA-Z0-9_-]+$/;
+
+                break;
+
             case "chinamobile":
                 regex= /^1[0-9]{10}$|^$/;
                 break;
