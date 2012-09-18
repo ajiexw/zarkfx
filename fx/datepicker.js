@@ -37,7 +37,8 @@ FX.getFrame('jquery-1.3.2', function($){
 
         var $this = $(this);
         attrs.defaultDate = $this.val();
-        $this.datepicker(attrs)
+        $this.datepicker(attrs);
+        $this.datepicker('option', 'yearRange', '-47:-12');
     
     }, {
 
