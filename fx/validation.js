@@ -87,7 +87,19 @@ FX.getFrame('jquery-1.3.2', function($) {
         // 根据验证类型的到不同的validate或regex
         switch(attrs["type"]) {
             case "numbers":
-                regex = /^[0-9]+$/;
+                if(attrs.nonnegative){
+                    if(attrs.empty){
+                        regex = /(^[0-9]+$)|(^$)/;
+                    }else{
+                        regex = /^[0-9]+$/;
+                    }
+                }else{
+                    if(attrs.empty){
+                        regex = /(^-?[0-9]+$)|(^$)/;
+                    }else{
+                        regex = /^-?[0-9]+$/;
+                    }
+                }
 
                 break;
 
@@ -430,6 +442,7 @@ FX.getFrame('jquery-1.3.2', function($) {
         blurValidate: true,
         submitValidate: true,
         ignorecase: false,
-        checkAll:   false
+        checkAll:   false,
+        nonnegative: false
     });
 });
