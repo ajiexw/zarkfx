@@ -7,8 +7,12 @@
         FX.PATH            = '';
 
         $("script").each(function() {
-            if( /zarkfx.js$/.test(this.src) ) {
-                FX.PATH = this.src.replace(/zarkfx.js$/, "");
+            var src = this.src;
+            if (src.indexOf('?') !== -1){
+                src = src.substr(0, src.indexOf('?'));
+            }
+            if( /zarkfx.js$/.test(src) ) {
+                FX.PATH = src.replace(/zarkfx.js$/, "");
             }
         });
 
