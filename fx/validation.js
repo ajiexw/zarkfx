@@ -101,6 +101,14 @@ FX.getFrame('jquery-1.3.2', function($) {
 
                 break;
 
+            case "username":
+                this_val.validate = function(){
+                    var reg = /\s+/g;
+                    return !reg.test($(this_val.node).val());
+                };
+
+                break;
+
             case "chinamobile":
                 regex= /^1[0-9]{10}$|^$/;
                 break;
