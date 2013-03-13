@@ -8,7 +8,7 @@ FX.getFrame('jquery-1.3.2', function($){
         if (!selected_value){
             selected_value = $(choice).html();
         };
-        return selected_value;
+        return $.trim(selected_value);
     };
 
     var filterChoice = function(obj, $container, choice){
