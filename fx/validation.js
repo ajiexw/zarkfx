@@ -78,7 +78,7 @@ FX.getFrame('jquery-1.3.2', function($) {
             return;
         };
 
-        var this_val = {node: this, validate: undefined}, // 当前验证对象, node是原始html的dom, validate为验证函数
+        var this_val = {node: this, validate: undefined, attrs: attrs}, // 当前验证对象, node是原始html的dom, validate为验证函数
             regex;  // 正则表达式, 当不指明验证函数validate时, 自动有regex生成validate
 
         this_val.invalid_msg = attrs["invalid_msg"];  // 错误提示
@@ -87,7 +87,19 @@ FX.getFrame('jquery-1.3.2', function($) {
         // 根据验证类型的到不同的validate或regex
         switch(attrs["type"]) {
             case "numbers":
-                regex = /^[0-9]+$/;
+                if(attrs.nonnegative){
+                    if(attrs.empty){
+                        regex = /(^[0-9]+$)|(^$)/;
+                    }else{
+                        regex = /^[0-9]+$/;
+                    }
+                }else{
+                    if(attrs.empty){
+                        regex = /(^-?[0-9]+$)|(^$)/;
+                    }else{
+                        regex = /^-?[0-9]+$/;
+                    }
+                }
 
                 break;
 
@@ -115,6 +127,7 @@ FX.getFrame('jquery-1.3.2', function($) {
 
             case "regex":
                 eval("regex = /" + attrs["regex"] +"/");
+                
                 if( !(regex instanceof RegExp) ) {
                     return;
                 };
@@ -270,12 +283,12 @@ FX.getFrame('jquery-1.3.2', function($) {
                 } else {
                     this_val.success = function() {
                         if( attrs["valid_fn"] ) {
-                            eval(attrs["valid_fn"] + ".call(this_val.node)");
+                            eval(attrs["valid_fn"] + ".call(this_val.node, this_val.attrs)");
                         };
                     };
                     this_val.fail = function() {
                         if( attrs["invalid_fn"] ) {
-                            eval(attrs["invalid_fn"] + ".call(this_val.node)");
+                            eval(attrs["invalid_fn"] + ".call(this_val.node, this_val.attrs)");
                         };
                     };
                 };
@@ -313,7 +326,7 @@ FX.getFrame('jquery-1.3.2', function($) {
         } else {
             if (attrs["valid_fn"]){
                 this_val.success = function(){
-                    attrs["valid_fn"] && eval(attrs["valid_fn"] + ".call(this_val.node)");
+                    attrs["valid_fn"] && eval(attrs["valid_fn"] + ".call(this_val.node, this_val.attrs)");
                 };
             }else{
                 this_val.success = function(){};
@@ -321,7 +334,7 @@ FX.getFrame('jquery-1.3.2', function($) {
 
             if (attrs["invalid_fn"]){
                 this_val.fail = function(){
-                    attrs["invalid_fn"] && eval(attrs["invalid_fn"] + ".call(this_val.node)");
+                    attrs["invalid_fn"] && eval(attrs["invalid_fn"] + ".call(this_val.node, this_val.attrs)");
                 };
             }else{
                 this_val.fail = function(){};
@@ -438,6 +451,7 @@ FX.getFrame('jquery-1.3.2', function($) {
         blurValidate: true,
         submitValidate: true,
         ignorecase: false,
-        checkAll:   false
+        checkAll:   false,
+        nonnegative: false
     });
 });

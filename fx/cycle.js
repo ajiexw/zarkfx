@@ -56,7 +56,8 @@ FX.getFrame('jquery-1.3.2', function($) {
     }, {
         fx_var: undefined,
         timeout: 0,
-        speed:  1000
+        speed:  1000,
+        pause:  0 // hover时暂停
     
     }, 'cycle');
 
