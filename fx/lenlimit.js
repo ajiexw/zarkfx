@@ -26,6 +26,11 @@ FX.getFrame('jquery-1.3.2', function($){
 
         }
 
+        $this.blur(function(){
+            showLimit();
+        });
+
+        /*Bug:使用搜狗输入法输入中文时，输入的汉语拼音超过两个字母，就会被截取
         $this.focus(function(){
             show_handle = window.setInterval(showLimit, 100);
         });
@@ -35,7 +40,7 @@ FX.getFrame('jquery-1.3.2', function($){
                 window.clearInterval(show_handle);
             }
         });
-
+        */
     }, {
         len: undefined,
         tipTarget: undefined
