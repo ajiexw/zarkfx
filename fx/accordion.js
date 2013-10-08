@@ -107,13 +107,13 @@ FX.getFrame('jquery-1.3.2', function($){
                 }
             });
         });
-        $('.zarkfx_accordion_a1',$this).after('<span class="zarkfx_accordion_span1"></span>').each(function(){
+        $('.zarkfx_accordion_a1',$this).append('<span class="zarkfx_accordion_span1"></span>').each(function(){
             if (($(this).attr('href') == undefined) || ($(this).attr('href').length == 0)){
                 $(this).attr('href','javascript:;');
             }
         });
-        $('.zarkfx_accordion_a2',$this).after('<span class="zarkfx_accordion_span2"></span>');
-        $this.width($this.width()); //为了ie浏览器兼容性
+        $('.zarkfx_accordion_a2',$this).append('<span class="zarkfx_accordion_span2"></span>');
+        //$this.width($this.width()); //为了ie浏览器兼容性
 
         /*events for css*/
         $('.zarkfx_accordion_li1',$this).mouseover(function(){
@@ -121,11 +121,11 @@ FX.getFrame('jquery-1.3.2', function($){
             if ($(this).find('li').length == 0) { 
                 //如果此li中的某个son被选中，则箭头不出现,否则箭头出现
                 if ( $(this).attr('fx_selected') != 'son') {
-                    $('.zarkfx_accordion_span1',$(this)).css("background","url("+attrs.right_img+") top right no-repeat");
+                    $('.zarkfx_accordion_span1',$(this)).css("background","url("+attrs.right_img+") center right no-repeat");
                 }
             }else{//否则有子项
                 if ($(this).find('.zarkfx_accordion_div2').css('display') == 'none'){
-                    $('.zarkfx_accordion_span1',$(this)).css("background","url("+attrs.down_img+") top right no-repeat");
+                    $('.zarkfx_accordion_span1',$(this)).css("background","url("+attrs.down_img+") center right no-repeat");
                 }
             }
         }).mouseout(function(){
