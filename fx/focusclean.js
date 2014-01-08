@@ -70,7 +70,7 @@ FX.getFrame('jquery-1.3.2', function($){
     
 
     }, {
-        color:  '#666666',
+        color:  '#bbb',
         onPassword: false,
         notResume: false
     });

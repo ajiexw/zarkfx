@@ -60,7 +60,7 @@ FX.getFrame('jquery-1.3.2', function($){
         backgroundcolor: '#000',
         opacity:    0.6,
         scroll:     false,
-        zIndex:     1000
+        zIndex:     10000
     });
 
 });
